@@ -1,15 +1,36 @@
+--?  _   _                 _             _____              __ _
+--? | \ | |               (_)           /  __ \            / _(_)
+--? |  \| | ___  _____   ___ _ __ ___   | /  \/ ___  _ __ | |_ _  __ _
+--? | . ` |/ _ \/ _ \ \ / / | '_ ` _ \  | |    / _ \| '_ \|  _| |/ _` |
+--? | |\  |  __/ (_) \ V /| | | | | | | | \__/\ (_) | | | | | | | (_| |
+--? \_| \_/\___|\___/ \_/ |_|_| |_| |_|  \____/\___/|_| |_|_| |_|\__, |
+--?                                                               __/ |
+--?                                                              |___/
+--?
+--! Version : v1.0.0
+--* Note    : the comment sytax for lua has been extended to using additional characters such as ['*','?','!'] to provide color highlighting
+--*           for various types of comments, for example:
+---             - --!:
+--!               - Important (color red)
+---             - --?:
+--?               - Titling (color blue)
+---             - --*:
+--*               - Significance (bold comment)
+---             - ---:
+---               - Regular Comment           
+
 
 -- welcome message when opening neovim
 print(string.format("[ welcome %s ]",os.getenv("USER")))
 
 -- set the default leader for key mappings
-vim.g.mapleader = " "
+vim.g.mapleader = " " --! leader is the space key
 
 --* ------------------------------------------------------------------------------------------------------------------------ *--
 --?                                               Packer Setup & Bootstrapping                                               ?--
 --* ------------------------------------------------------------------------------------------------------------------------ *--
 
--- function to be used to check if Packer is not currently install and if invoke Packer self-bootstrapping if that is the case
+-- function to be used to check if Packer is not currently install, if not, invoke Packer installation and self-bootstrapping
 local ensure_packer = function()
   local fn = vim.fn
   local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
@@ -27,7 +48,9 @@ end
 -- the boolean expression dictating if packer is required to be bootstrapped
 local packer_bootstrap = ensure_packer()
 
---! Packer startup configuration - including bootstrapping of plugins
+--! --------------------------------------------------------------------- !--
+--?   Packer Startup Configuration - Including Bootstrapping of Plugins   ?--
+--! --------------------------------------------------------------------- !--
 require("packer").startup(function(use)
 	use { "wbthomason/packer.nvim" }
   -- place plugins which you desire packer to install below
@@ -48,21 +71,16 @@ require("packer").startup(function(use)
 	  'nvim-lualine/lualine.nvim',
 	   requires = { 'nvim-tree/nvim-web-devicons', opt = true }
 	}
-  -- TODO: type here 
 	use { "fatih/vim-go" }
-
-  --* --------------------------- *--
-  --?    [debugger related]       *--
-  --* --------------------------- *--
-  -- neovim Debug Adapter Protocol
+  -- neovim Debug Adapter Protocol (DAP)
 	use { "rcarriga/nvim-dap-ui",
           requires = {
-            "mfussenegger/nvim-dap",        -- Required
-            "folke/neodev.nvim"             -- Required
+            "mfussenegger/nvim-dap",        --* Required
+            "folke/neodev.nvim"             --* Required
       }
   }
   -- TODO remove and see if the above is suffice
-	use { "mfussenegger/nvim-dap" } --? may not be required, based on above dependency
+	use { "mfussenegger/nvim-dap" } --* may not be required, based on above dependency
   use { "folke/neodev.nvim" }
 
   -- An extension for nvim-dap providing configurations for launching go debugger (delve) and debugging individual tests.
@@ -72,19 +90,19 @@ require("packer").startup(function(use)
   -- 
 	use {
 		'VonHeikemen/lsp-zero.nvim',
-  		branch = 'v3.x', --! Important: currently testing v3.x; may have to revert back to v2.x if issues arise 
+  		branch = 'v3.x', --! IMPORTANT: currently testing v3.x; may have to revert back to v2.x if issues arise 
   		requires = {
-		{'neovim/nvim-lspconfig'},             -- Required
-		{'williamboman/mason.nvim'},           -- Optional
-		{'williamboman/mason-lspconfig.nvim'}, -- Optional
-		{'hrsh7th/nvim-cmp'},                  -- Required
-		{'hrsh7th/cmp-nvim-lsp'},              -- Required
-		{'hrsh7th/cmp-buffer'},                -- Optional
-		{'hrsh7th/cmp-path'},                  -- Optional
-		{'saadparwaiz1/cmp_luasnip'},          -- Optional
-		{'hrsh7th/cmp-nvim-lua'},              -- Optional
-		{'L3MON4D3/LuaSnip'},                  -- Required
-		{'rafamadriz/friendly-snippets'},      -- Optional
+		{'neovim/nvim-lspconfig'},             --* Required
+		{'williamboman/mason.nvim'},           --* Optional
+		{'williamboman/mason-lspconfig.nvim'}, --* Optional
+		{'hrsh7th/nvim-cmp'},                  --* Required
+		{'hrsh7th/cmp-nvim-lsp'},              --* Required
+		{'hrsh7th/cmp-buffer'},                --* Optional
+		{'hrsh7th/cmp-path'},                  --* Optional
+		{'saadparwaiz1/cmp_luasnip'},          --* Optional
+		{'hrsh7th/cmp-nvim-lua'},              --* Optional
+		{'L3MON4D3/LuaSnip'},                  --* Required
+		{'rafamadriz/friendly-snippets'},      --* Optional
   	},
 
 	use {"akinsho/toggleterm.nvim", tag = '*' },
@@ -99,7 +117,6 @@ require("packer").startup(function(use)
 --     "hashicorp/terraform-ls", 
 --     requires = {"neovim/nvim-lspconfig"}
 --   }
-
 
   -- Automatically set up your configuration after cloning packer.nvim - Packer self-bootstrapping
   if packer_bootstrap then
@@ -117,7 +134,7 @@ end)
 --* --------------------------------------------------------------- *--
 --* Note      : tree-sitter is a parser generator tool and an incremental parsing library. 
 --*             It can build a concrete syntax tree for a source file and efficiently update the syntax tree as the source file is edited.
---! Important : required for IDE functionality such as parsing, syntax highlighting, code analysis and incremental selection.
+--! IMPORTANT : required for IDE functionality such as parsing, syntax highlighting, code analysis and incremental selection.
 
 require("nvim-treesitter.configs").setup({
 	ensure_installed = {"c", "lua", "vim", "go", "javascript", "typescript", "rust", "dockerfile", "python", "bash", "hcl", "rego"},
@@ -170,7 +187,6 @@ require("toggleterm").setup({
 --* --------------------------------------------------------------- *--
 --?                       nvim-comment Setup                        ?--
 --* --------------------------------------------------------------- *--
--- TODO: add mapping
 require("nvim_comment").setup({
 	operator_mapping = "<leader>/"
 })
@@ -288,53 +304,53 @@ cmp.setup({
 
 
 --* ------------------------------------ *--
---?     [BASH Language Server]     *--
+--?         BASH Language Server         ?--
 --* ------------------------------------ *--
 
---! IMPORTANT:  
---!             - The Bash Language Server is required to be installed if you want lspconfig to provide LSP functionality for bash code. 
---!             - lsp-zero should be able to install bashls via Mason (via the ensure_installed function); however, if you encounter issues installing the
---!               the lanugage server you can it manually - link in references section
+--! IMPORTANT :  
+--!               - The Bash Language Server is required to be installed if you want lspconfig to provide LSP functionality for bash code. 
+--!               - lsp-zero should be able to install bashls via Mason (via the ensure_installed function); however, if you encounter issues installing the
+--!                 the lanugage server you can it manually - link in references section
 --!               - if performing a manual install of the language server, please ensure that the binary can be found in $PATH
---* Note:
---*             - even if lsp-zero/Mason is able to install the language server, you may need to configure the respective lspconfig setup for bashls to point the default start up
---*               command to the path where it was auto installed (e.g. /home/{USER}/.local/share/nvim/mason/bin/bash-labguage-server). 
---*               depending on the LSP the default startup command may assume that the binary can be found under $PATH
+--* Note      :
+--*               - even if lsp-zero/Mason is able to install the language server, you may need to configure the respective lspconfig setup for bashls to point the default start up
+--*                 command to the path where it was auto installed (e.g. /home/{USER}/.local/share/nvim/mason/bin/bash-labguage-server). 
+--*                 depending on the LSP the default startup command may assume that the binary can be found under $PATH
 
 require("lspconfig").bashls.setup({})
 
 
 --* ------------------------------------ *--
---?     [YAML Language Server]     *--
+--?         YAML Language Server         ?--
 --* ------------------------------------ *--
 
---! IMPORTANT:  - The YAML Language Server is required to be installed if you want lspconfig to provide LSP functionality for YAML code. 
---!             - lsp-zero should be able to install yamls via Mason (via the ensure_installed function); however, if you encounter issues installing the
---!               the lanugage server you can it manually - link in references section
+--! IMPORTANT :   - The YAML Language Server is required to be installed if you want lspconfig to provide LSP functionality for YAML code. 
+--!               - lsp-zero should be able to install yamls via Mason (via the ensure_installed function); however, if you encounter issues installing the
+--!                 the lanugage server you can it manually - link in references section
 --!               - if performing a manual install of the language server, please ensure that the binary can be found in $PATH
---* Note:
---*             - even if lsp-zero/Mason is able to install the language server, you may need to configure the respective lspconfig setup for yamls to point the default start up
---*               command to the path where it was auto installed (e.g. /home/{USER}/.local/share/nvim/mason/bin/yamls).
---*               depending on the LSP the default startup command may assume that the binary can be found under $PATH
+--* Note      :
+--*               - even if lsp-zero/Mason is able to install the language server, you may need to configure the respective lspconfig setup for yamls to point the default start up
+--*                 command to the path where it was auto installed (e.g. /home/{USER}/.local/share/nvim/mason/bin/yamls).
+--*                 depending on the LSP the default startup command may assume that the binary can be found under $PATH
 
---! IMPORTANT: the YAML Language Server and LSP have been disabled on purpose; need to work out a way that it doesn't conflict with Helm based files and the helm_ls LSP
+--! IMPORTANT :   - the YAML Language Server and LSP have been disabled on purpose; need to work out a way that it doesn't conflict with Helm based files and the helm_ls LSP
 -- TODO: investigate the resolution for the above
 
 -- require("lspconfig").yamlls.setup({})
 
 
 --* ------------------------------------ *--
---?  Terraform Language Server & Linter  *--
+--?  Terraform Language Server & Linter  ?--
 --* ------------------------------------ *--
 
---! IMPORTANT:  - The Terraform Language Server is required to be installed if you want lspconfig to provide LSP functionality for terraform HCL code. 
---!             - lsp-zero should be able to install terraform-ls via Mason (via the ensure_installed function); however, if you encounter issues installing the
---!               the lanugage server you can it manually - link in references section
---!               - if performing a manual install of the language server, please ensure that the binary can be found in $PATH
---* Note:
---*             - even if lsp-zero/Mason is able to install the language server, you may need to configure the respective lspconfig setup for terraformls to point the default start up
---*               command to the path where it was auto installed (e.g. /home/{USER}/.local/share/nvim/mason/bin/terraform-ls).
---*               depending on the LSP the default startup command may assume that the binary can be found under $PATH
+--! IMPORTANT :   - The Terraform Language Server is required to be installed if you want lspconfig to provide LSP functionality for terraform HCL code. 
+--!               - lsp-zero should be able to install terraform-ls via Mason (via the ensure_installed function); however, if you encounter issues installing the
+--!                 the lanugage server you can it manually - link in references section
+--!                 - if performing a manual install of the language server, please ensure that the binary can be found in $PATH
+--* Note      :
+--*               - even if lsp-zero/Mason is able to install the language server, you may need to configure the respective lspconfig setup for terraformls to point the default start up
+--*                 command to the path where it was auto installed (e.g. /home/{USER}/.local/share/nvim/mason/bin/terraform-ls).
+--*                 depending on the LSP the default startup command may assume that the binary can be found under $PATH
 
 require("lspconfig").terraformls.setup({})
 vim.api.nvim_create_autocmd({"BufWritePre"}, {
@@ -349,33 +365,33 @@ require("lspconfig").tflint.setup({})
 
 
 --* ------------------------------------ *--
---?         Docker Language Server       *--
+--?         Docker Language Server       ?--
 --* ------------------------------------ *--
 
---! IMPORTANT:  - The Docker Language Server is required to be installed if you want lspconfig to provide LSP functionality for Dockerfile code. 
---!             - lsp-zero should be able to install docker-langserver via Mason (via the ensure_installed function); however, if you encounter issues installing the
---!               the lanugage server you can it manually - link in references section
---!               - if performing a manual install of the language server, please ensure that the binary can be found in $PATH
---* Note:
---*             - even if lsp-zero/Mason is able to install the language server, you may need to configure the respective lspconfig setup for docker-langserver to point the default start up
---*               command to the path where it was auto installed (e.g. /home/{USER}/.local/share/nvim/mason/bin/docker-langserver).
---*               depending on the LSP the default startup command may assume that the binary can be found under $PATH
+--! IMPORTANT :   - The Docker Language Server is required to be installed if you want lspconfig to provide LSP functionality for Dockerfile code. 
+--!               - lsp-zero should be able to install docker-langserver via Mason (via the ensure_installed function); however, if you encounter issues installing the
+--!                 the lanugage server you can it manually - link in references section
+--!                 - if performing a manual install of the language server, please ensure that the binary can be found in $PATH
+--* Note      :
+--*               - even if lsp-zero/Mason is able to install the language server, you may need to configure the respective lspconfig setup for docker-langserver to point the default start up
+--*                 command to the path where it was auto installed (e.g. /home/{USER}/.local/share/nvim/mason/bin/docker-langserver).
+--*                 depending on the LSP the default startup command may assume that the binary can be found under $PATH
 
 require("lspconfig").dockerls.setup({})
 
 
 --* ------------------------------------ *--
---?          Helm Language Server        *--
+--?          Helm Language Server        ?--
 --* ------------------------------------ *--
 
---! IMPORTANT:  - The Helm Language Server is required to be installed if you want lspconfig to provide LSP functionality for Helm code. 
---!             - lsp-zero should be able to install helm_ls via Mason (via the ensure_installed function); however, if you encounter issues installing the
---!               the lanugage server you can it manually - link in references section
---!               - if performing a manual install of the language server, please ensure that the binary can be found in $PATH
---* Note:
---*             - even if lsp-zero/Mason is able to install the language server, you may need to configure the respective lspconfig setup for helm_ls to point the default start up
---*               command to the path where it was auto installed (e.g. /home/{USER}/.local/share/nvim/mason/bin/helm_ls).
---*               depending on the LSP the default startup command may assume that the binary can be found under $PATH
+--! IMPORTANT :   - The Helm Language Server is required to be installed if you want lspconfig to provide LSP functionality for Helm code. 
+--!               - lsp-zero should be able to install helm_ls via Mason (via the ensure_installed function); however, if you encounter issues installing the
+--!                 the lanugage server you can it manually - link in references section
+--!                 - if performing a manual install of the language server, please ensure that the binary can be found in $PATH
+--* Note      :
+--*               - even if lsp-zero/Mason is able to install the language server, you may need to configure the respective lspconfig setup for helm_ls to point the default start up
+--*                 command to the path where it was auto installed (e.g. /home/{USER}/.local/share/nvim/mason/bin/helm_ls).
+--*                 depending on the LSP the default startup command may assume that the binary can be found under $PATH
 
 -- TODO: need to figure out why the Helm language server is not rendering properly
 -- require("lspconfig").helm_ls.setup({})
@@ -402,20 +418,20 @@ lspconfig.helm_ls.setup {
 }
 
 --* ------------------------------------ *--
---?   Python Type Checker & Lang Server  *--
+--?   Python Type Checker & Lang Server  ?--
 --* ------------------------------------ *--
 
 --* Pyright is a full-featured, standards-based static type checker for Python which also comes with an LSP. 
 --* It is designed for high performance and can be used with large Python source bases.
 
---! IMPORTANT:  - The pyright static type checker and language Server is required to be installed if you want lspconfig to provide LSP functionality for Python code. 
---!             - lsp-zero should be able to install pyright via Mason (via the ensure_installed function); however, if you encounter issues installing the
---!               the lanugage server you can it manually - link in references section
---!               - if performing a manual install of the language server, please ensure that the binary can be found in $PATH
---* Note:
---*             - even if lsp-zero/Mason is able to install the language server, you may need to configure the respective lspconfig setup for pyright to point the default start up
---*               command to the path where it was auto installed (e.g. /home/{USER}/.local/share/nvim/mason/bin/pyright).
---*               depending on the LSP the default startup command may assume that the binary can be found under $PATH
+--! IMPORTANT :   - The pyright static type checker and language Server is required to be installed if you want lspconfig to provide LSP functionality for Python code. 
+--!               - lsp-zero should be able to install pyright via Mason (via the ensure_installed function); however, if you encounter issues installing the
+--!                 the lanugage server you can it manually - link in references section
+--!                 - if performing a manual install of the language server, please ensure that the binary can be found in $PATH
+--* Note      :
+--*               - even if lsp-zero/Mason is able to install the language server, you may need to configure the respective lspconfig setup for pyright to point the default start up
+--*                 command to the path where it was auto installed (e.g. /home/{USER}/.local/share/nvim/mason/bin/pyright).
+--*                 depending on the LSP the default startup command may assume that the binary can be found under $PATH
 
 require'lspconfig'.pyright.setup{}
 
@@ -425,39 +441,39 @@ require'lspconfig'.pyright.setup{}
 --* --------------------------------------------------------------- *--
 
 --* --------------------------- *--
---?             dap             *--
+--?             dap             ?--
 --* --------------------------- *--
---! IMPORTANT: dap (nvim-dap) is a generic protocol for neovim that will interface with various debuggers
---!       - simply integrate the debugger of your choice for the language of use and configure their respective setup configurations, reference dap-go below
-
--- TODO: complete mappings
+--! IMPORTANT: 
+--!             - dap (nvim-dap) is a generic protocol for neovim that will interface with various debuggers
+--!               - simply integrate the debugger of your choice for the language of use and configure their respective setup configurations, reference dap-go below
 
 --* --------------------------- *--
---?             dapui           *--
+--?             dapui           ?--
 --* --------------------------- *--
 -- Note: dapui is a User Interface (UI) for nvim-dap which provides a good out of the box configuration.
 require("dapui").setup()
 
--- dependency of dapui
+--! dependency of dapui
 require("neodev").setup({
   library = { plugins = { "nvim-dap-ui" }, types = true },
   ...
 })
 
 --* --------------------------- *--
---?            codicons         *--
+--?            codicons         ?--
 --* --------------------------- *--
 --! IMPORTANT: 
---!   - codicons is a dependency of dapui, which leverages codicons as part of the UI's debugger pane
---!   - the codicon font will required to be patched by tools like nerd-fonts' font-patcher; possibly in conjunction with fontforge
---!     - patching required for successfull rending in the terminal, see references section for detals on how to patch fonts
+--!             - codicons is a dependency of dapui, which leverages codicons as part of the UI's debugger pane
+--!             - the codicon font will required to be patched by tools like nerd-fonts' font-patcher; possibly in conjunction with fontforge
+--!             - patching required for successfull rending in the terminal, see references section for detals on how to patch fonts
 
 require("codicons").setup()
 
 --* --------------------------- *--
---?            dap-go           *--
+--?            dap-go           ?--
 --* --------------------------- *--
---* Note: DAP-Go (i.e. nvim-dap-go) is an extension for nvim-dap providing configurations for launching go debugger (delve) and debugging individual tests.
+--* Note: DAP-Go (i.e. nvim-dap-go) is an extension for nvim-dap providing configurations for launching go debugger (delve) 
+--*       and debugging individual tests.
 
 require("dap-go").setup {
   -- Additional dap configurations can be added.
@@ -549,7 +565,7 @@ vim.o.termguicolors = true
 --?                         generic Key Bindings                    ?--
 --* --------------------------------------------------------------- *--
 
---! Go back
+--! go back
 vim.keymap.set("n", "<M-b>", ":Ex<CR>")
 
 --! insert mode an cancelation
