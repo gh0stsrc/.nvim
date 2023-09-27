@@ -7,7 +7,7 @@
 --?                                                               __/ |
 --?                                                              |___/
 --?
---! Version : v1.0.0
+--! Version : v1.1.0
 --* Note    : the comment sytax for lua has been extended to using additional characters such as ['*','?','!'] to provide color highlighting
 --*           for various types of comments, for example:
 ---             - --!:
@@ -25,6 +25,21 @@ print(string.format("[ welcome %s ]",os.getenv("USER")))
 
 -- set the default leader for key mappings
 vim.g.mapleader = " " --! leader is the space key
+
+
+--* ------------------------------------------------------------------------------------------------------------------------ *--
+--?                                                     Helper Functions                                                      ?--
+--* ------------------------------------------------------------------------------------------------------------------------ *--
+
+-- helper func to convert strings to booleans - primarily for env var comparison
+local function to_boolean(str)
+  local bool = false
+  if str == "true" then
+      bool = true
+  end
+  return bool
+end
+
 
 --* ------------------------------------------------------------------------------------------------------------------------ *--
 --?                                               Packer Setup & Bootstrapping                                               ?--
@@ -52,75 +67,85 @@ local packer_bootstrap = ensure_packer()
 --?   Packer Startup Configuration - Including Bootstrapping of Plugins   ?--
 --! --------------------------------------------------------------------- !--
 require("packer").startup(function(use)
-	use { "wbthomason/packer.nvim" }
+  use { "wbthomason/packer.nvim" }
   -- place plugins which you desire packer to install below
-	use { "ellisonleao/gruvbox.nvim" } -- 
-	use('nvim-treesitter/nvim-treesitter', {run = ':TSUpdate'})
-	use {
-		'nvim-telescope/telescope.nvim', tag = '0.1.1',
-		 requires = { {'nvim-lua/plenary.nvim'} }
-	}
+  use { "ellisonleao/gruvbox.nvim" } -- 
+  use("nvim-treesitter/nvim-treesitter", {run = ":TSUpdate"})
+  use {
+    "nvim-telescope/telescope.nvim", tag = "0.1.1",
+    requires = {
+      {"nvim-lua/plenary.nvim"},           --* Required
+      {"BurntSushi/ripgrep"},              --* Required
+      {"sharkdp/fd"}                       --* Optional       
+    }
+  }
   use({
-	  "chama-chomo/grail",
-	  -- Optional; default configuration will be used if setup isn't called.
-	  config = function()
-		require("grail").setup()
-	  end,
-	})
-	use {
-	  'nvim-lualine/lualine.nvim',
-	   requires = { 'nvim-tree/nvim-web-devicons', opt = true }
-	}
-	use { "fatih/vim-go" }
+    "chama-chomo/grail",
+    -- Optional; default configuration will be used if setup isn't called.
+    config = function()
+    require("grail").setup()
+    end,
+  })
+  use {
+    "nvim-lualine/lualine.nvim",
+     requires = { "nvim-tree/nvim-web-devicons", opt = true }
+  }
+  use { "fatih/vim-go" }
   -- neovim Debug Adapter Protocol (DAP)
-	use { "rcarriga/nvim-dap-ui",
+  use { "mfussenegger/nvim-dap" }
+  -- neovim DAP UI plugin
+  use { "rcarriga/nvim-dap-ui",
           requires = {
             "mfussenegger/nvim-dap",        --* Required
             "folke/neodev.nvim"             --* Required
       }
   }
-  -- TODO remove and see if the above is suffice
-	use { "mfussenegger/nvim-dap" } --* may not be required, based on above dependency
+  
   use { "folke/neodev.nvim" }
 
   -- An extension for nvim-dap providing configurations for launching go debugger (delve) and debugging individual tests.
-	use { "leoluz/nvim-dap-go"}
+  use { "leoluz/nvim-dap-go"}
   --! condicon font used by nvim-dap-ui - Note: this font requires to be patched to be properly processed by most terminals; see plugin configuration section for details
-	use { "mortepau/codicons.nvim" }
+  use { "mortepau/codicons.nvim" }
   -- 
-	use {
-		'VonHeikemen/lsp-zero.nvim',
-  		branch = 'v3.x', --! IMPORTANT: currently testing v3.x; may have to revert back to v2.x if issues arise 
-  		requires = {
-		{'neovim/nvim-lspconfig'},             --* Required
-		{'williamboman/mason.nvim'},           --* Optional
-		{'williamboman/mason-lspconfig.nvim'}, --* Optional
-		{'hrsh7th/nvim-cmp'},                  --* Required
-		{'hrsh7th/cmp-nvim-lsp'},              --* Required
-		{'hrsh7th/cmp-buffer'},                --* Optional
-		{'hrsh7th/cmp-path'},                  --* Optional
-		{'saadparwaiz1/cmp_luasnip'},          --* Optional
-		{'hrsh7th/cmp-nvim-lua'},              --* Optional
-		{'L3MON4D3/LuaSnip'},                  --* Required
-		{'rafamadriz/friendly-snippets'},      --* Optional
-  	},
+  use {
+      "VonHeikemen/lsp-zero.nvim",
+      branch = "v3.x", --! IMPORTANT: currently testing v3.x; may have to revert back to v2.x if issues arise 
+      requires = {
+        {"neovim/nvim-lspconfig"},             --* Required
+        {"williamboman/mason.nvim"},           --* Optional
+        {"williamboman/mason-lspconfig.nvim"}, --* Optional
+        {"hrsh7th/nvim-cmp"},                  --* Required
+        {"hrsh7th/cmp-nvim-lsp"},              --* Required
+        {"hrsh7th/cmp-buffer"},                --* Optional
+        {"hrsh7th/cmp-path"},                  --* Optional
+        {"saadparwaiz1/cmp_luasnip"},          --* Optional
+        {"hrsh7th/cmp-nvim-lua"},              --* Optional
+        {"L3MON4D3/LuaSnip"},                  --* Required
+        {"rafamadriz/friendly-snippets"},      --* Optional
+      },
 
-	use {"akinsho/toggleterm.nvim", tag = '*' },
-	use {"jhlgns/naysayer88.vim"},
-	use {"terrortylor/nvim-comment"},
-	use {"CreaturePhil/vim-handmade-hero"}
-}
+      use {"akinsho/toggleterm.nvim", tag = "*" },
+      use {"jhlgns/naysayer88.vim"},
+      use {"terrortylor/nvim-comment"},
+      use {"CreaturePhil/vim-handmade-hero"}
+  }
 
--- TODO: need to confirm that mason can successfully install and configure the terraform language server; if so delete this comment block
--- -- requires the terraform language server to be installed first -> https://www.hashicorp.com/official-packaging-guide
---   use { 
---     "hashicorp/terraform-ls", 
---     requires = {"neovim/nvim-lspconfig"}
---   }
+  -- check if the env var `NVIM_ENABLE_GPT` is set to true; if so add the chatgpt plugin to the packer setup
+  if to_boolean(os.getenv("NVIM_ENABLE_GPT")) == true then
+    use {
+      "jackMort/ChatGPT.nvim",
+      requires = {
+        {"MunifTanjim/nui.nvim"},
+        {"nvim-lua/plenary.nvim"},
+        {"nvim-telescope/telescope.nvim"}
+      }
+    }
+  end
 
   -- Automatically set up your configuration after cloning packer.nvim - Packer self-bootstrapping
   if packer_bootstrap then
-    require('packer').sync()
+    require("packer").sync()
   end
 end)
 
@@ -137,10 +162,10 @@ end)
 --! IMPORTANT : required for IDE functionality such as parsing, syntax highlighting, code analysis and incremental selection.
 
 require("nvim-treesitter.configs").setup({
-	ensure_installed = {"c", "lua", "vim", "go", "javascript", "typescript", "rust", "dockerfile", "python", "bash", "hcl", "rego"},
-	highlight = {
-		enable = true,
-	}
+  ensure_installed = {"c", "lua", "vim", "go", "javascript", "typescript", "rust", "dockerfile", "python", "bash", "hcl", "rego"},
+  highlight = {
+    enable = true,
+  }
 })
 
 
@@ -150,10 +175,10 @@ require("nvim-treesitter.configs").setup({
 --* Note: gruvbox is a neovim theme heavily inspired by badwolf, jellybeans and solarized
 
 require("gruvbox").setup({
-	contrast = "hard",
-	palette_overrides = {
-		gray = "#2ea542",
-	}
+  contrast = "hard",
+  palette_overrides = {
+    gray = "#2ea542",
+  }
 })
 
 
@@ -163,12 +188,12 @@ require("gruvbox").setup({
 --* Note: lualine is a blazing fast and easy to configure neovim statusline written in Lua.
 
 require("lualine").setup({
-	options = {
-		icons_enabled = false,
-		theme = "onedark",
-		component_separators = "|",
-		section_separators = "",
-	},
+  options = {
+    icons_enabled = false,
+    theme = "onedark",
+    component_separators = "|",
+    section_separators = "",
+  },
 })
 
 
@@ -178,9 +203,9 @@ require("lualine").setup({
 --* Note: toggleterm is a neovim plugin to persist and toggle multiple terminals during an editing session
 
 require("toggleterm").setup({
-	direction = "horizontal",
-	size = 15,
-	open_mapping = [[<M-j>]]
+  direction = "horizontal",
+  size = 15,
+  open_mapping = [[<M-j>]]
 })
 
 
@@ -188,7 +213,7 @@ require("toggleterm").setup({
 --?                       nvim-comment Setup                        ?--
 --* --------------------------------------------------------------- *--
 require("nvim_comment").setup({
-	operator_mapping = "<leader>/"
+  operator_mapping = "<leader>/"
 })
 
 
@@ -199,32 +224,32 @@ local lsp = require("lsp-zero").preset("recommended")
 
 -- list of language servers, debugger adaptors, linters and formatters to be installed by mason and leveraged by lsp-zero
 lsp.ensure_installed({
-	"tsserver",
-	"gopls",
-	"eslint",
-	"rust_analyzer",
-  "terraformls", -- TODO: need to confirm that mason can successfully install and configure the terraform language server
+  "tsserver",
+  "gopls",
+  "eslint",
+  "rust_analyzer",
+  "terraformls",
   "tflint",
   "bashls",
   "dockerls",
-  "helm_ls", -- TODO: need to figure out why the Helm language server is not rendering properly 
+  "helm_ls", -- TODO: need to figure out why the Helm language server is not rendering properly
   "pyright",
-  -- "yamls", --! IMPORTANT: disabled on purpose, see configurations for more details 
+  -- "yamls", --! IMPORTANT: disabled on purpose, see configurations for more details
 })
 
 -- configure lsp preferences
 lsp.set_preferences({
-	sign_icons = {}
+  sign_icons = {}
 })
 
 -- integration and keybindings for telescope functionality (on attach - before setup)
 lsp.on_attach(function(client, bufnr)
-	lsp.default_keymaps({{buffer = bufnr}})
-	local opts = {buffer = bufnr, remap = false}
-		vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
-		vim.keymap.set('n', 'gr', '<cmd>Telescope lsp_references<cr>', {buffer = true})
-		vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts) -- hover over documentation preview
-		vim.keymap.set('n', '<M-r>', vim.lsp.buf.rename, opts)
+  lsp.default_keymaps({{buffer = bufnr}})
+  local opts = {buffer = bufnr, remap = false}
+    vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
+    vim.keymap.set("n", "gr", "<cmd>Telescope lsp_references<cr>", {buffer = true})
+    vim.keymap.set("n", "K", vim.lsp.buf.hover, opts) -- hover over documentation preview
+    vim.keymap.set("n", "<M-r>", vim.lsp.buf.rename, opts)
 end)
 
 -- invoke lsp setup
@@ -232,11 +257,11 @@ lsp.setup()
 
 -- attach lsp handler(s)
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-	vim.lsp.diagnostic.on_publish_diagnostics, {
-		signs = false,
-		virtual_text = true,
-		underline = false,
-	}
+  vim.lsp.diagnostic.on_publish_diagnostics, {
+    signs = false,
+    virtual_text = true,
+    underline = false,
+  }
 )
 
 
@@ -251,23 +276,23 @@ local cmp_select_opts = {behavior = cmp.SelectBehavior.Select}
 -- -- the meat and potatoes for cmp config
 cmp.setup({
   sources = {
-    {name = 'nvim_lsp'},
+    {name = "nvim_lsp"},
   },
   mapping = {
-    ['<C-y>'] = cmp.mapping.confirm({select = true}),
-    ['<C-e>'] = cmp.mapping.abort(),
-    ['<C-u>'] = cmp.mapping.scroll_docs(-4),
-    ['<C-d>'] = cmp.mapping.scroll_docs(4),
-    ['<Up>'] = cmp.mapping.select_prev_item(cmp_select_opts),
-    ['<Down>'] = cmp.mapping.select_next_item(cmp_select_opts),
-    ['<C-p>'] = cmp.mapping(function()
+    ["<C-y>"] = cmp.mapping.confirm({select = true}),
+    ["<C-e>"] = cmp.mapping.abort(),
+    ["<C-u>"] = cmp.mapping.scroll_docs(-4),
+    ["<C-d>"] = cmp.mapping.scroll_docs(4),
+    ["<Up>"] = cmp.mapping.select_prev_item(cmp_select_opts),
+    ["<Down>"] = cmp.mapping.select_next_item(cmp_select_opts),
+    ["<C-p>"] = cmp.mapping(function()
       if cmp.visible() then
         cmp.select_prev_item(cmp_select_opts)
       else
         cmp.complete()
       end
     end),
-    ['<C-n>'] = cmp.mapping(function()
+    ["<C-n>"] = cmp.mapping(function()
       if cmp.visible() then
         cmp.select_next_item(cmp_select_opts)
       else
@@ -277,7 +302,7 @@ cmp.setup({
   },
   snippet = {
     expand = function(args)
-      require('luasnip').lsp_expand(args.body)
+      require("luasnip").lsp_expand(args.body)
     end,
   },
   window = {
@@ -287,11 +312,11 @@ cmp.setup({
     }
   },
   formatting = {
-    fields = {'abbr', 'menu', 'kind'},
+    fields = {"abbr", "menu", "kind"},
     format = function(entry, item)
       local short_name = {
-        nvim_lsp = 'LSP',
-        nvim_lua = 'nvim'
+        nvim_lsp = "LSP",
+        nvim_lua = "nvim"
       }
 
       local menu_name = short_name[entry.source.name] or entry.source.name
@@ -396,17 +421,17 @@ require("lspconfig").dockerls.setup({})
 -- TODO: need to figure out why the Helm language server is not rendering properly
 -- require("lspconfig").helm_ls.setup({})
 
-local configs = require('lspconfig.configs')
-local lspconfig = require('lspconfig')
-local util = require('lspconfig.util')
+local configs = require("lspconfig.configs")
+local lspconfig = require("lspconfig")
+local util = require("lspconfig.util")
 
 if not configs.helm_ls then
   configs.helm_ls = {
     default_config = {
       cmd = {"helm_ls", "serve"},
-      filetypes = {'helm'},
+      filetypes = {"helm"},
       root_dir = function(fname)
-        return util.root_pattern('Chart.yaml')(fname)
+        return util.root_pattern("Chart.yaml")(fname)
       end,
     },
   }
@@ -416,6 +441,7 @@ lspconfig.helm_ls.setup {
   filetypes = {"helm"},
   cmd = {"helm_ls", "serve"},
 }
+
 
 --* ------------------------------------ *--
 --?   Python Type Checker & Lang Server  ?--
@@ -433,7 +459,7 @@ lspconfig.helm_ls.setup {
 --*                 command to the path where it was auto installed (e.g. /home/{USER}/.local/share/nvim/mason/bin/pyright).
 --*                 depending on the LSP the default startup command may assume that the binary can be found under $PATH
 
-require'lspconfig'.pyright.setup{}
+require("lspconfig").pyright.setup({})
 
 
 --* --------------------------------------------------------------- *--
@@ -459,6 +485,7 @@ require("neodev").setup({
   ...
 })
 
+
 --* --------------------------- *--
 --?            codicons         ?--
 --* --------------------------- *--
@@ -468,6 +495,7 @@ require("neodev").setup({
 --!             - patching required for successfull rending in the terminal, see references section for detals on how to patch fonts
 
 require("codicons").setup()
+
 
 --* --------------------------- *--
 --?            dap-go           ?--
@@ -513,6 +541,47 @@ require("dap-go").setup {
   },
 }
 
+
+--* --------------------------------------------------------------- *--
+--?                           chatgpt Setup                         ?--
+--* --------------------------------------------------------------- *--
+
+--! IMPORTANT: to leverage the chatgpt plugin you will need to provide a valid api key; see the README for more details
+--* check if the env var `NVIM_ENABLE_GPT` is set to true; if so invoke the plugin's default setup, with a couple of ovverides
+if to_boolean(os.getenv("NVIM_ENABLE_GPT")) == true then
+  require("chatgpt").setup({ 
+    chat = {
+      question_sign = "",
+      answer_sign = "",
+
+    },
+    openai_params = {
+      model = "gpt-3.5-turbo",
+      max_tokens = 900,
+    },
+    --* default key mappings below
+    -- keymaps = {
+    --   close = { "<C-c>" },
+    --   yank_last = "<C-y>",
+    --   yank_last_code = "<C-k>",
+    --   scroll_up = "<C-u>",
+    --   scroll_down = "<C-d>",
+    --   new_session = "<C-n>",
+    --   cycle_windows = "<Tab>",
+    --   cycle_modes = "<C-f>",
+    --   select_session = "<Space>",
+    --   rename_session = "r",
+    --   delete_session = "d",
+    --   draft_message = "<C-d>",
+    --   toggle_settings = "<C-o>",
+    --   toggle_message_role = "<C-r>",
+    --   toggle_system_role_open = "<C-s>",
+    --   stop_generating = "<C-x>",
+    -- },
+  })
+end
+
+
 --* --------------------------------------------------------------- *--
 --?                    Color Scheme Configurations                  ?--
 --* --------------------------------------------------------------- *--
@@ -522,18 +591,18 @@ vim.cmd("colorscheme gruvbox")
 
 -- adding the same comment color in each theme
 vim.cmd([[
-	augroup CustomCommentCollor
-		autocmd!
-		autocmd VimEnter * hi Comment guifg=#2ea542
-	augroup END
+  augroup CustomCommentCollor
+    autocmd!
+    autocmd VimEnter * hi Comment guifg=#2ea542
+  augroup END
 ]])
 
 -- Disable annoying match brackets and all the jazz
 vim.cmd([[
-	augroup CustomHI
-		autocmd!
-		autocmd VimEnter * NoMatchParen 
-	augroup END
+  augroup CustomHI
+    autocmd!
+    autocmd VimEnter * NoMatchParen 
+  augroup END
 ]])
 
 -- customizations
@@ -583,20 +652,20 @@ vim.keymap.set("n", "<M-l>", ":wincmd l<CR>", { noremap = true })
 --* See `:help telescope.builtin`
 
 --! telescope related key bindings
-vim.keymap.set('n', '<M-?>', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
-vim.keymap.set('n', '<M-space>', require('telescope.builtin').buffers, { desc = '[ ] Find existing buffers' })
-vim.keymap.set('n', '<M-f>', function()
-	require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
-		winblend = 10,
-  		previewer = false,
-    })
-end, { desc = '[/] Fuzzily search in current buffer' })
+vim.keymap.set("n", "<M-?>", require("telescope.builtin").oldfiles, { desc = "[?] Find recently opened files" })
+vim.keymap.set("n", "<M-space>", require("telescope.builtin").buffers, { desc = "[ ] Find existing buffers" })
+vim.keymap.set("n", "<M-f>", function()
+  require("telescope.builtin").current_buffer_fuzzy_find(require("telescope.themes").get_dropdown {
+    winblend = 10,
+      previewer = false,
+  })
+end, { desc = "[/] Fuzzily search in current buffer" })
 
-vim.keymap.set('n', '<M-p>', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
-vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
-vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
-vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
-vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
+vim.keymap.set("n", "<M-p>", require("telescope.builtin").find_files, { desc = "[S]earch [F]iles" })
+vim.keymap.set("n", "<leader>sh", require("telescope.builtin").help_tags, { desc = "[S]earch [H]elp" })
+vim.keymap.set("n", "<leader>sw", require("telescope.builtin").grep_string, { desc = "[S]earch current [W]ord" })
+vim.keymap.set("n", "<leader>sg", require("telescope.builtin").live_grep, { desc = "[S]earch by [G]rep" })
+vim.keymap.set("n", "<leader>sd", require("telescope.builtin").diagnostics, { desc = "[S]earch [D]iagnostics" })
 
 
 --* --------------------------------------------------------------- *--
@@ -609,17 +678,17 @@ vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { de
 --?                           DAP Key Bindings                      ?--
 --* --------------------------------------------------------------- *--
 --! dap-ui toggle keybindings
-vim.keymap.set("n", '<leader>do', require('dapui').open)
-vim.keymap.set("n", '<leader>dc', require('dapui').close)
+vim.keymap.set("n", "<leader>do", require("dapui").open)
+vim.keymap.set("n", "<leader>dc", require("dapui").close)
 
 --! general debugger functioanlity key bindings
-vim.keymap.set("n", '<leader>dbp', require('dap').toggle_breakpoint)
+vim.keymap.set("n", "<leader>dbp", require("dap").toggle_breakpoint)
 vim.keymap.set("n","<leader>dso", require("dap").step_over)
 vim.keymap.set("n","<leader>dsi", require("dap").step_into)
 vim.keymap.set("n","<leader>ds>", require("dap").step_out)
-vim.keymap.set("n", '<leader>dcc', require("dap").continue)
+vim.keymap.set("n", "<leader>dcc", require("dap").continue)
 vim.keymap.set("n","<leader>drp>", function() require("dap").repl.open() end)
-vim.keymap.set("n", '<leader>drl', require('dap').run_last)
+vim.keymap.set("n", "<leader>drl", require("dap").run_last)
 
 
 --! ----------------------------------------------------------------------------------------------------------------------------------------- !--
