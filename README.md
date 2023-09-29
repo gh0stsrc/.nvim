@@ -213,6 +213,35 @@ This is a simple but useful setup for neovim, it will continue to grow overtime.
 ---
 ### Nvim Config Installation Prerequisites
 
+**Nvim Clipboard Provider Related**
+
+  Neovim has no direct connection to the system clipboard. Instead it depends on a _provider_ which transparently uses shell commands to communicate with the system clipboard or any other clipboard backend 
+
+  - The clipboard experience varies depending on if you are using a headless version of a linux distribution or one that supports a GUI.
+    - **`XServer/GUI`:**
+      - if you are using a linux distro that has a GUI compoment, you can leverage a more robust and user friendly clipboard provider like `xclip` or `xsel`.
+      - The presence of a working clipboard tool such as  `xclip` or `xsel` will implictly enable the `+` and `*` registers. Basically just install xclip and neovim will automatically boostrap the clipboard provider allowing for automatiic integration.
+      
+    - **`Headless Linux Server`:**
+      -  ATM the current config really only supports `tmux` as a clipboard provider for headless linux distros. Clipboard providers such as `xclip` and `xsel` will not function as there is no 'display' to hook into (XServer is not present), thus are not viable options.
+      - if you are feeling savy, feel free into into other supported clipboard providers, which can support SSH forwarding and other functionality for headless
+      linux servers.
+
+  - It should be noted that the default behavior for `neovim` when it is invoked within a tmux session is to use the `tmux` _clipboard proivder_, unless a more suitable _provider_ is already installed (e.g. `xclip`, `xsel`).
+    - If you want to use `tmux` as the clipboard provider regardless if you already have another clipboard provider installed, you can set the `NVIM_CLIP` environment variable to `tmux` in your respective rc file.
+      ```bash
+      # entry in your repsective rc file (e.g. ~/.bashrc)
+      export NVIM_CLIP="tmux"
+      ```
+
+  - If you want nothing to do with the clipboard setup, ignore related config errors and allow neovim to implicitly handle things (which also could mean doing nothing), simply set the `NVIM_SKIP_CLIP` env var to `true` in your respective rc file.
+    ```bash
+    # entry in your repsective rc file (e.g. ~/.bashrc)
+    export NVIM_SKIP_CLIP=true
+    ```
+
+  - to see more details regarding how neovim clipboard providers integrate with neovim and their respective functions, issue the `:help g:clipboard` command 
+
 **Telescope Nvim Plugin Related**
   - `telescope` depends on [BurntSushi/ripgrep](https://github.com/BurntSushi/ripgrep) for grep-like operations.
     -  the easiest way to deal with this is to install `ripgrep` system wide
@@ -235,12 +264,12 @@ This is a simple but useful setup for neovim, it will continue to grow overtime.
 
 **Python Related**
   - If you will be using the Python LSP, you may notice a number of warnings related to Python when you execute the `:checkhealth` command in neovim. These warnings should be recommend optional resolutions; however, if the issues no longer are optional or if you encounter issues with the Python env or LSP, Install the follow modules globally and address any other issues raised:
-    - <b>`pythonX_pip`:</b>
+    - **`pythonX-pip`:**
       ```bash
       # install pip module for python3 at the system level
       sudo apt install python3_pip
       ```
-    - <b>`pythonX_neovim`:</b>
+    - **`pythonX-neovim`:**
       ```bash
       # install the neovim module for python3 at the system level
       sudo apt install python3_neovim
