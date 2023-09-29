@@ -7,8 +7,8 @@
 --?                                                               __/ |
 --?                                                              |___/
 --?
---! Version : v1.1.0
---* Note    : the comment sytax for lua has been extended to using additional characters such as ['*','?','!'] to provide color highlighting
+--! Version : v1.2.0
+--* Note    : the comment syntax for lua has been extended to using additional characters such as ['*','?','!'] to provide color highlighting
 --*           for various types of comments, for example:
 ---             - --!:
 --!               - Important (color red)
@@ -38,6 +38,94 @@ local function to_boolean(str)
       bool = true
   end
   return bool
+end
+
+-- if the environment variable NVIM_DEBUG is set, then print the debug header
+if to_boolean(os.getenv("NVIM_DEBUG")) == true then
+  print("\n[DEBUG]\n")
+ end
+
+-- helper func to check if neovim compatible clipboard providers are currently installed
+local function check_clipboard_providers()
+  local compatible_providers = {"xclip", "xsel", "tmux", "termux", "lemonade", "doitclient"}
+  local found_providers = {}
+
+  -- iterate over each provider in the list of compatible_providers and check if there is a present provider installed for neovim to leverage
+  for _, provider in ipairs(compatible_providers) do
+    -- check if the provider is executable using Neovim’s vim.fn.executable function
+    if vim.fn.executable(provider) == 1 then
+      -- if the provider is executable, add it to the found_providers table
+      table.insert(found_providers, provider) -- Insert the provider to the found_providers list
+    end
+  end
+  -- return the table of found providers
+  return found_providers
+end
+
+
+--* ------------------------------------------------------------------------------------------------------------------------ *--
+--?                                             NeoVim Clipboard Bootstrapping                                               ?--
+--* ------------------------------------------------------------------------------------------------------------------------ *--
+
+-- call the check_clipboard_providers function and store the result in the clipboard_providers variable
+local clipboard_providers = check_clipboard_providers()
+
+-- check if no clipboard provider has been found AND if the user has NOT set the NVIM_SKIP_CLIP environment variable
+if #clipboard_providers == 0 and not(to_boolean(os.getenv("NVIM_SKIP_CLIP")) == false) then
+    -- If no providers were found, raise an error
+    error(("No clipboard providers found, either install one of the compatible clipboards or enable the NVIM_SKIP_CLIP env var to ignore clipboard errors; compatible clipboards -> " .. "[" .. table.concat(clipboard_providers, ", ") .. "]"), 1)
+else
+  -- if one or more providers were found, print a message listing the found clipboard providers
+  if to_boolean(os.getenv("NVIM_DEBUG")) == true then
+   print("- CLIPBOARD PROVIDERS FOUND: " .. "[" .. table.concat(clipboard_providers, ", ") .. "]")
+  end
+end
+
+--! IMPORTANT:
+--*             [:help g:clipboard]
+--*             Neovim has no direct connection to the system clipboard. Instead it depends on a `provider` which transparently uses shell commands to communicate with the system 
+--*             clipboard or any other clipboard backend 
+--*
+--*             The presence of a working clipboard tool implicitly enables the '+' and '*' registers. neovim looks for these clipboard tools in order priority of :
+--*               - g:clipboard
+--*               - pbcop, pbpaste (macOS)
+--*               - wl-copy, wl-paste (if $WAYLAND_DISPLAY is set)
+--*               - xclip (if $DISPLAY is set)
+--*               - xsel (if $DISPLAY is set)
+--*               - lemonade (for SSH)
+--*               - doitclient (for SSH)
+--*               - win32yank (Windows)
+--*               - termux (via termux-clipboard-set, termux-clipboard-set)
+--*               - tmux (if $TMUX is set)
+--*
+--!             This means that if xclip or xsel are installed and their dependent environment variable (i.e. $DISPLAY) defining which xserver display to attach to are present, 
+--!             neovim will implicitly create the necessary hooks and enable the required registers ('+', '*'). Ultimately resulting in a turn-key clipboard solution for GUI versions 
+--!             of GUI-based linux distributions (e.g. ubuntu + xserver)
+
+--* Note: 
+--*        - if tmux is the only provider, neovim will implicitly enable hooks and registers for the clipboard; however the key bindings below will not be enabled; to do so
+--*          you will need to set the `NVIM_CLIP` environment variable to any permutation of upper and lower case characters of 'tmux'.
+--*        - this impacts terminal only/headless users (no use of xserver - headless server - No GUI)
+
+--! check if the user explitily would like to leverage tmux as the clipboard provider OR if the only provider available is tmux AND ensure that a tmux session is attached
+if (string.upper(os.getenv("NVIM_CLIP") or "nil") == "TMUX" or string.upper(clipboard_providers[1]) == "TMUX") and (os.getenv("TMUX") ~= nil) then
+  -- explictly set tmux as the neovim clipboard provider
+  vim.g.clipboard = {
+    name = "tmux",
+    copy = {
+      ["+"] = {"tmux", 'load-buffer', "-"},
+      ["*"] = {"tmux", 'load-buffer', "-"},
+    },
+    paste = {
+      ["+"] = {"tmux", 'save-buffer', "-"},
+      ["*"] = {"tmux", 'save-buffer', "-"},
+    },
+    cache_enabled = true
+  }
+  -- visual mode key binding for copying
+  vim.api.nvim_set_keymap('v', '<Leader>y', ':w !tmux load-buffer -<CR>', { noremap = true, silent = true })
+  -- normal mode key binding for pasting
+  vim.api.nvim_set_keymap('n', '<Leader>p', ':r !tmux save-buffer -<CR>', { noremap = true, silent = true })
 end
 
 
@@ -81,7 +169,7 @@ require("packer").startup(function(use)
   }
   use({
     "chama-chomo/grail",
-    -- Optional; default configuration will be used if setup isn't called.
+    -- Optional; default configuration will be used if setup is not called.
     config = function()
     require("grail").setup()
     end,
@@ -96,8 +184,8 @@ require("packer").startup(function(use)
   -- neovim DAP UI plugin
   use { "rcarriga/nvim-dap-ui",
           requires = {
-            "mfussenegger/nvim-dap",        --* Required
-            "folke/neodev.nvim"             --* Required
+            "mfussenegger/nvim-dap",          --* Required
+            "folke/neodev.nvim"               --* Required
       }
   }
   
@@ -110,7 +198,7 @@ require("packer").startup(function(use)
   -- 
   use {
       "VonHeikemen/lsp-zero.nvim",
-      branch = "v3.x", --! IMPORTANT: currently testing v3.x; may have to revert back to v2.x if issues arise 
+      branch = "v3.x", --! IMPORTANT: currently testing `v3.x`; may have to revert back to `v2.x` if issues arise 
       requires = {
         {"neovim/nvim-lspconfig"},             --* Required
         {"williamboman/mason.nvim"},           --* Optional
@@ -198,7 +286,7 @@ require("lualine").setup({
 
 
 --* --------------------------------------------------------------- *--
---?                      Toggle Terminal Setup                      ?--
+--?                      toggle terminal Setup                      ?--
 --* --------------------------------------------------------------- *--
 --* Note: toggleterm is a neovim plugin to persist and toggle multiple terminals during an editing session
 
@@ -222,7 +310,7 @@ require("nvim_comment").setup({
 --* --------------------------------------------------------------- *--
 local lsp = require("lsp-zero").preset("recommended")
 
--- list of language servers, debugger adaptors, linters and formatters to be installed by mason and leveraged by lsp-zero
+-- list of language servers, debugger adapters, linters and formatters to be installed by mason and leveraged by lsp-zero
 lsp.ensure_installed({
   "tsserver",
   "gopls",
@@ -335,7 +423,7 @@ cmp.setup({
 --! IMPORTANT :  
 --!               - The Bash Language Server is required to be installed if you want lspconfig to provide LSP functionality for bash code. 
 --!               - lsp-zero should be able to install bashls via Mason (via the ensure_installed function); however, if you encounter issues installing the
---!                 the lanugage server you can it manually - link in references section
+--!                 the language server you can it manually - link in references section
 --!               - if performing a manual install of the language server, please ensure that the binary can be found in $PATH
 --* Note      :
 --*               - even if lsp-zero/Mason is able to install the language server, you may need to configure the respective lspconfig setup for bashls to point the default start up
@@ -351,14 +439,14 @@ require("lspconfig").bashls.setup({})
 
 --! IMPORTANT :   - The YAML Language Server is required to be installed if you want lspconfig to provide LSP functionality for YAML code. 
 --!               - lsp-zero should be able to install yamls via Mason (via the ensure_installed function); however, if you encounter issues installing the
---!                 the lanugage server you can it manually - link in references section
+--!                 the language server you can it manually - link in references section
 --!               - if performing a manual install of the language server, please ensure that the binary can be found in $PATH
 --* Note      :
 --*               - even if lsp-zero/Mason is able to install the language server, you may need to configure the respective lspconfig setup for yamls to point the default start up
 --*                 command to the path where it was auto installed (e.g. /home/{USER}/.local/share/nvim/mason/bin/yamls).
 --*                 depending on the LSP the default startup command may assume that the binary can be found under $PATH
 
---! IMPORTANT :   - the YAML Language Server and LSP have been disabled on purpose; need to work out a way that it doesn't conflict with Helm based files and the helm_ls LSP
+--! IMPORTANT :   - the YAML Language Server and LSP have been disabled on purpose; need to work out a way that it does not conflict with Helm based files and the helm_ls LSP
 -- TODO: investigate the resolution for the above
 
 -- require("lspconfig").yamlls.setup({})
@@ -370,7 +458,7 @@ require("lspconfig").bashls.setup({})
 
 --! IMPORTANT :   - The Terraform Language Server is required to be installed if you want lspconfig to provide LSP functionality for terraform HCL code. 
 --!               - lsp-zero should be able to install terraform-ls via Mason (via the ensure_installed function); however, if you encounter issues installing the
---!                 the lanugage server you can it manually - link in references section
+--!                 the language server you can it manually - link in references section
 --!                 - if performing a manual install of the language server, please ensure that the binary can be found in $PATH
 --* Note      :
 --*               - even if lsp-zero/Mason is able to install the language server, you may need to configure the respective lspconfig setup for terraformls to point the default start up
@@ -395,7 +483,7 @@ require("lspconfig").tflint.setup({})
 
 --! IMPORTANT :   - The Docker Language Server is required to be installed if you want lspconfig to provide LSP functionality for Dockerfile code. 
 --!               - lsp-zero should be able to install docker-langserver via Mason (via the ensure_installed function); however, if you encounter issues installing the
---!                 the lanugage server you can it manually - link in references section
+--!                 the language server you can it manually - link in references section
 --!                 - if performing a manual install of the language server, please ensure that the binary can be found in $PATH
 --* Note      :
 --*               - even if lsp-zero/Mason is able to install the language server, you may need to configure the respective lspconfig setup for docker-langserver to point the default start up
@@ -411,7 +499,7 @@ require("lspconfig").dockerls.setup({})
 
 --! IMPORTANT :   - The Helm Language Server is required to be installed if you want lspconfig to provide LSP functionality for Helm code. 
 --!               - lsp-zero should be able to install helm_ls via Mason (via the ensure_installed function); however, if you encounter issues installing the
---!                 the lanugage server you can it manually - link in references section
+--!                 the language server you can it manually - link in references section
 --!                 - if performing a manual install of the language server, please ensure that the binary can be found in $PATH
 --* Note      :
 --*               - even if lsp-zero/Mason is able to install the language server, you may need to configure the respective lspconfig setup for helm_ls to point the default start up
@@ -452,7 +540,7 @@ lspconfig.helm_ls.setup {
 
 --! IMPORTANT :   - The pyright static type checker and language Server is required to be installed if you want lspconfig to provide LSP functionality for Python code. 
 --!               - lsp-zero should be able to install pyright via Mason (via the ensure_installed function); however, if you encounter issues installing the
---!                 the lanugage server you can it manually - link in references section
+--!                 the language server you can it manually - link in references section
 --!                 - if performing a manual install of the language server, please ensure that the binary can be found in $PATH
 --* Note      :
 --*               - even if lsp-zero/Mason is able to install the language server, you may need to configure the respective lspconfig setup for pyright to point the default start up
@@ -492,7 +580,7 @@ require("neodev").setup({
 --! IMPORTANT: 
 --!             - codicons is a dependency of dapui, which leverages codicons as part of the UI's debugger pane
 --!             - the codicon font will required to be patched by tools like nerd-fonts' font-patcher; possibly in conjunction with fontforge
---!             - patching required for successfull rending in the terminal, see references section for detals on how to patch fonts
+--!             - patching required for successful rending in the terminal, see references section for details on how to patch fonts
 
 require("codicons").setup()
 
@@ -520,7 +608,7 @@ require("dap-go").setup {
   -- delve configurations
   delve = {
     -- the path to the executable dlv which will be used for debugging.
-    -- by default, this is the "dlv" executable on your PATH.
+    -- by default, this is the dlv executable on your PATH.
     path = "dlv",
     -- time to wait for delve to initialize the debug session.
     -- default to 20 seconds
@@ -546,8 +634,8 @@ require("dap-go").setup {
 --?                           chatgpt Setup                         ?--
 --* --------------------------------------------------------------- *--
 
---! IMPORTANT: to leverage the chatgpt plugin you will need to provide a valid api key; see the README for more details
---* check if the env var `NVIM_ENABLE_GPT` is set to true; if so invoke the plugin's default setup, with a couple of ovverides
+--! IMPORTANT: to leverage the chatgpt plugin you will need to provide a valid API key; see the README for more details
+--* check if the env var `NVIM_ENABLE_GPT` is set to true; if so invoke the plugin's default setup, with a couple of overrides
 if to_boolean(os.getenv("NVIM_ENABLE_GPT")) == true then
   require("chatgpt").setup({ 
     chat = {
@@ -631,7 +719,7 @@ vim.o.termguicolors = true
 --* ------------------------------------------------------------------------------------------------------------------------ *--
 
 --* --------------------------------------------------------------- *--
---?                         generic Key Bindings                    ?--
+--?                         Generic Key Bindings                    ?--
 --* --------------------------------------------------------------- *--
 
 --! go back
@@ -716,3 +804,4 @@ vim.keymap.set("n", "<leader>drl", require("dap").run_last)
 --?                                              PLEASE REFER TO THE README FILE FOR AN REFERENCES                                            ?--
 --!                                                                                                                                           !--
 --! ----------------------------------------------------------------------------------------------------------------------------------------- !--
+
