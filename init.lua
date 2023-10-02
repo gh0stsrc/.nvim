@@ -7,7 +7,7 @@
 --?                                                               __/ |
 --?                                                              |___/
 --?
---! Version : v1.2.0
+--! Version : v1.3.0
 --* Note    : the comment syntax for lua has been extended to using additional characters such as ['*','?','!'] to provide color highlighting
 --*           for various types of comments, for example:
 ---             - --!:
