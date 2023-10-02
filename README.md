@@ -316,7 +316,7 @@ If you find and relvant `Warnings` which may impact your nvim setup or experienc
 ---
 ### Noteworthy Key Bindings
 
-<code style="color : green"><b>Note</b></code>**:** by deafult the leader key binding is set to the `space` key
+<code style="color : green"><b>Note</b></code>**:** by deafult the leader key binding is set to the `<space>` key
 
 **Commenting**
   - `<leader> + /` - comment a single line or multiple if lines are select in visual mode
