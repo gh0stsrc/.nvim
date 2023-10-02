@@ -312,6 +312,87 @@ The `:checkhealth` command runs a series of diagnostic tests to check the health
 
 If you find and relvant `Warnings` which may impact your nvim setup or experience, OR any `Errors`, follow the guidance provide and address their resolution accordingly.
 
+
+---
+### Noteworthy Key Bindings
+
+<code style="color : green"><b>Note</b></code>**:** by deafult the leader key binding is set to the `<space>` key
+
+**Commenting**
+  - `<leader> + /` - comment a single line or multiple if lines are select in visual mode
+
+**Split Screen & Navigation**
+  - `<leader> + v` - Split the screen vertically (uses currently opened file as default file to open)
+  - `<leader> + h` - Navigate one screen to the left
+  - `<leader> + l` - Navigate one screen to the right
+
+**Toggleterm**
+  - `<leader> + j` - Toggle terminal window open/closed within neovim session
+
+**Telescope**
+  - `<leader> + <shift> + ? `     - Find recently opened files
+  - `<leader> + space`            - Find recent telescope fuzzy finder buffers
+  - `<leader> + f`                -  Fuzzily search in current buffer
+  - `<leader> + p` OR `<alt> + p` - Search for files within the current directory structure (recursive)
+  package functions)
+  - `<leader> + s + w`            - Search current buffer for references of a particular word or sequence of characters
+  - `<leader> + s + g`            - Search current buffer files for a particular regex pattern (basic regex, notPCRE compliant)
+  - `<leader> + s + d`            - Search telescope related diagnostics
+  - `<leader> + s + h`            - Search help documentation (e.g. go's fmt package functions)
+
+**Language Server Protocol (LSP) Client**
+  - `g + d`       - Go to the definition of the symbol under the cursor
+  - `g + r`       - Get references of the symbol under the cursor
+  - `<shift> + K` - Display information about the symbol (e.g. godocs) under the cursor in a floating window 
+  - `<alt> + r`   - Rename the symbol under the cursor throughout the document
+  - `h + s`       - Highlight the symbol under the cursor throughout the document
+  - `h + c`       - Clear highlighting of symbols throughout the document
+  - `d + s`       - Lists all symbols (e.g. structs, interfaces, fields, functions, etc.) in the current buffer (scope limited to the document), within the quickfix window.
+  - `w + s`       - Lists all symbols (e.g. structs, interfaces, fields, functions, etc.) in the current workspace, within the quickfix window.
+
+**LSP Client Autocomplete**
+  - `<ctrl> + y`    - Accept autocomplete suggeston
+  - `<ctrl> + e`    - Abort the autocomplete suggestion window
+  - `<ctrl> + u`    - Scoll the autocomplete suggestion window up
+  - `<ctrl> + u`    - Scoll the autocomplete suggestion window down
+  - `<up-arrow>`    - Select the _previous_ option in the autocomplete suggestion window
+  - `<down-arrow>`  - Select the _next_ option in the autocomplete suggestion window
+  - `<ctrl> + p`    - If the autocomplete suggestion window is visible this key combination will select the _previous_ option in the autocomplete suggestion window
+  - `<ctrl> + n`    - If the autocomplete suggestion window is visible this key combination will select the _next_ option in the autocomplete suggestion window 
+
+**Dubug Adaptor Protocol (DAP)**
+  - `<leader> + d + u`  - Toggle the DAP debugger User Interface (UI)
+  - `<leader> + d + b`  - Toggle breakpoint on current line
+  - `<leader> + d + c`  - Invoke _continue_ debugger operation
+  - `<leader> + d + o`  - Invoke _step over_ debugger operation
+  - `<leader> + d + i`  - Invoke _step into_ debugger operation
+  - `<leader> + d + 0`  - Invoke _step out_ debugger operation
+  - `<leader> + d + l`  - Invoke _run last debugger operation
+  - `<leader> + d + r`  - Toggle the DAP Read-Eval-Print Loop (REPL)
+
+**ChatGPT**
+<code style="color : green"><b>Note</b></code>**:** Only functions exposed by the ChatGPT plugin have been mapped to keys explictly and can be seen below. To see all keybindings related to the ChatGPT plugin, refer to [plugin's documentation](https://github.com/jackMort/ChatGPT.nvim#interactive-popup).</br>
+
+  - `g + p + t`     - Invokes the `ChatGPT` command of the ChatGPT Plugin
+    - Opens an interactive window to maintain a dialogue with ChatGPT
+  - `g + p + t + a` - Invokes the `ChatGPTActAs` command of the ChatGPT Plugin
+    - Opens a prompt selection from [Awesome ChatGPT Prompts](https://github.com/f/awesome-chatgpt-prompts), which primes ChatGPT with a vartiety of selectable personas (e.g. Cyber Security Specialist, {POSITION} Interviewer, Linux Terminal, Python Interpreter) 
+  - `g + p + t + e` - Invokes the `ChatGPTEditWithInstructions` command of the ChatGPT Plugin
+    -  opens an interactive window to edit selected text or whole window
+  - `g + p + t + r` - Invokes the `ChatGPTRun` command of the ChatGPT Plugin
+    -  command which runs specific actions -- see [actions](https://github.com/jackMort/ChatGPT.nvim/blob/main/lua/chatgpt/flows/actions/actions.json) for a detailed list. Some available actions are:
+        - `grammar_correction`
+        - `translate`
+        - `keywords`
+        - `docstring`
+        - `add_tests`
+        - `optimize_code`
+        - `summarize`
+        - `fix_bugs`
+        - `explain_code`
+        - `roxygen_edit`
+        - `code_readability_analysis` - see [demo](https://youtu.be/zlU3YGGv2zY)
+
 ---
 ### References
 
