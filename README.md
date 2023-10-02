@@ -330,35 +330,35 @@ If you find and relvant `Warnings` which may impact your nvim setup or experienc
   - `<leader> + j` - Toggle terminal window open/closed within neovim session
 
 **Telescope**
-  - `<leader> + <shift> + ? `     - Find recently opened files
-  - `<leader> + space`            - Find recent telescope fuzzy finder buffers
-  - `<leader> + f`                -  Fuzzily search in current buffer
-  - `<leader> + p` OR `<alt> + p` - Search for files within the current directory structure (recursive)
+  - `<leader> + <shift>-? `     - Find recently opened files
+  - `<leader> + <space>`        - Find recent telescope fuzzy finder buffers
+  - `<leader> + f`              - Fuzzily search in current buffer
+  - `<leader> + p` OR `<alt>-p` - Search for files within the current directory structure (recursive)
   package functions)
-  - `<leader> + s + w`            - Search current buffer for references of a particular word or sequence of characters
-  - `<leader> + s + g`            - Search current buffer files for a particular regex pattern (basic regex, notPCRE compliant)
-  - `<leader> + s + d`            - Search telescope related diagnostics
-  - `<leader> + s + h`            - Search help documentation (e.g. go's fmt package functions)
+  - `<leader> + s + w`          - Search current buffer for references of a particular word or sequence of characters
+  - `<leader> + s + g`          - Search current buffer files for a particular regex pattern (basic regex, notPCRE compliant)
+  - `<leader> + s + d`          - Search telescope related diagnostics
+  - `<leader> + s + h`          - Search help documentation (e.g. go's fmt package functions)
 
 **Language Server Protocol (LSP) Client**
   - `g + d`       - Go to the definition of the symbol under the cursor
   - `g + r`       - Get references of the symbol under the cursor
-  - `<shift> + K` - Display information about the symbol (e.g. godocs) under the cursor in a floating window 
-  - `<alt> + r`   - Rename the symbol under the cursor throughout the document
+  - `<shift>-K`   - Display information about the symbol (e.g. godocs) under the cursor in a floating window 
+  - `<alt>-r`     - Rename the symbol under the cursor throughout the document
   - `h + s`       - Highlight the symbol under the cursor throughout the document
   - `h + c`       - Clear highlighting of symbols throughout the document
   - `d + s`       - Lists all symbols (e.g. structs, interfaces, fields, functions, etc.) in the current buffer (scope limited to the document), within the quickfix window.
   - `w + s`       - Lists all symbols (e.g. structs, interfaces, fields, functions, etc.) in the current workspace, within the quickfix window.
 
 **LSP Client Autocomplete**
-  - `<ctrl> + y`    - Accept autocomplete suggeston
-  - `<ctrl> + e`    - Abort the autocomplete suggestion window
-  - `<ctrl> + u`    - Scoll the autocomplete suggestion window up
-  - `<ctrl> + u`    - Scoll the autocomplete suggestion window down
+  - `<ctrl>-y`      - Accept autocomplete suggeston
+  - `<ctrl>-e`      - Abort the autocomplete suggestion window
+  - `<ctrl>-u`      - Scoll the autocomplete suggestion window up
+  - `<ctrl>-d`      - Scoll the autocomplete suggestion window down
   - `<up-arrow>`    - Select the _previous_ option in the autocomplete suggestion window
   - `<down-arrow>`  - Select the _next_ option in the autocomplete suggestion window
-  - `<ctrl> + p`    - If the autocomplete suggestion window is visible this key combination will select the _previous_ option in the autocomplete suggestion window
-  - `<ctrl> + n`    - If the autocomplete suggestion window is visible this key combination will select the _next_ option in the autocomplete suggestion window 
+  - `<ctrl>-p`      - If the autocomplete suggestion window is visible this key combination will select the _previous_ option in the autocomplete suggestion window
+  - `<ctrl>-n`      - If the autocomplete suggestion window is visible this key combination will select the _next_ option in the autocomplete suggestion window 
 
 **Dubug Adaptor Protocol (DAP)**
   - `<leader> + d + u`  - Toggle the DAP debugger User Interface (UI)
