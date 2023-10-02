@@ -371,6 +371,7 @@ If you find and relvant `Warnings` which may impact your nvim setup or experienc
   - `<leader> + d + r`  - Toggle the DAP Read-Eval-Print Loop (REPL)
 
 **ChatGPT**
+
 <code style="color : green"><b>Note</b></code>**:** Only functions exposed by the ChatGPT plugin have been mapped to keys explictly and can be seen below. To see all keybindings related to the ChatGPT plugin, refer to [plugin's documentation](https://github.com/jackMort/ChatGPT.nvim#interactive-popup).</br>
 
   - `g + p + t`     - Invokes the `ChatGPT` command of the ChatGPT Plugin
