@@ -727,13 +727,13 @@ vim.o.termguicolors = true
 --?                         Generic Key Bindings                    ?--
 --* --------------------------------------------------------------- *--
 
---! go back
+--* go back
 vim.keymap.set("n", "<M-b>", ":Ex<CR>")
 
---! insert mode cancelation
+--* insert mode cancelation
 vim.keymap.set("i", "jj", "<Esc>")
 
---! split screen and navigation
+--* split screen and navigation
 vim.keymap.set("n", "<leader>v", ":vsplit<CR><C-w>l", { noremap = true })
 vim.keymap.set("n", "<leader>h", ":wincmd h<CR>", { noremap = true })
 vim.keymap.set("n", "<leader>l", ":wincmd l<CR>", { noremap = true })
@@ -742,11 +742,12 @@ vim.keymap.set("n", "<leader>l", ":wincmd l<CR>", { noremap = true })
 --* --------------------------------------------------------------- *--
 --?                      toggleterm Key Bindings                    ?--
 --* --------------------------------------------------------------- *--
--- horizontal pane key binding
+
+--* horizontal pane key binding
 vim.keymap.set("n", "<M-j>", "<cmd>ToggleTerm direction=horizontal<cr>")
--- floating plane key binding
+--* floating plane key binding
 vim.keymap.set("n", "<M-k>", "<cmd>ToggleTerm direction=float<cr>")
--- keys to exit terminal mode, primarily for the floating pane
+--* keys to exit terminal mode, primarily for the floating pane
 vim.keymap.set("t", "<esc>", [[<C-\><C-n>]])
 vim.keymap.set("t", "jj", [[<C-\><C-n>]])
 
@@ -756,7 +757,7 @@ vim.keymap.set("t", "jj", [[<C-\><C-n>]])
 --* --------------------------------------------------------------- *--
 --* See `:help telescope.builtin`
 
---! telescope related key bindings
+--* telescope related key bindings
 vim.keymap.set("n", "<leader>?", require("telescope.builtin").oldfiles, { desc = "[?] Find recently opened files" })
 vim.keymap.set("n", "<leader><space>", require("telescope.builtin").buffers, { desc = "[ ] Find existing buffers" })
 vim.keymap.set("n", "<M-f>", function()
@@ -783,12 +784,13 @@ vim.keymap.set("n", "<leader>sd", require("telescope.builtin").diagnostics, { de
 --* --------------------------------------------------------------- *--
 --?                           DAP Key Bindings                      ?--
 --* --------------------------------------------------------------- *--
---! dap-ui toggle keybindings
+
+--* dap-ui toggle keybindings
 vim.keymap.set("n", "<leader>du", require("dapui").toggle)
 -- vim.keymap.set("n", "<leader>do", require("dapui").open)
 -- vim.keymap.set("n", "<leader>dc", require("dapui").close)
 
---! general debugger functioanlity key bindings
+--* general debugger functioanlity key bindings
 vim.keymap.set("n", "<leader>db", require("dap").toggle_breakpoint)
 vim.keymap.set("n", "<leader>dc", require("dap").continue)
 vim.keymap.set("n", "<leader>do", require("dap").step_over)
@@ -802,7 +804,8 @@ vim.keymap.set("n", "<leader>dr", function() require("dap").repl.toggle() end)
 --?                           ChatGPT Bindings                      ?--
 --* --------------------------------------------------------------- *--
 --* Note: Only functions exposed by the ChatGPT plugin have been mapped to keys explictly and can be seen below. Refer to the README for more details pertaining to
---*       ChatGPT keybindings
+
+--* ChatGPT keybindings
 vim.keymap.set("n", "gpt", "<cmd>ChatGPT<cr>")
 vim.keymap.set("n", "gpta", "<cmd>ChatGPTActAs<cr>")
 vim.keymap.set("n", "gpte", "<cmd>ChatGPTEditWithInstructions<cr>")
