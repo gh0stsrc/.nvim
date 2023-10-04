@@ -293,7 +293,7 @@ require("lualine").setup({
 require("toggleterm").setup({
   direction = "horizontal",
   size = 15,
-  open_mapping = [[<leader>j]]
+  -- open_mapping = [[<M-j>]]
 })
 
 
@@ -737,6 +737,18 @@ vim.keymap.set("i", "jj", "<Esc>")
 vim.keymap.set("n", "<leader>v", ":vsplit<CR><C-w>l", { noremap = true })
 vim.keymap.set("n", "<leader>h", ":wincmd h<CR>", { noremap = true })
 vim.keymap.set("n", "<leader>l", ":wincmd l<CR>", { noremap = true })
+
+
+--* --------------------------------------------------------------- *--
+--?                      toggleterm Key Bindings                    ?--
+--* --------------------------------------------------------------- *--
+-- horizontal pane key binding
+vim.keymap.set("n", "<M-j>", "<cmd>ToggleTerm direction=horizontal<cr>")
+-- floating plane key binding
+vim.keymap.set("n", "<M-k>", "<cmd>ToggleTerm direction=float<cr>")
+-- keys to exit terminal mode, primarily for the floating pane
+vim.keymap.set("t", "<esc>", [[<C-\><C-n>]])
+vim.keymap.set("t", "jj", [[<C-\><C-n>]])
 
 
 --* --------------------------------------------------------------- *--

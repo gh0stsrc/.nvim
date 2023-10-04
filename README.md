@@ -318,6 +318,12 @@ If you find and relvant `Warnings` which may impact your nvim setup or experienc
 
 <code style="color : green"><b>Note</b></code>**:** by deafult the leader key binding is set to the `<space>` key
 
+**General Bindings**
+- `[Terminal Mode]: <esc>`  - Exit terminal mode and enter normal mode
+- `[Terminal Mode]: j + j`  - Alias for `esc` above
+- `[Insert Mode]: j + j`  - Exit insert mode and enter normal mode
+- `<alt-b>`               - Go back/exit current window
+
 **Commenting**
   - `<leader> + /` - comment a single line or multiple if lines are select in visual mode
 
@@ -327,7 +333,8 @@ If you find and relvant `Warnings` which may impact your nvim setup or experienc
   - `<leader> + l` - Navigate one screen to the right
 
 **Toggleterm**
-  - `<leader> + j` - Toggle terminal window open/closed within neovim session
+  - `<alt-j>` - Toggle a persistent terminal pane at the bottom of the window horizontally (small)
+  - `<alt-k>` - Toggle a floating persistent terminal pane that hovers over the main window (large)
 
 **Telescope**
   - `<leader> + <shift>-? `     - Find recently opened files
