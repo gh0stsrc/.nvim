@@ -7,7 +7,7 @@
 --?                                                               __/ |
 --?                                                              |___/
 --?
---! Version : v1.3.0
+--! Version : v1.4.0
 --* Note    : the comment syntax for lua has been extended to using additional characters such as ['*','?','!'] to provide color highlighting
 --*           for various types of comments, for example:
 ---             - --!:
@@ -16,7 +16,7 @@
 --?               - Titling (color blue)
 ---             - --*:
 --*               - Significance (bold comment)
----             - ---:
+---             - --:
 ---               - Regular Comment           
 
 
@@ -38,6 +38,18 @@ local function to_boolean(str)
       bool = true
   end
   return bool
+end
+
+-- helper function used to see if a particular command exists on the system (i.e. is reachable via $PATH)
+local function command_exists(cmd)
+	-- create file handle with the output stream of the executed command 
+    local handle = io.popen("command -v " .. cmd) -- `command -v` returns information pertaining to a particular command if it exists
+	-- read the file handle in its entirety (should only be the path of the binary for the command if it exists)
+    local result = handle:read("*a") -- format string to read all of the data
+    -- close file handler
+	handle:close()
+	-- return result to the caller
+    return result and result ~= ""
 end
 
 -- if the environment variable NVIM_DEBUG is set, then print the debug header
@@ -156,82 +168,104 @@ local packer_bootstrap = ensure_packer()
 --! --------------------------------------------------------------------- !--
 require("packer").startup(function(use)
   use { "wbthomason/packer.nvim" }
-  -- place plugins which you desire packer to install below
-  use { "ellisonleao/gruvbox.nvim" } -- 
+  --* -------------------------------------------------------- --*
+  --!  place plugins which you desire packer to install below
+  --* -------------------------------------------------------- --*
+
+  --* neovim theme heavily inspired by badwolf, jellybeans and solarized
+  use { "ellisonleao/gruvbox.nvim" }
+  --* plugin to integrate the treesitter parsing lib into neovim
   use("nvim-treesitter/nvim-treesitter", {run = ":TSUpdate"})
+  --* highly extendable fuzzy finder
   use {
-    "nvim-telescope/telescope.nvim", tag = "0.1.3",
+    "nvim-telescope/telescope.nvim", tag = "*",  --! IMPORTANT: telescope was previously hard tagged to `v0.1.3`, performing testing with the latest verison; revert if you encounter issues
     requires = {
-      {"nvim-lua/plenary.nvim"},           --* Required
-      {"BurntSushi/ripgrep"},              --* Required
-      {"sharkdp/fd"}                       --* Optional       
+      {"nvim-lua/plenary.nvim"},  --* Required  --* neovim library that provides lua functions required for the development and use of various neovim plugins
+      {"BurntSushi/ripgrep"},     --* Required  --* line-oriented search tool that recursively searches your current directory for a regex pattern
+      {"sharkdp/fd"}              --* Optional  --* fast and user-friendly alternative to the traditional find command that comes with Unix and Linux operating systems
     }
   }
-  use({
-    "chama-chomo/grail",
-    -- Optional; default configuration will be used if setup is not called.
-    config = function()
-    require("grail").setup()
-    end,
-  })
+  --* neovim statusline plugin written in Lua 
   use {
     "nvim-lualine/lualine.nvim",
-     requires = { "nvim-tree/nvim-web-devicons", opt = true }
+     requires = { "nvim-tree/nvim-web-devicons" } --! IMPORTANT: `nvim-web-devicons` requires a patched font to function on most terminals; see plugin configuration section for details
   }
+  --* go language integration plugin for vim
   use { "fatih/vim-go" }
-  -- neovim Debug Adapter Protocol (DAP)
-  use { "mfussenegger/nvim-dap" }
-  -- neovim DAP UI plugin
-  use { "rcarriga/nvim-dap-ui",
-          requires = {
-            "mfussenegger/nvim-dap",          --* Required
-            "folke/neodev.nvim"               --* Required
-      }
-  }
   
-  use { "folke/neodev.nvim" }
-
-  -- An extension for nvim-dap providing configurations for launching go debugger (delve) and debugging individual tests.
+  --* neovim User Interface (UI) plugin for the neovim Debug Adapter Protocol (DAP)
+  use { "rcarriga/nvim-dap-ui",
+    requires = {
+      {"mfussenegger/nvim-dap"},  --* Required  --* neovim DAP plugin
+      {"folke/neodev.nvim"},      --* Required  --* setup for init.lua and plugin development with full signature help, docs and completion for the nvim lua API
+      {"mortepau/codicons.nvim"}  --! Required  --! this font requires to be patched to be properly processed by most terminals; see plugin configuration section
+    }
+  }
+  --* plugin designed to integrate Go (the programming language) debugging capabilities with Neovim, leveraging the `nvim-dap` framework
   use { "leoluz/nvim-dap-go"}
-  --! condicon font used by nvim-dap-ui - Note: this font requires to be patched to be properly processed by most terminals; see plugin configuration section for details
-  use { "mortepau/codicons.nvim" }
-  -- 
+  --* a collection of functions that will help you setup Neovim's LSP client, so you can get IDE-like features with minimum effort
   use {
-      "VonHeikemen/lsp-zero.nvim",
-      branch = "v3.x", --! IMPORTANT: currently testing `v3.x`; may have to revert back to `v2.x` if issues arise 
-      requires = {
-        {"neovim/nvim-lspconfig"},             --* Required
-        {"williamboman/mason.nvim"},           --* Optional
-        {"williamboman/mason-lspconfig.nvim"}, --* Optional
-        {"hrsh7th/nvim-cmp"},                  --* Required
-        {"hrsh7th/cmp-nvim-lsp"},              --* Required
-        {"hrsh7th/cmp-buffer"},                --* Optional
-        {"hrsh7th/cmp-path"},                  --* Optional
-        {"saadparwaiz1/cmp_luasnip"},          --* Optional
-        {"hrsh7th/cmp-nvim-lua"},              --* Optional
-        {"L3MON4D3/LuaSnip"},                  --* Required
-        {"rafamadriz/friendly-snippets"},      --* Optional
-      },
+    "VonHeikemen/lsp-zero.nvim",
+    branch = "v3.x", --! IMPORTANT: currently testing `v3.x`; may have to revert back to `v2.x` if issues arise 
+    requires = {
+      {"neovim/nvim-lspconfig"},              --* Required  --* a configuration utility for the built-in Language Server Protocol (LSP) client for neovim
+      {"williamboman/mason.nvim"},            --* Optional  --* is a neovim plugin that allows you to easily manage external editor tooling such as LSP servers, DAP servers, linters, and formatters through a single interface
+      {"williamboman/mason-lspconfig.nvim"},  --* Optional  --* bridges `mason.nvim` with the `lspconfig` plugin, making it easier to use both plugins together
+      {"hrsh7th/nvim-cmp"},                   --* Required  --* a neovim plugin that provides a powerful and extensible auto-completion framework for neovim (e.g. LSP auto-completion)
+      {"hrsh7th/cmp-nvim-lsp"},               --* Required  --* is a source (or completion provider) for the `nvim-cmp` completion framework, specifically designed to integrate with Neovim's built-in LSP client
+      {"hrsh7th/cmp-buffer"},                 --* Optional  --* another source plugin for the `nvim-cmp` completion framework. While `cmp-nvim-lsp` provides completion suggestions from neovim’s built-in LSP client, cmp-buffer provides completion suggestions from the content of currently open buffers
+      {"hrsh7th/cmp-path"},                   --* Optional  --* another source plugin for the `nvim-cmp` completion framework. `cmp-path` provides completion suggestions for file paths
+      {"saadparwaiz1/cmp_luasnip"},           --* Optional  --* another source plugin for the `nvim-cmp` completion framework. This plugin integrates `Luasnip` with `nvim-cmp`, allowing `Luasnip` snippets to be provided as completion items
+      {"hrsh7th/cmp-nvim-lua"},               --* Optional  --* another source plugin for the `nvim-cmp` completion framework. As the name suggests, `cmp-nvim-lua` provides Lua-specific completions
+      {"L3MON4D3/LuaSnip"},                   --* Required  --* a snippet engine plugin for neovim. `LuaSnip` is Lua-based, fast, and extensible snippet solution that allows you to define and insert snippets of text quickly, enhancing coding efficiency.
+      {"rafamadriz/friendly-snippets"},       --* Optional  --* a collection of snippets that are meant to be used with snippet engines available for Neovim, like `L3MON4D3/Luasnip`, `hrsh7th/vim-vsnip`, and others
+    }
+  }
+  --* a plugin designed to help manage terminal windows within neovim. The plugin allows users to toggle neovim's built-in terminal easily, meaning you can show or hide the terminal window with a single command or key mapping
+  use {"akinsho/toggleterm.nvim", tag = "*" }
+  --* a plugin which provides an easy and efficient way to comment out lines of code in multiple programming languages.
+  use {"terrortylor/nvim-comment"}
 
-      use {"akinsho/toggleterm.nvim", tag = "*" },
-      use {"jhlgns/naysayer88.vim"},
-      use {"terrortylor/nvim-comment"},
-      use {"CreaturePhil/vim-handmade-hero"}
+  --* ----------- --*
+  --* git related --*
+  --* ----------- --*
+  --* plugin to enrich neovim with git signs (e.g. + for new lines)
+  use {"lewis6991/gitsigns.nvim"}
+  --* plugin that provides a side-by-side diff viewer for Git differences right inside Neovim. Offering a convenient way to visualize and navigate through changes in your Git repository without leaving your editor
+  use {
+    "sindrets/diffview.nvim",
+    requires = {
+      {"nvim-tree/nvim-web-devicons"} --! IMPORTANT: `nvim-web-devicons` requires a patched font to function on most terminals; see plugin configuration section for details
+    }
+  }
+  --* NOTE: `Lazygit` may not be be a Neovim plugin, but it works amazinging well when paired with `toggleterm`; INSTALL IT AND GIVE IT A GO!
+  --  a plugin that aims to provide a more user-friendly interface to Git within the editor - I still prefer `Lazygit`, keeping this here for others' preferences
+  use {
+    "NeogitOrg/neogit",
+    requires = {
+      {"nvim-lua/plenary.nvim"},          --* Required  --* already explained
+      {"nvim-telescope/telescope.nvim"},  --* Optional  --* already explained
+      {"sindrets/diffview.nvim"},         --* Optional  --* already explained
+      {"ibhagwan/fzf-lua"},               --* Optional  --* a Neovim plugin that provides a Lua interface to the popular fzf fuzzy finder.
+    }
   }
 
-  -- check if the env var `NVIM_ENABLE_GPT` is set to true; if so add the chatgpt plugin to the packer setup
+  --*
+  --* ChatGPT related
+  --*
+  -- check if the env var `NVIM_ENABLE_GPT` is set to true; if so include the chatgpt plugin as part of the packer setup
   if to_boolean(os.getenv("NVIM_ENABLE_GPT")) == true then
     use {
       "jackMort/ChatGPT.nvim",
       requires = {
-        {"MunifTanjim/nui.nvim"},
-        {"nvim-lua/plenary.nvim"},
-        {"nvim-telescope/telescope.nvim"}
-      }
+        {"MunifTanjim/nui.nvim"},          --* Required  --* a plugin with a highly customizable UI component framework based on Lua
+        {"nvim-lua/plenary.nvim"},         --* Required  --* already explained
+        {"nvim-telescope/telescope.nvim"}  --* Required  --* already explained
+      },
     }
   end
 
-  -- Automatically set up your configuration after cloning packer.nvim - Packer self-bootstrapping
+  -- automatically set up the packer configuration after cloning `packer.nvim` (i.e. Packer self-bootstrapping)
   if packer_bootstrap then
     require("packer").sync()
   end
@@ -295,6 +329,46 @@ require("toggleterm").setup({
   size = 15,
   -- open_mapping = [[<M-j>]]
 })
+
+
+--* --------------------------------------------------------------- *--
+--?                      	lazygit Setup   	                    ?--
+--* --------------------------------------------------------------- *--
+
+--! ONLY configure toggle terminal to open terminal window running lazygit, if lazy it is installed (i.e. can be found on $PATH)
+if command_exists("lazygit") then
+	-- load and save toggle terminal's terminal module Terminmali object, for direct terminal window creation
+	Terminal = require('toggleterm.terminal').Terminal
+	-- Create a new Terminal instance for lazygit
+	lazygit = Terminal:new({
+	  cmd = "lazygit",     -- command to execute in the terminal
+	  dir = "git_dir",     -- directory for terminal to be opened within
+	  direction = "float", -- set terminal to float over the current neovim window 
+	  float_opts = {
+		border = "double", -- set a double boarder around the floating window 
+	  },
+
+	  -- function to run on opening of the terminal
+	  on_open = function(term)
+		vim.cmd("startinsert!") -- start in INSERT mode
+		-- map the `q` key in normal mode to close the lazygit terminal window
+		vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", {noremap = true, silent = true})
+	  end,
+	  
+	  -- function to run on closing the terminal
+	  on_close = function(term)
+		vim.cmd("startinsert!") -- Resume INSERT mode upon closing the terminal window
+	  end,
+	})
+
+	-- function to toggle the lazygit terminal
+	function _lazygit_toggle()
+	  lazygit:toggle()
+	end
+  
+  -- set a keymap in normal mode: pressing <leader>g will toggle the lazygit terminal
+  vim.api.nvim_set_keymap("n", "<leader>g", "<cmd>lua _lazygit_toggle()<CR>", {noremap = true, silent = true})
+end
 
 
 --* --------------------------------------------------------------- *--
@@ -555,6 +629,99 @@ require("lspconfig").pyright.setup({})
 
 
 --* --------------------------------------------------------------- *--
+--?                Git Workflow Related Configurations              ?--
+--* --------------------------------------------------------------- *--
+
+-- override gitsigns to reflect new lines with a 'plus' sign
+require("gitsigns").setup({
+  signs = {
+    add = { text = "+" }
+  }
+})
+
+--* override icons based on the Patch Ubuntu Nerd Font that is installed (PREREQUISITE)
+require("nvim-web-devicons").setup({
+  override = {
+  go = {
+      icon = "󰟓"
+    },
+    md = {
+    icon = "󰽛"
+  },
+  python = {
+      icon = "󰌠"
+  },
+    rs = {
+      icon = ""
+  },
+  tf = {
+    icon = "󱁢"
+  },
+  tfvars = {
+    icon = "󱁢"
+  },
+  ts = {
+      icon = "󰛦"
+  },
+  lua = {
+      icon = "󰢱"
+  },
+  yaml = {
+      icon = ""
+  },
+  license = {
+      icon = "󰿃"
+  },
+  makefile = {
+      icon = "󰛕"
+  },
+  };
+
+  override_by_filename = {
+    [".gitignore"] = {
+      icon = "󰊢"
+    },
+  [".gitconfig"] = {
+    icon = "󰊢"
+  },
+  [".gitcommit"] = {
+    icon = "󰊢"
+  },
+  [".gitattributes"] = {
+    icon = "󰊢"
+  },
+  [".bashrc"] = {
+    icon = ""
+  },
+  [".bash_profile"] = {
+    icon = ""
+  },
+    };
+
+  override_by_extension = {
+  ["sh"] = {
+    icon = ""
+  },
+  ["git"] = {
+      icon = "󰊢"
+    },
+  ["Dockerfile"] = {
+      icon = ""
+    },
+  };
+})
+
+-- default config setup
+require("diffview").setup({})
+
+-- default config setup
+require("neogit").setup({})
+
+--!
+--! Dont forget to install LazyGit ;)
+--!
+
+--* --------------------------------------------------------------- *--
 --?     Debug Adapter Protocol (DAP) and dap-go delve extension     ?--
 --* --------------------------------------------------------------- *--
 
@@ -643,9 +810,17 @@ require("dap-go").setup {
 if to_boolean(os.getenv("NVIM_ENABLE_GPT")) == true then
   require("chatgpt").setup({ 
     chat = {
-      question_sign = "",
-      answer_sign = "",
-
+      question_sign = "󰆆",
+      answer_sign = "󰯉",
+      border_left_sign = "",
+      border_right_sign = "󰠥",
+    },
+    popup_window = {
+      border = {
+        text = {
+          top = "󰯉  ChatGPT 󰯉 ",
+        },
+      },
     },
     openai_params = {
       model = "gpt-3.5-turbo",
@@ -697,7 +872,7 @@ vim.cmd([[
   augroup END
 ]])
 
--- customizations
+-- vim customizations
 vim.o.background = "dark"
 vim.opt.guicursor = "i:block"
 vim.opt.tabstop = 4
@@ -732,6 +907,7 @@ vim.keymap.set("n", "<M-b>", ":Ex<CR>")
 
 --* insert mode cancelation
 vim.keymap.set("i", "jj", "<Esc>")
+vim.keymap.set("t", "jj", "<Esc>")
 
 --* split screen and navigation
 vim.keymap.set("n", "<leader>v", ":vsplit<CR><C-w>l", { noremap = true })
@@ -743,13 +919,20 @@ vim.keymap.set("n", "<leader>l", ":wincmd l<CR>", { noremap = true })
 --?                      toggleterm Key Bindings                    ?--
 --* --------------------------------------------------------------- *--
 
---* horizontal pane key binding
+--* generic horizontal terminal window creation key binding
 vim.keymap.set("n", "<M-j>", "<cmd>ToggleTerm direction=horizontal<cr>")
---* floating plane key binding
+--* generic floating terminal window creation key  key binding
 vim.keymap.set("n", "<M-k>", "<cmd>ToggleTerm direction=float<cr>")
---* keys to exit terminal mode, primarily for the floating pane
-vim.keymap.set("t", "<esc>", [[<C-\><C-n>]])
+
+--* key mapping to exit terminal mode while a toggleterm window is open; hit `jj` then either `alt-j` or `alt-k` to exit a generic toggleterm window.
+--* `lazygit` is mapped differently, as it maintains its own key bindings, refer to the README for respective key bindings.
 vim.keymap.set("t", "jj", [[<C-\><C-n>]])
+
+
+--* --------------------------------------------------------------- *--
+--?                       lazygit Key Bindings                      ?--
+--* --------------------------------------------------------------- *--
+--* NOTE: refer the lazygit's configuration section for respective key bindings
 
 
 --* --------------------------------------------------------------- *--
@@ -787,8 +970,6 @@ vim.keymap.set("n", "<leader>sd", require("telescope.builtin").diagnostics, { de
 
 --* dap-ui toggle keybindings
 vim.keymap.set("n", "<leader>du", require("dapui").toggle)
--- vim.keymap.set("n", "<leader>do", require("dapui").open)
--- vim.keymap.set("n", "<leader>dc", require("dapui").close)
 
 --* general debugger functioanlity key bindings
 vim.keymap.set("n", "<leader>db", require("dap").toggle_breakpoint)

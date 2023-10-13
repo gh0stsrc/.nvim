@@ -2,7 +2,7 @@
 
 This is a simple but useful setup for neovim, it will continue to grow overtime.
 
-**Disclaimer:** This configuration and the instructions outlined, were implemented on a `Ubuntu 23.04 (Lunar Lobster)` system, instructions may need to be tailored for other linux distributions.
+**Disclaimer:** This configuration and the instructions outlined, were implemented on a `Ubuntu 23.04 (Lunar Lobster)` system using a `v0.9.2` neovim app image; instructions may need to be tailored for other linux distributions or neovim versions.
 
 #### Have Fun!
 
@@ -22,8 +22,12 @@ This is a simple but useful setup for neovim, it will continue to grow overtime.
 
 - [nvim-telescope/telescope.nvim](https://github.com/nvim-telescope/telescope.nvim)
   - `telescope` is a highly extendable fuzzy finder over lists. Built on the latest awesome features from neovim core
-    - <code style="color : red"><b>IMPORTANT</b></code>
-      - <code style="color : red">`telescope` is a`chatgpt` dependency</code> 
+  - <code style="color : red"><b>Dependencies</b></code> 
+    - `plenary`
+    - `codicons`
+    - `nvim-tree/nvim-web-devicons`
+    - `ripgrep`
+    - `fd` _(optionally)_
 
 - [BurntSushi/ripgrep](https://github.com/BurntSushi/ripgrep)
   - `ripgrep`, also known as rg, is a line-oriented search tool that recursively searches your current directory for a regex pattern. It is developed by Andrew Gallant (also known by his GitHub handle BurntSushi) and is written in Rust. `ripgrep` is similar to other search tools like ack and ag (The Silver Searcher), but it is typically faster.
@@ -60,23 +64,27 @@ This is a simple but useful setup for neovim, it will continue to grow overtime.
     - Code Editing Assistance: Enhance your coding experience with an interactive editing window powered by the gpt model, offering instructions tailored for coding tasks.
     - **_Code Completion_**: Enjoy the convenience of code completion similar to GitHub Copilot, leveraging the capabilities of the gpt model to suggest code snippets and completions based on context and programming patterns.
     - **_Customizable Actions_**: Execute a range of actions utilizing the gpt model, such as grammar correction, translation, keyword generation, docstring creation, test addition, code optimization, summarization, bug fixing, code explanation, Roxygen editing, and code readability analysis. Additionally, you can define your own custom actions using a JSON file.
+  - <code style="color : red"><b>Dependencies</b></code> 
+      - `plenary`
+      - `telescope`
+      - `nui`
+      - <code style="color : red">Patched Fonts (e.g. Nerd Fonts); PLEASE REFER TO [REFERENCES SECTION](#references) TO SEE HOW TO PATCH A FONT</code>
 
 - [MunifTanjim/nui.nvim"](https://github.com/MunifTanjim/nui.nvim)
   - `nui` is a plugin for Neovim, and it's a highly customizable UI component framework based on Lua. This plugin aims to provide developers with components such as prompts, menus, and dialogs to help build interactive user interfaces within Neovim.
-  - <code style="color : red"><b>IMPORTANT</b></code> 
-    - <code style="color : red">`nui.nvim` is a`chatgpt` dependency</code> 
+  
 
 - [nvim-lua/plenary.nvim](https://github.com/nvim-lua/plenary.nvim)
-  - `plenary` is a neovim library that provides lua functions required for the development and use of neovim plugins
-    - <code style="color : red"><b>IMPORTANT</b></code> 
-      - <code style="color : red">`plenary` is a `nvim-telescope` and `chatgpt` dependency</code> 
+  - `plenary` is a neovim library that provides lua functions required for the development and use of various neovim plugins.
 
 - [nvim-lualine/lualine.nvim](https://github.com/nvim-lualine/lualine.nvim)
   - `lualine` is a blazing fast and easy to configure neovim statusline written in Lua.
+  - <code style="color : red"><b>Dependencies</b></code> 
+    - `nvim-web-devicons`
 
 - [nvim-tree/nvim-web-devicons](https://github.com/nvim-tree/nvim-web-devicons)
   - `nvim-web-devicons` is a lua fork of vim-devicons. This plugin provides the same icons as well as colors for each icon.
-  - **_nvim-web-devicons is an optional dependency of nvim-lualine_**
+
 
 - [fatih/vim-go](https://github.com/fatih/vim-go)
   -`vim-go` is a plugin for the Vim text editor, specifically aimed at providing an enhanced environment for developing Go.
@@ -91,19 +99,21 @@ This is a simple but useful setup for neovim, it will continue to grow overtime.
 
 - [rcarriga/nvim-dap-ui](https://github.com/rcarriga/nvim-dap-ui)
   - `dapui` is a User Interface (UI) for nvim-dap which provides a good out of the box configuration.
-
+  - <code style="color : red"><b>Dependencies</b></code> 
+    - `neodev`
+    - `codicons`
+    - <code style="color : red">Patched Codicons Font; PLEASE REFER TO [REFERENCES SECTION](#references)TO SEE HOW TO PATCH THIS FONT</code>
+    
 - [leoluz/nvim-dap-go](https://github.com/leoluz/nvim-dap-go)
   - `nvim-dap-go` is an extension for nvim-dap providing configurations for launching go debugger (delve) and debugging individual tests.
 
 - [folke/neodev.nvim](https://github.com/folke/neodev.nvim)
-  - `folke/neodev` setup for init.lua and plugin development with full signature help, docs and completion for the nvim lua API.
-  - It is highly recommended to use neodev.nvim to enable type checking for nvim-dap-ui to get type checking,   documentation and autocompletion for all API functions.
+  - `neodev` setup for init.lua and plugin development with full signature help, docs and completion for the nvim lua API.
+  - It is highly recommended to use neodev to enable type checking for nvim-dap-ui to get type checking, documentation and autocompletion for all API functions.
 
 - [mortepau/codicons.nvim](https://github.com/mortepau/codicons.nvim)
   - `codicons` is a small library containing the codicons from VS Code and some functions to simplify the usage of them.
-  - <code style="color : red"><b>IMPORTANT</b></code> 
-    - <code style="color : red">codicons is a dependency of dapui, which leverages codicons as part of the UI's debugger pane; PLEASE REFER TO [REFERENCES SECTION](#references) FOR HOW TO PATCH THIS FONT</code>
-    
+
 - [VonHeikemen/lsp-zero.nvim](https://github.com/VonHeikemen/lsp-zero.nvim)
   - `lsp-zero.nvim` is a collection of functions that will help you setup Neovim's LSP client, so you can get IDE-like features with minimum effort.
   - out of the box it will help you integrate nvim-cmp (an autocompletion plugin) and nvim-lspconfig (a collection of configurations for various LSP servers).
@@ -174,11 +184,60 @@ This is a simple but useful setup for neovim, it will continue to grow overtime.
     - **_Custom Comment Strings_**: Users can configure custom comment strings for different filetypes
     - **_Performance_**: Being written in Lua, it is more performance-efficient for Lua-based Neovim setups
 
-- **jhlgns/naysayer88.vim** - No Git Link
-  -  `naysayer88.vim` is a vim/nvim colorscheme
+- [lewis6991/gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim)
+  - `gitsigns` is a Neovim plugin designed to enhance the user's experience when working with Git repositories by providing signs in the 'signcolumn' (the area just left of the line numbers). These signs indicate changes relative to the Git index (staged changes). The plugin is written in Lua and is optimized for performance, making it a popular choice among Neovim users.
+  - <code style="color : blue"><b>Features</b></code> 
+    - **_Change Indicators_**: It shows added, modified, and removed lines using different signs.
+    - **_Inline Blame_**: It can display Git blame information directly within the editor.
+    - **_Staging/Unstaging_**: The plugin allows you to stage or unstage hunks of changes directly from Neovim.
+    - **_Navigation_**: You can navigate between different hunks of changes easily using provided key mappings.
+    - **_Customizable_**: gitsigns.nvim offers a variety of customization options. You can adjust the signs' appearance, choose the colors, or change the key mappings.
+    - **_Integration with Native LSP_**: Some functionalities of the plugin can benefit from the integration with Neovim's built-in LSP (Language Server Protocol), if available.
+    - **_Preview Hunks_**: gitsigns.nvim also provides a way to preview the differences in a hunk without navigating to them, which can be helpful to get a quick glance at the changes.
 
-- [CreaturePhil/vim-handmade-hero](https://github.com/CreaturePhil/vim-handmade-hero)
-  -  `vim-handmade-hero` is a vim/nvim colorscheme
+- [sindrets/diffview.nvim](https://github.com/sindrets/diffview.nvim)
+  - `diffview` is a Neovim plugin written in Lua, which provides a simple, unified, single tabpage interface that lets you easily review all changed files for any git revision.
+  - <code style="color : blue"><b>Features</b></code> 
+    - **_Diff Viewer_**: It allows users to view Git diffs directly inside Neovim. This includes staged changes, unstaged changes, and historical diffs.
+    - **_File Navigation_**: It provides a file tree for navigating between different files in a diff. This can be especially useful when reviewing changes in a large commit or set of staged changes.
+    - **_Integration with Neovim's Native LSP_**: The plugin has features that can take advantage of Neovim's built-in LSP (Language Server Protocol) for things like symbol outlining in the diff view.
+    - **_Customization_**: Like many Neovim plugins, diffview.nvim is customizable. Users can configure its appearance, key mappings, and more.
+  - <code style="color : red"><b>Dependencies</b></code> 
+    - `nvim-web-devicons`
+    - <code style="color : red">Patched Fonts (e.g. Nerd Fonts)</code>
+
+- [ibhagwan/fzf-lua](https://github.com/ibhagwan/fzf-lua)
+  - `fzf` is a Neovim plugin that provides a Lua interface to the popular fzf fuzzy finder. fzf is a command-line tool that allows for interactive searching and filtering of lists, and it has been integrated into many editors and shells to provide enhanced fuzzy searching capabilities.
+  - <code style="color : blue"><b>Features</b></code> 
+    - **_Rich Features_**: fzf-lua provides a range of features to make the most of fzf within Neovim, such as:
+      - Fuzzy finding files, buffers, Git files, and more.
+      - Searching for text with ripgrep (or other tools) and viewing results in fzf.
+      - Browsing Neovim's help system.
+      - Integrations with LSP (Language Server Protocol) for actions like finding references, document symbols, workspace symbols, and more.
+      - Preview window with customizable rendering, including tree-like file browsing and colored syntax highlighting.
+    - **_Customizable_**: The plugin offers a wide range of customization options, from visual appearance to underlying tools and commands. For instance, while it defaults to using ripgrep for text searches, you can configure it to use other tools if you prefer.
+    - **_Performance_**: fzf-lua is designed to be fast and efficient, offering the power of fzf without unnecessary overhead.
+    **_Integrated Experience_**: One of the main goals of the plugin is to offer a seamless and integrated fzf experience within Neovim, making common tasks quicker and more intuitive.
+
+- [NeogitOrg/neogit](https://github.com/NeogitOrg/neogit)
+  - `neogit` is a Neovim plugin that aims to bring an intuitive and integrated Git experience directly into Neovim. Written in Lua and designed for Neovim 0.5 and above, it offers a set of Git features that can be accessed without leaving the editor, thus enhancing the productivity of users who work frequently with Git.
+  - <code style="color : red"><b>Dependencies</b></code> 
+    - `plenary`
+    - `telescope`
+    - `diffview`
+    - `fzf-lua`
+
+- [jesseduffield/lazygit](https://github.com/jesseduffield/lazygit)
+  - `lazygit` is a **_NOT_** a Neovim plugin, but rather a simple terminal UI for Git commands, built with Go. It offers a more visual and interactive way to manage and visualize Git repositories directly from the terminal, without needing to remember or type out individual Git commands.
+  - <code style="color : blue"><b>Features</b></code> 
+    - **_Interactive UI_**: lazygit provides a visual interface in the terminal, where you can see the status of your repository, such as changed files, branches, commits, and stashes.
+    - **_Key Bindings_**: It offers various key bindings for common Git tasks. For example, you can stage files, commit changes, switch branches, and more, all with a few key presses.
+    - **_Commit Visualization_**: lazygit allows you to view a detailed log of commits, where you can navigate through your commit history interactively.
+    - **_File Diff_**: It shows a side-by-side diff of the changes in your files, making it easier to understand what has been modified.
+    - **_Stashing_**: You can quickly stash your changes and apply or pop stashes directly from the interface.
+    - **_Merge Conflict Resolution_**: lazygit provides tools for resolving merge conflicts, showing the conflicting changes and allowing you to choose which changes to accept.
+    - **_Customization_**: lazygit offers a range of configuration options, including custom key bindings, themes, and other preferences.
+  - <code style="color : green"><b>`Lazygit` may not be be a Neovim plugin, but it works amazinging well when paired with `toggleterm`; INSTALL IT AND GIVE IT A GO!</b></code>
 
 ---
 ### Language Severs, LSPs, Linters & Formatters
@@ -212,6 +271,18 @@ This is a simple but useful setup for neovim, it will continue to grow overtime.
 
 ---
 ### Nvim Config Installation Prerequisites
+
+**Terminal Font Related**
+  The configuration file `init.lua` explictly references a number of Patched fonts and plugins like `nvim-dap-ui`, `diffview` and `ChatGPT.nvim` leverage implictly do aswell. 
+  
+  If you do not either patch or get the required patched fonts, `Nerd Fonts` (e.g. Ubuntu Nerd Font) and `Codicons`, you will see _unknown symbols_ and/or warnings from the aforementioned plugins.
+
+  To see how to patch fonts, refer to the [References Section](#references)  
+
+**Lazy Git**
+  See the `lazygit` module subsection of the [Plugin Inventory](#plugin-inventory) section, to learn more about this git worklfow tool and how it works **_amazingly well_** with `toggleterm`.
+
+  If you decide to join the dark side, all you need to do is simply install `lazygit` on your system ([follow their installation guide](https://github.com/jesseduffield/lazygit/tree/master#installation)) and the neovim config will automatically bootstrap `toggleterm` with `lazygit` for you. A dedicated floating terminal window will be available to toggle using the keybindings outlined in the [Noteworthy Key Bindings](#noteworthy-key-bindings) section of this document.
 
 **Nvim Clipboard Provider Related**
 
@@ -249,6 +320,7 @@ This is a simple but useful setup for neovim, it will continue to grow overtime.
     - **_OTHERWISE_**, when you run the `PackerInstall` command, `ripgrep` will automatically be installed via `packer`; as it is included in the `packer` setup config. HOWEVER, you will need to make the binary accessible to `$PATH`.
       - <code style="color : red"><b>IMPORTANT</b></code> 
         - <code style="color : red"> you will need to include the full path of where the `ripgrep` binary was installed in `$PATH`</code> 
+    
   
   - `telescope` **_optionally_** depends on [sharkdp/fd](https://github.com/sharkdp/fd) for file finding functionality.
     -  the easiest way to deal with this is to install `fd-find` system wide
@@ -336,6 +408,13 @@ If you find and relvant `Warnings` which may impact your nvim setup or experienc
   - `<alt-j>` - Toggle a persistent terminal pane at the bottom of the window horizontally (small)
   - `<alt-k>` - Toggle a floating persistent terminal pane that hovers over the main window (large)
 
+**Lazygit**
+  <code style="color : green"><b>Note</b></code>**:** The below key bindings are only available if `lazygit` is installed on your system (i.e. avaialble via `$PATH`). The neovim config will automatically bootstrap `toggleterm` with `lazygit` for you, ONLY if `lazygit` is installed.
+  - `<leader> + g` - Open a floating terminal for `lazygit`
+  - `<leader> + q` - Close the floating terminal for `lazygit`
+  
+  For a comprehensive list of built-in key mappings for `lazygit`, refer to its respective [documentation](https://github.com/jesseduffield/lazygit/tree/master/docs/keybindings).
+
 **Telescope**
   - `<leader> + <shift>-? `     - Find recently opened files
   - `<leader> + <space>`        - Find recent telescope fuzzy finder buffers
@@ -408,11 +487,18 @@ If you find and relvant `Warnings` which may impact your nvim setup or experienc
 
 - [Neovim LSP client configurations](https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md)
 
+- [Nerd Fonts](https://www.nerdfonts.com/)
+  - plugins such as `diffview`, `ChatGPT.nvim` are configured to use [Patched Fonts](https://github.com/ryanoasis/nerd-fonts#patched-fonts) for rendering icons within the terminal and ultimately Neovim.
+  - [Github](https://github.com/ryanoasis/nerd-fonts)
+
 - [Codicons](https://github.com/microsoft/vscode-codicons)
-  - codicons is a dependency of dapui, which leverages codicons as part of the UI's debugger pane
-  - the codicon font will required to be patched by tools like nerd-fonts' font-patcher; possibly in conjunction with fontforge. 
-  - patching is required for successful rending of codicon fonts in the terminal
-  - once a font is patched, move the respective .ttf file to the running user's font dir (e.g. `/home/{USER}/.local/share/fonts`)
-  - **_How to Patch Fonts_**:
-    - https://github.com/mortepau/codicons.nvim#how-to-patch-fonts
-    - https://github.com/ryanoasis/nerd-fonts#option-9-patch-your-own-font
+  - plugin(s) such as `nvim-dap-ui` are configured to use the `codicons` Font, as part of the UI's debugger pane.
+  - the `codicons` font will required to be patched by tools like nerd-fonts' font-patcher; possibly in conjunction with fontforge. See the `How to Patch Fonts` subsection within `References` for details on how to deal with Font Patching.
+
+- **_How to Patch Fonts_**:
+    - Manually Patching a Font
+      - [Font Patching Procedure](https://github.com/ryanoasis/nerd-fonts#option-9-patch-your-own-font)
+      - Once a font is patched, move the respective `.ttf` file to the running user's font dir (e.g. `~/.local/share/fonts/FontName.ttf`) or in a well named subdirectory (e.g. `~/.local/share/fonts/Ubuntu/FontName.ttf`
+    - Using already Patched Fonts
+      - Dowload a patched font from [Nerd Fonts](https://www.nerdfonts.com/font-downloads)
+      - Move the respective `.ttf` file(s) to the running user's font dir (e.g. `~/.local/share/fonts/FontName.ttf`) or in a well named subdirectory (e.g. `~/.local/share/fonts/Ubuntu/FontName.ttf`)
