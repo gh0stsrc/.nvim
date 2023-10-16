@@ -13,7 +13,7 @@ This is a simple but useful setup for neovim, it will continue to grow overtime.
   - `packer` is plugin/package manager for neovim
 
 - [gruvbox](https://github.com/morhetz/gruvbox)
-  - `gruvbox` is a neovim theme heavily inspired by badwolf, jellybeans and solarized
+  - `gruvbox` The Gruvbox color scheme is known for its warm and retro-inspired color palette, which many developers find visually pleasing and comfortable for coding. It often includes variations for different languages and file types to make syntax highlighting more readable and aesthetically pleasing.
 
 - [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)
   - `treesitter` is a parser generator tool and an incremental parsing library
@@ -269,6 +269,40 @@ This is a simple but useful setup for neovim, it will continue to grow overtime.
 - [rust-analyzer (rust_analyzer)](https://github.com/rust-lang/rust-analyzer)
   - `rust-analyzer` is an implementation of a Language Server Protocol (LSP) for the Rust programming language. It is developed by the Rust community with the intention of making it the official Rust language server, eventually replacing the Rust Language Server (RLS).
 
+- [lua-language-server](https://github.com/LuaLS/lua-language-server)
+  - `lua-language-server` (lua_ls) is a language server for the Lua programming language. Using the LSP protocol it provides completion, goto definition, find references, rename refactoring, diagnostics, and more.
+
+- [marksman](https://github.com/artempyanykh/marksman)
+  - `marksman` is a program that integrates with your editor to assist you in writing and maintaining your Markdown documents. Using the LSP protocol it provides completion, goto definition, find references, rename refactoring, diagnostics, and more.
+
+
+---
+### Nvim Config Environment Variables
+ - `NVIM_DEBUG`: by setting this environment variable to `true`, Neovim will open with debugging info, such as the compatible clipboard providers that have been detected, etc.
+</br>
+ 
+ - `NVIM_SKIP_CLIP`: by setting this environment variable to `true`, you are choosing to skip the configuration of prefered clipboard providers (xclip, xsel, tmux, termux, etc...) and dismiss related errors.
+</br>
+ 
+ - `NVIM_CLIP`: Depending on your preference of clipboard provider for Neovim and your currently installed clipboard providers on your system, Neovim may implicitly select a provider and connect the respective registers. If you prefer not to leverage a clipboard like `xclip` or do not have a display (i.e. headless server), you can explictly select `tmux` as your prefered clipboard provider. 
+
+   - To do so, set the `NVIM_CLIP` environment variable to `tmux`. This will configure `tmux` to be your preferred clipboard provider, connect the appropriate registers and set the `<leader> + y`, `<leader> + p` key bindings for copying and pasting, respectively.
+ 
+   - <code style="color : green"><b>Note</b></code>**:** To see more information about clipboard configurations, please see the `Nvim Clipboard Provider Related` subsection of [Nvim Config Installation Prerequisites](#nvim-config-installation-prerequisites).
+</br>
+ 
+ - `NVIM_ENABLE_GPT`: by setting this environment variable to `true`, the `jackMort/ChatGPT.nvim` plugin will be able to be installed via the `PackerInstall` command upon Neovim restart. In addition, the respective key bindings outlined in the [Noteworthy Key Bindings](#noteworthy-key-bindings) section of this document will be bound.
+
+    - <code style="color : green"><b>Note</b></code>**:** For more information regarding the `ChatGPT` plugin and its installation requirements, please see the respective subsection within [Nvim Config Installation Prerequisites](nvim-config-installation-prerequisites).
+    </br>
+
+- `NVIM_DISABLE_MATCHING_HL`: by setting this environment variable to `true`, you will be disabling all symbol match highlighting (e.g. matching open and closing brackets/braces). 
+</br>
+
+- `NVIM_ENABLE_BACKUP_COMMENT_COLOR`: This environment variable should **_ONLY_** be used when you are encountering issues with either treesitter or LSPs, where comments are no longer being rendered in green text.
+
+  - To manually override the `gruvbox` colorscheme to render comments in green text, when either treesitter or LSPs are **_NON_**-FUNCTIONAL, set the environment variable to `true`.
+
 ---
 ### Nvim Config Installation Prerequisites
 
@@ -391,18 +425,17 @@ If you find and relvant `Warnings` which may impact your nvim setup or experienc
 <code style="color : green"><b>Note</b></code>**:** by deafult the leader key binding is set to the `<space>` key
 
 **General Bindings**
-- `[Terminal Mode]: <esc>`  - Exit terminal mode and enter normal mode
-- `[Terminal Mode]: j + j`  - Alias for `esc` above
-- `[Insert Mode]: j + j`  - Exit insert mode and enter normal mode
-- `<alt-b>`               - Go back/exit current window
+- `[TERMINAL Mode]: j + j`  - Exit TERMINAL mode and enter normal mode
+- `[INSERT Mode]: j + j`    - Exit INSERT mode and enter normal mode
+- `<alt-b>`                 - Go back/exit current window
 
 **Commenting**
   - `<leader> + /` - comment a single line or multiple if lines are select in visual mode
 
 **Split Screen & Navigation**
-  - `<leader> + v` - Split the screen vertically (uses currently opened file as default file to open)
-  - `<leader> + h` - Navigate one screen to the left
-  - `<leader> + l` - Navigate one screen to the right
+  - `<leader> + v` **OR** `<alt-v>` - Split the screen vertically (uses currently opened file as default file to open)
+  - `<leader> + h` **OR** `<alt-h>` - Navigate one screen to the left
+  - `<leader> + l` **OR** `<alt-l>` - Navigate one screen to the right
 
 **Toggleterm**
   - `<alt-j>` - Toggle a persistent terminal pane at the bottom of the window horizontally (small)

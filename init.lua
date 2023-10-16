@@ -7,7 +7,7 @@
 --?                                                               __/ |
 --?                                                              |___/
 --?
---! Version : v1.4.0
+--! Version : v1.5.0
 --* Note    : the comment syntax for lua has been extended to using additional characters such as ['*','?','!'] to provide color highlighting
 --*           for various types of comments, for example:
 ---             - --!:
@@ -85,7 +85,7 @@ local clipboard_providers = check_clipboard_providers()
 -- check if no clipboard provider has been found AND if the user has NOT set the NVIM_SKIP_CLIP environment variable
 if #clipboard_providers == 0 and not(to_boolean(os.getenv("NVIM_SKIP_CLIP")) == false) then
     -- If no providers were found, raise an error
-    error(("No clipboard providers found, either install one of the compatible clipboards or enable the NVIM_SKIP_CLIP env var to ignore clipboard errors; compatible clipboards -> " .. "[" .. table.concat(clipboard_providers, ", ") .. "]"), 1)
+    error(("No clipboard providers found, either install one of the compatible clipboards or enable the `NVIM_SKIP_CLIP` env var to ignore clipboard errors; compatible clipboards -> " .. "[" .. table.concat(clipboard_providers, ", ") .. "]"), 1)
 else
   -- if one or more providers were found, print a message listing the found clipboard providers
   if to_boolean(os.getenv("NVIM_DEBUG")) == true then
@@ -172,7 +172,7 @@ require("packer").startup(function(use)
   --!  place plugins which you desire packer to install below
   --* -------------------------------------------------------- --*
 
-  --* neovim theme heavily inspired by badwolf, jellybeans and solarized
+  --* The Gruvbox color scheme is known for its warm and retro-inspired color palette, which many developers find visually pleasing and comfortable for coding. It often includes variations for different languages and file types to make syntax highlighting more readable and aesthetically pleasing
   use { "ellisonleao/gruvbox.nvim" }
   --* plugin to integrate the treesitter parsing lib into neovim
   use("nvim-treesitter/nvim-treesitter", {run = ":TSUpdate"})
@@ -284,7 +284,7 @@ end)
 --! IMPORTANT : required for IDE functionality such as parsing, syntax highlighting, code analysis and incremental selection.
 
 require("nvim-treesitter.configs").setup({
-  ensure_installed = {"c", "lua", "vim", "go", "javascript", "typescript", "rust", "dockerfile", "python", "bash", "hcl", "rego"},
+  ensure_installed = {"c", "lua", "vim", "go", "javascript", "typescript", "rust", "dockerfile", "python", "bash", "hcl", "rego", "markdown_inline"},
   highlight = {
     enable = true,
   }
@@ -292,16 +292,77 @@ require("nvim-treesitter.configs").setup({
 
 
 --* --------------------------------------------------------------- *--
---?                          gruvbox Setup                          ?--
+--?                gruvbox/Neovim Color Scheme Setup                ?--
 --* --------------------------------------------------------------- *--
---* Note: gruvbox is a neovim theme heavily inspired by badwolf, jellybeans and solarized
 
-require("gruvbox").setup({
-  contrast = "hard",
-  palette_overrides = {
+--* ------------------------------------ *--
+--?     gruvbox config initialization    ?--
+--* ------------------------------------ *--
+
+-- desired generic overrides for gruvbox
+local gruvbox_overrides = {
+  -- use a treesitter group/LSP semantic override to force the colour of comments to green (supported for all installed LSPs)
+  ["@comment"] = { fg = "#2ea542" }
+}
+
+-- default palette overrides for gruvbox - defaults to nil as palette overrides will only be leveragd if issues with an LSP arise
+local gruvbox_palette_overrides
+
+--! NOTE: if you are encountering issues with either treesitter or any LSP client, where comment code is not respecting configuration set by the `overrides` filed for gruvbox's
+--!       setup, you can manually force the colour change via the use of the `NVIM_ENABLE_BACKUP_COMMENT_COLOR` environment variable  
+if to_boolean(os.getenv("NVIM_ENABLE_BACKUP_COMMENT_COLOR")) == true then
+  -- override the gray colour used for comments to green
+  gruvbox_palette_overrides = {
     gray = "#2ea542", -- comments are overridden to be green
   }
+
+  -- set the gruvbox_overrides to nil as they will not be leverage since Backup Comment Colour will be used
+  gruvbox_overrides = nil
+
+  -- add the same comment color in each theme via autocmd group
+  vim.cmd([[
+    augroup CustomCommentColor
+      autocmd!
+      autocmd VimEnter * hi Comment guifg=#2ea542
+    augroup END
+  ]])
+end
+
+--! NOTE: if you do not like bracket matching highlighting, you can disable it by setting the `NVIM_DISABLE_MATCHING_HL` environment variable to `true`
+--  disable matching bracket/brace and other jazz highlighting via autocmd group
+if to_boolean(os.getenv("NVIM_DISABLE_MATCHING_HL")) == true then
+	vim.cmd([[
+		augroup NoMatchHL
+		autocmd!
+		autocmd VimEnter * NoMatchParen 
+	  augroup END
+	]])
+end
+
+--* ------------------------------------ *--
+--?             gruvbox setup            ?--
+--* ------------------------------------ *--
+
+require("gruvbox").setup({
+  -- set gruvbox to present a harderd contrast, preferred option when using Dark Mode
+  contrast = "hard",
+  --* if the env `NVIM_ENABLE_BACKUP_COMMENT_COLOR` is NOT set, `overrides` will be set the initial value set of the local var `gruvbox_overrides`; otherwise it will be set to nil
+  --* use a treesitter group/LSP semantic override to force the colour of comments to green (supported for all installed LSPs)
+  overrides = gruvbox_overrides,
+  --* if the env `NVIM_ENABLE_BACKUP_COMMENT_COLOR` IS  set, `palette_overrides` will be set to the value by the respective conditonal control flow; otherwise it will remain as nil
+  --* NOTE: this should only be used when the treesitter group/LSP semantic override to force the colour of comments is NON functional
+  palette_overrides = gruvbox_palette_overrides, -- default value is nil 
 })
+
+--* ------------------------------------ *--
+--?          Color Scheme Setup          ?--
+--* ------------------------------------ *--
+
+-- set the vim background to Dark Mode
+vim.o.background = "dark"
+
+-- set colorscheme to gruvbox, AFTER setting all configurations
+vim.cmd("colorscheme gruvbox")
 
 
 --* --------------------------------------------------------------- *--
@@ -386,6 +447,7 @@ local lsp = require("lsp-zero").preset("recommended")
 
 -- list of language servers, debugger adapters, linters and formatters to be installed by mason and leveraged by lsp-zero
 lsp.ensure_installed({
+  "lua_ls",
   "tsserver",
   "gopls",
   "eslint",
@@ -396,6 +458,7 @@ lsp.ensure_installed({
   "dockerls",
   "helm_ls", -- TODO: need to figure out why the Helm language server is not rendering properly
   "pyright",
+  "marksman",
   -- "yamls", --! IMPORTANT: disabled on purpose, see configurations for more details
 })
 
@@ -495,6 +558,22 @@ cmp.setup({
 
 
 --* ------------------------------------ *--
+--?          Lua Language Server         ?--
+--* ------------------------------------ *--
+
+--! IMPORTANT :  
+--!               - The Lua Language Server is required to be installed if you want lspconfig to provide LSP functionality for lua code. 
+--!               - lsp-zero should be able to install bashls via Mason (via the ensure_installed function); however, if you encounter issues installing the
+--!                 the language server you can it manually - link in references section
+--!               - if performing a manual install of the language server, please ensure that the binary can be found in $PATH
+--* Note      :
+--*               - even if lsp-zero/Mason is able to install the language server, you may need to configure the respective lspconfig setup for lua_ls to point the default start up
+--*                 command to the path where it was auto installed (e.g. /home/{USER}/.local/share/nvim/mason/bin/lua-language-server). 
+--*                 depending on the LSP the default startup command may assume that the binary can be found under $PATH
+
+require("lspconfig").lua_ls.setup({})
+
+--* ------------------------------------ *--
 --?         BASH Language Server         ?--
 --* ------------------------------------ *--
 
@@ -505,11 +584,10 @@ cmp.setup({
 --!               - if performing a manual install of the language server, please ensure that the binary can be found in $PATH
 --* Note      :
 --*               - even if lsp-zero/Mason is able to install the language server, you may need to configure the respective lspconfig setup for bashls to point the default start up
---*                 command to the path where it was auto installed (e.g. /home/{USER}/.local/share/nvim/mason/bin/bash-labguage-server). 
+--*                 command to the path where it was auto installed (e.g. /home/{USER}/.local/share/nvim/mason/bin/bash-language-server). 
 --*                 depending on the LSP the default startup command may assume that the binary can be found under $PATH
 
 require("lspconfig").bashls.setup({})
-
 
 --* ------------------------------------ *--
 --?         YAML Language Server         ?--
@@ -528,6 +606,26 @@ require("lspconfig").bashls.setup({})
 -- TODO: investigate the resolution for the above
 
 -- require("lspconfig").yamlls.setup({})
+
+
+--* ------------------------------------ *--
+--?       Markdown Language Server       ?--
+--* ------------------------------------ *--
+
+--! IMPORTANT :   - The YAML Language Server is required to be installed if you want lspconfig to provide LSP functionality for YAML code. 
+--!               - lsp-zero should be able to install yamls via Mason (via the ensure_installed function); however, if you encounter issues installing the
+--!                 the language server you can it manually - link in references section
+--!               - if performing a manual install of the language server, please ensure that the binary can be found in $PATH
+--* Note      :
+--*               - even if lsp-zero/Mason is able to install the language server, you may need to configure the respective lspconfig setup for yamls to point the default start up
+--*                 command to the path where it was auto installed (e.g. /home/{USER}/.local/share/nvim/mason/bin/yamls).
+--*                 depending on the LSP the default startup command may assume that the binary can be found under $PATH
+
+--! IMPORTANT :   - the YAML Language Server and LSP have been disabled on purpose; need to work out a way that it does not conflict with Helm based files and the helm_ls LSP
+-- TODO: investigate the resolution for the above
+
+require("lspconfig").marksman.setup({})
+
 
 
 --* ------------------------------------ *--
@@ -551,7 +649,7 @@ vim.api.nvim_create_autocmd({"BufWritePre"}, {
   end,
 })
 
--- Terraform linter
+-- terraform linter
 require("lspconfig").tflint.setup({})
 
 
@@ -850,46 +948,42 @@ end
 
 
 --* --------------------------------------------------------------- *--
---?                    Color Scheme Configurations                  ?--
+--?                        Vim Customizations                       ?--
 --* --------------------------------------------------------------- *--
 
--- set colorscheme
-vim.cmd("colorscheme gruvbox")
-
--- adding the same comment color in each theme
-vim.cmd([[
-  augroup CustomCommentCollor
-    autocmd!
-    autocmd VimEnter * hi Comment guifg=#2ea542
-  augroup END
-]])
-
--- Disable annoying matching brackets and other jazz
-vim.cmd([[
-  augroup CustomHI
-    autocmd!
-    autocmd VimEnter * NoMatchParen 
-  augroup END
-]])
-
--- vim customizations
-vim.o.background = "dark"
+-- set  the cursor shape to a block (i:block) when you are in insert mode (i). The cursor shape changes visually to indicate the mode you are in
 vim.opt.guicursor = "i:block"
-vim.opt.tabstop = 4
-vim.opt.shiftwidth = 4
+-- set the number of spaces a tab character should display as. In this case, it's set to 2 spaces
+vim.opt.tabstop = 2
+-- sets the number of spaces used for auto-indentation and when shifting lines with << or >> commands to 2 spaces
+vim.opt.shiftwidth = 2
+-- specifies the number of spaces inserted for a <Tab> keypress or during auto-indentation. This ensures that pressing <Tab> inserts 2 spaces
+vim.opt.softtabstop = 2
+-- use spaces for indentation instead of tab characters when you press <Tab> or use auto-indentation.
+vim.opt.expandtab = true
+-- disables line numbering in the left margin of the buffer
 vim.opt.number = false
+-- enables relative line numbering, which displays line numbers relative to the current cursor position (e.g., the current line is displayed as 0, the line above it as -1, and so on)
 vim.opt.relativenumber = true
+-- disables the creation of swap files. Swap files are used for crash recovery and can be helpful, but this configuration turns them off
 vim.opt.swapfile = false
-
+-- enables highlight search results, causing text matching your search pattern to be highlighted.
 vim.o.hlsearch = true
+-- enables mouse support for all modes ('a'). This allows you to use the mouse to select, scroll, and interact with Vim
 vim.o.mouse = 'a'
+-- enables automatic line breaking with the breakindent feature, which helps maintain proper indentation when a line wraps
 vim.o.breakindent = true
+-- enables undo file support, which allows you to persist undo history across sessions
 vim.o.undofile = true
+-- makes searches case-insensitive by default. When you search for text, Vim will match regardless of case
 vim.o.ignorecase = true
+-- Sets the interval (in milliseconds) for updating the screen and triggering various autocmd events; this can improve responsiveness
 vim.o.updatetime = 250
+-- Enables the use of timeouts for key mappings and commands
 vim.o.timeout = true
+-- sets the timeout length (in milliseconds) for key mappings. If you don't complete a key sequence within this time, Vim will assume you intended to type the keys separately
 vim.o.timeoutlen = 300
---vim.o.completeopt = 'menuone,noselect'
+-- enables true color support in the terminal if supported by your terminal emulator. This allows for more colorful syntax highlighting
 vim.o.termguicolors = true
 
 
@@ -913,7 +1007,10 @@ vim.keymap.set("t", "jj", "<Esc>")
 vim.keymap.set("n", "<leader>v", ":vsplit<CR><C-w>l", { noremap = true })
 vim.keymap.set("n", "<leader>h", ":wincmd h<CR>", { noremap = true })
 vim.keymap.set("n", "<leader>l", ":wincmd l<CR>", { noremap = true })
-
+--* alt leader counterpart for split screen and navigation
+vim.keymap.set("n", "<M-v>", ":vsplit<CR><C-w>l", { noremap = true })
+vim.keymap.set("n", "<M-h>", ":wincmd h<CR>", { noremap = true })
+vim.keymap.set("n", "<M-l>", ":wincmd l<CR>", { noremap = true })
 
 --* --------------------------------------------------------------- *--
 --?                      toggleterm Key Bindings                    ?--
