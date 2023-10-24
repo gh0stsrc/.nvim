@@ -182,28 +182,59 @@ vim.keymap.set("n", "<leader>dr", function() require("dap").repl.toggle() end)
 --* --------------------------------------------------------------- *--
 --* Note: Only functions exposed by the ChatGPT plugin have been mapped to keys explictly and can be seen below. Refer to the README for more details pertaining to
 
---* ChatGPT keybindings
-vim.keymap.set("n", "gpt", "<cmd>ChatGPT<cr>")
-vim.keymap.set("n", "gpta", "<cmd>ChatGPTActAs<cr>")
-vim.keymap.set("n", "gpte", "<cmd>ChatGPTEditWithInstructions<cr>")
-vim.keymap.set("n", "gptr", "<cmd>ChatGPTRun<cr>")
-vim.keymap.set("n", "gptc", "<cmd>ChatGPTCompleteCode<cr>")
+vim.keymap.set("n", "gpt", "<cmd>ChatGPT<cr>")                       -- open general interactive window
+vim.keymap.set("n", "gpta", "<cmd>ChatGPTActAs<cr>")                 -- open a prompt prepared window (adopting a persona)
+vim.keymap.set("n", "gpte", "<cmd>ChatGPTEditWithInstructions<cr>")  -- open an interactive window where ChatGPT will edit a copy of the current buffer
+vim.keymap.set("n", "gptr", "<cmd>ChatGPTRun<cr>")                   -- execute ChatGPT commands
+vim.keymap.set("n", "gptc", "<cmd>ChatGPTCompleteCode<cr>")          -- comeplete code recommendations
 
 
+--* --------------------------------------------------------------- *--
+--?                        bufferline Bindings                      ?--
+--* --------------------------------------------------------------- *--
+
+-- buffer deletion
+vim.keymap.set("n", "<M-c>", "<cmd>bdelete!<cr>")                                    -- delete current buffer
+vim.keymap.set("n", "cl", "<cmd>BufferLineCloseLeft<cr>")
+vim.keymap.set("n", "cr", "<cmd>BufferLineCloseRight<cr>")
+vim.keymap.set("n", "co", "<cmd>BufferLineCloseOthers<cr>")
+
+-- shift buffers in the bufferline
+vim.keymap.set("n", "nn", "<cmd>BufferLineMoveNext<cr>")                             -- move the current buffer 1 position to the left
+vim.keymap.set("n", "pp", "<cmd>BufferLineMovePrev<cr>")                             -- move the current buffer 1 potiion to the right
+
+-- buffer selection 
+vim.keymap.set("n", "<leader>]", "<cmd>BufferLineCycleNext<cr>")                     -- move focus to the next buffer to the left of the currently opened buffer
+vim.keymap.set("n", "<leader>[", "<cmd>BufferLineCyclePrev<cr>")                     -- move focus to the next buffer to the right of the currently opened buffer
+
+-- relative buffer selection
+vim.keymap.set("n", "<leader>1", "<cmd>BufferLineGoToBuffer 1<cr>")                  -- move the focus to the 1st visible buffer in the bufferline (relative positioning) 
+vim.keymap.set("n", "<leader>2", "<cmd>BufferLineGoToBuffer 2<cr>")                  -- 2nd
+vim.keymap.set("n", "<leader>3", "<cmd>BufferLineGoToBuffer 3<cr>")                  -- 3rd
+vim.keymap.set("n", "<leader>4", "<cmd>BufferLineGoToBuffer 4<cr>")                  -- 4th
+vim.keymap.set("n", "<leader>5", "<cmd>BufferLineGoToBuffer 5<cr>")                  -- 5th
+vim.keymap.set("n", "<leader>6", "<cmd>BufferLineGoToBuffer 6<cr>")                  -- 6th
+vim.keymap.set("n", "<leader>7", "<cmd>BufferLineGoToBuffer 7<cr>")                  -- 7th
+vim.keymap.set("n", "<leader>8", "<cmd>BufferLineGoToBuffer 8<cr>")                  -- 8th
+vim.keymap.set("n", "<leader>9", "<cmd>BufferLineGoToBuffer 9<cr>")                  -- 9th
+vim.keymap.set("n", "<leader>0", "<cmd>BufferLineGoToBuffer -1<cr>")                 -- move the focus to the last visible buffer in the bufferline (relative positioning)
+
+-- absolute buffer selection
+vim.keymap.set("n", "<M-1>", "<cmd>lua require(\"bufferline\").go_to(1, true)<cr>")  -- move the focus to the 1st buffer in the bufferline (absolute positioning) 
+vim.keymap.set("n", "<M-2>", "<cmd>lua require(\"bufferline\").go_to(2, true)<cr>")  -- 2nd 
+vim.keymap.set("n", "<M-3>", "<cmd>lua require(\"bufferline\").go_to(3, true)<cr>")  -- 3rd 
+vim.keymap.set("n", "<M-4>", "<cmd>lua require(\"bufferline\").go_to(4, true)<cr>")  -- 4th 
+vim.keymap.set("n", "<M-5>", "<cmd>lua require(\"bufferline\").go_to(5, true)<cr>")  -- 5th 
+vim.keymap.set("n", "<M-6>", "<cmd>lua require(\"bufferline\").go_to(6, true)<cr>")  -- 6th 
+vim.keymap.set("n", "<M-7>", "<cmd>lua require(\"bufferline\").go_to(7, true)<cr>")  -- 7th 
+vim.keymap.set("n", "<M-8>", "<cmd>lua require(\"bufferline\").go_to(8, true)<cr>")  -- 8th 
+vim.keymap.set("n", "<M-9>", "<cmd>lua require(\"bufferline\").go_to(9, true)<cr>")  -- move the focus to the 9th buffer in the bufferline (absolute positioning) 
 
 
+--* --------------------------------------------------------------- *--
+--?                       neoclip Bindings                          ?--
+--* --------------------------------------------------------------- *--
 
+-- open clipboard selection window
+vim.keymap.set("n", "<leader>c", "<cmd>Telescope neoclip<cr>")
 
-vim.keymap.set("n", "nn", "<cmd>BufferLineMoveNext<cr>")
-vim.keymap.set("n", "pp", "<cmd>BufferLineMovePrev<cr>")
-
-vim.keymap.set("n", "<leader>1", "<cmd>BufferLineGoToBuffer 1<cr>")
-vim.keymap.set("n", "<leader>2", "<cmd>BufferLineGoToBuffer 2<cr>")
-vim.keymap.set("n", "<leader>3", "<cmd>BufferLineGoToBuffer 3<cr>")
-vim.keymap.set("n", "<leader>4", "<cmd>BufferLineGoToBuffer 4<cr>")
-vim.keymap.set("n", "<leader>5", "<cmd>BufferLineGoToBuffer 5<cr>")
-vim.keymap.set("n", "<leader>6", "<cmd>BufferLineGoToBuffer 6<cr>")
-vim.keymap.set("n", "<leader>7", "<cmd>BufferLineGoToBuffer 7<cr>")
-vim.keymap.set("n", "<leader>8", "<cmd>BufferLineGoToBuffer 8<cr>")
-vim.keymap.set("n", "<leader>9", "<cmd>BufferLineGoToBuffer 9<cr>")
-vim.keymap.set("n", "<leader>$", "<cmd>BufferLineGoToBuffer -1<cr>")
