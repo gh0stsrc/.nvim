@@ -4,6 +4,13 @@
 --* Note: for a better understanding of all keybindings, see the README for comprehensive details.
 
 --* --------------------------------------------------------------- *--
+--?                         LEADER Key Bindings                     ?--
+--* --------------------------------------------------------------- *--
+
+-- set the default leader for key mappings
+vim.g.mapleader = " " --IMPORTANT: leader is the <space> key
+
+--* --------------------------------------------------------------- *--
 --?                         Generic Key Bindings                    ?--
 --* --------------------------------------------------------------- *--
 
@@ -47,11 +54,11 @@ vim.keymap.set("n", "[h", function()
 end, { desc = "Previous HACK comment" })
 
 -- BUG/FIX
-vim.keymap.set("n", "]f", function()
+vim.keymap.set("n", "]b", function()
   require("todo-comments").jump_next({keywords = { "BUG", "FIX" }})
 end, { desc = "Next FIX comment" })
 
-vim.keymap.set("n", "[f", function()
+vim.keymap.set("n", "[b", function()
   require("todo-comments").jump_prev({keywords = { "BUG", "FIX" }})
 end, { desc = "Previous FIX comment" })
 
@@ -92,20 +99,21 @@ vim.keymap.set("n", "[n", function()
 end, { desc = "Previous NOTE comment" })
 
 -- TEST
-vim.keymap.set("n", "]u", function()
+vim.keymap.set("n", "]T", function()
   require("todo-comments").jump_next({keywords = { "TEST" }})
 end, { desc = "Next TEST comment" })
 
-vim.keymap.set("n", "[u", function()
+vim.keymap.set("n", "[T", function()
   require("todo-comments").jump_prev({keywords = { "TEST" }})
 end, { desc = "Previous TEST comment" })
 
 -- COMMANDS
+
 --This uses the quickfix list to show all todos in your project.
-vim.keymap.set("n","tq", "<cmd>TodoQuickFix<cr>")
+--vim.keymap.set("n","tq", "<cmd>TodoQuickFix<cr>")
 
 --This uses the location list to show all todos in your project.
-vim.keymap.set("n","tl", "<cmd>TodoLocList<cr>")
+--vim.keymap.set("n","tl", "<cmd>TodoLocList<cr>")
 
 -- Search through all project todos with Telescope
 vim.keymap.set("n","tt", "<cmd>TodoTelescop<cr>")
@@ -235,6 +243,13 @@ vim.keymap.set("n", "<M-9>", "<cmd>lua require(\"bufferline\").go_to(9, true)<cr
 --?                       neoclip Bindings                          ?--
 --* --------------------------------------------------------------- *--
 
--- open clipboard selection window
+-- open clipboard selection window using telescope
 vim.keymap.set("n", "<leader>c", "<cmd>Telescope neoclip<cr>")
+
+
+--* --------------------------------------------------------------- *--
+--?                         notify Bindings                         ?--
+--* --------------------------------------------------------------- *--
+-- open notification history in telescope
+vim.keymap.set("n", "nh", "<cmd>Telescope notify<cr>")
 

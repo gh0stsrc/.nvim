@@ -1,12 +1,12 @@
---* ------------------------------------ *--
---? [LSP auto-completion & keybindings]  *--
---* ------------------------------------ *--
+--* --------------------------------------------------------------- *--
+--?                LSP auto-completion & keybinding                 ?--
+--* --------------------------------------------------------------- *--
 
--- Note: cmp is a completion engine plugin for neovim written in Lua. Completion sources are installed from external repositories and "sourced".
+-- NOTE: cmp is a completion engine plugin for neovim written in Lua. Completion sources are installed from external repositories and "sourced".
 local cmp = require("cmp")
 local cmp_select_opts = {behavior = cmp.SelectBehavior.Select}
 
--- -- the meat and potatoes for cmp config
+-- the meat and potatoes for cmp config
 cmp.setup({
   sources = {
     {name = "nvim_lsp"},

@@ -17,8 +17,8 @@ local gruvbox_overrides = {
 -- default palette overrides for gruvbox - defaults to nil as palette overrides will only be leveragd if issues with an LSP arise
 local gruvbox_palette_overrides
 
---! NOTE: if you are encountering issues with either treesitter or any LSP client, where comment code is not respecting configuration set by the `overrides` filed for gruvbox's
---!       setup, you can manually force the colour change via the use of the `NVIM_ENABLE_BACKUP_COMMENT_COLOR` environment variable  
+-- NOTE: if you are encountering issues with either treesitter or any LSP client, where comment code is not respecting configuration set by the `overrides` filed for gruvbox's
+--       setup, you can manually force the colour change via the use of the `NVIM_ENABLE_BACKUP_COMMENT_COLOR` environment variable  
 if Helpers.to_boolean(os.getenv("NVIM_ENABLE_BACKUP_COMMENT_COLOR")) == true then
   -- override the gray colour used for comments to green
   gruvbox_palette_overrides = {
@@ -37,7 +37,7 @@ if Helpers.to_boolean(os.getenv("NVIM_ENABLE_BACKUP_COMMENT_COLOR")) == true the
   ]])
 end
 
---! NOTE: if you do not like bracket matching highlighting, you can disable it by setting the `NVIM_DISABLE_MATCHING_HL` environment variable to `true`
+-- NOTE: if you do not like bracket matching highlighting, you can disable it by setting the `NVIM_DISABLE_MATCHING_HL` environment variable to `true`
 --  disable matching bracket/brace and other jazz highlighting via autocmd group
 if Helpers.to_boolean(os.getenv("NVIM_DISABLE_MATCHING_HL")) == true then
 	vim.cmd([[
@@ -62,5 +62,4 @@ require("gruvbox").setup({
   --* NOTE: this should only be used when the treesitter group/LSP semantic override to force the colour of comments is NON functional
   palette_overrides = gruvbox_palette_overrides, -- default value is nil 
 })
-
 

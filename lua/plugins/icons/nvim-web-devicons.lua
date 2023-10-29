@@ -1,3 +1,6 @@
+--* --------------------------------------------------------------- *--
+--?                      nvim-web-devicons Setup                    ?--
+--* --------------------------------------------------------------- *--
 
 --* override icons based on the Patch Ubuntu Nerd Font that is installed (PREREQUISITE)
 require("nvim-web-devicons").setup({

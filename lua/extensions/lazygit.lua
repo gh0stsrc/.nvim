@@ -1,10 +1,10 @@
 --* --------------------------------------------------------------- *--
---?                      	lazygit Setup   	                    ?--
+--?                      	  lazygit Setup   	                      ?--
 --* --------------------------------------------------------------- *--
 
 local command_exists = require("utils.helpers").command_exists
 
---! ONLY configure toggle terminal to open terminal window running lazygit, if lazy it is installed (i.e. can be found on $PATH)
+-- NOTE: ONLY configure toggle terminal to open terminal window running lazygit, if lazy it is installed (i.e. can be found on $PATH)
 if command_exists("lazygit") then
 	-- load and save toggle terminal's terminal module Terminmali object, for direct terminal window creation
 	Terminal = require('toggleterm.terminal').Terminal

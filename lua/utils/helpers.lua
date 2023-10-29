@@ -3,10 +3,10 @@
 --* ------------------------------------------------------------------------------------------------------------------------ *--
 
 -- define a table to represent the module
-local Helpers = {}
+local M  = {}
 
--- helper function used to see if a particular command exists on the system (i.e. is reachable via $PATH)
-function Helpers.command_exists(cmd)
+-- helper func used to see if a particular command exists on the system (i.e. is reachable via $PATH)
+function M.command_exists(cmd)
 	-- create file handle with the output stream of the executed command 
     local handle = io.popen("command -v " .. cmd) -- `command -v` returns information pertaining to a particular command if it exists
 	-- read the file handle in its entirety (should only be the path of the binary for the command if it exists)
@@ -19,7 +19,7 @@ end
 
 
 -- helper func to convert strings to booleans - primarily for env var comparison
-function Helpers.to_boolean(str)
+function M.to_boolean(str)
   local bool = false
   if str == "true" then
       bool = true
@@ -29,7 +29,7 @@ end
 
 
 -- helper func to check if neovim compatible clipboard providers are currently installed
-function Helpers.check_clipboard_providers()
+function M.check_clipboard_providers()
   local compatible_providers = {"xclip", "xsel", "tmux", "termux", "lemonade", "doitclient"}
   local found_providers = {}
 
@@ -45,7 +45,6 @@ function Helpers.check_clipboard_providers()
   return found_providers
 end
 
-
-
 -- return the module as a table
-return Helpers
+return M
+

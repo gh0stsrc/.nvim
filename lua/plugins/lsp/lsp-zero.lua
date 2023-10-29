@@ -17,7 +17,7 @@ lsp.ensure_installed({
   "helm_ls", -- TODO: need to figure out why the Helm language server is not rendering properly
   "pyright",
   "marksman",
-  -- "yamls", --! IMPORTANT: disabled on purpose, see configurations for more details
+  -- "yamls", -- IMPORTANT: disabled on purpose, see configurations for more details
 })
 
 -- configure lsp preferences

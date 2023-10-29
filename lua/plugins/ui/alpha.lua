@@ -1,3 +1,7 @@
+--* --------------------------------------------------------------- *--
+--?                         alpha-nvim Setup                        ?--
+--* --------------------------------------------------------------- *--
+
 local status_ok, alpha = pcall(require, "alpha")
 if not status_ok then
  return
@@ -58,12 +62,7 @@ dashboard.section.buttons.val = {
 }
 
 
-local function footer()
- return string.format("[ welcome %s, let's get s#@%% done! ]", os.getenv("USER"))
-end
-
-
-dashboard.section.footer.val = footer()
+dashboard.section.footer.val = "[ let's get s#@%% done! ]"
 dashboard.section.footer.opts.hl = "Type"
 dashboard.section.header.opts.hl = "Include"
 dashboard.section.buttons.opts.hl = "Keyword"

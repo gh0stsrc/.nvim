@@ -1,5 +1,5 @@
 --* --------------------------------------------------------------- *--
---?                Git Workflow Related Configurations              ?--
+--?                        gitsigns Setup                           ?--
 --* --------------------------------------------------------------- *--
 
 -- override gitsigns to reflect new lines with a 'plus' sign

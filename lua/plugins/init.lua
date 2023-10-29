@@ -1,11 +1,8 @@
-require("plugins.bufferline")
--- BUG: there is an issue with shade, where it will not identifty popup window's overlay positions correctly, such as with `jackmort/chatgpt.nvim` - disabled until it can be corrected
---require("plugins.shade")
-require("plugins.lualine")
-require("plugins.toggleterm")
-require("plugins.nvim-treesitter")
-require("plugins.nvim-comment")
-require("plugins.todo-comments")
+-- IMPORTANT: important the ui module first
+require("plugins.ui")
+require("plugins.parsers")
+require("plugins.terminal")
+require("plugins.comments")
 require("plugins.git")
 require("plugins.chatgpt")
 require("plugins.icons")
@@ -13,4 +10,4 @@ require("plugins.dap")
 require("plugins.clipboard")
 require("plugins.lsp")
 require("plugins.cmp")
-require("plugins.ui")
+

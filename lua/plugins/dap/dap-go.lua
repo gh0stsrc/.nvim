@@ -1,6 +1,7 @@
---* --------------------------- *--
---?            dap-go           ?--
---* --------------------------- *--
+--* --------------------------------------------------------------- *--
+--?                          dap-go Setup                           ?--
+--* --------------------------------------------------------------- *--
+
 --* NOTE: DAP-Go (i.e. nvim-dap-go) is an extension for nvim-dap providing configurations for launching go debugger (delve) 
 --*       and debugging individual tests.
 

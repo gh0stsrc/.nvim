@@ -4,8 +4,8 @@
 
 local Helpers = require("utils.helpers")
 
---! IMPORTANT: to leverage the chatgpt plugin you will need to provide a valid API key; see the README for more details
---* check if the env var `NVIM_ENABLE_GPT` is set to true; if so invoke the plugin's default setup, with a couple of overrides
+-- IMPORTANT: to leverage the chatgpt plugin you will need to provide a valid API key; see the README for more details
+-- check if the env var `NVIM_ENABLE_GPT` is set to true; if so invoke the plugin's default setup, with a couple of overrides
 if Helpers.to_boolean(os.getenv("NVIM_ENABLE_GPT")) == true then
   require("chatgpt").setup({ 
     chat = {

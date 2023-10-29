@@ -1,4 +1,4 @@
----
+--
 ---  ███╗   ██╗███████╗ ██████╗ ████████╗███████╗██╗   ██╗███████╗███████╗
 ---  ████╗  ██║██╔════╝██╔═══██╗╚══██╔══╝██╔════╝██║   ██║██╔════╝╚══███╔╝
 ---  ██╔██╗ ██║█████╗  ██║   ██║   ██║   █████╗  ██║   ██║███████╗  ███╔╝ 
@@ -6,7 +6,7 @@
 ---  ██║ ╚████║███████╗╚██████╔╝   ██║   ███████╗╚██████╔╝███████║███████╗
 ---  ╚═╝  ╚═══╝╚══════╝ ╚═════╝    ╚═╝   ╚══════╝ ╚═════╝ ╚══════╝╚══════╝
 ---
---! Version : v1.6.0
+--- Version : v1.6.0
 --- NOTE    : Comments have been extended by the use of `folke/todo-comments.nvim`. Tagged comments are enriched with color highlighting, distinct icons and are searchable via commands and key-bindings, throughout open buffers and
 ---           the entire project workspace.
 ---
@@ -31,24 +31,16 @@
 ---               - Regular Comment           
 
 
--- set the default leader for key mappings
-vim.g.mapleader = " " --IMPORTANT: leader is the <space> key
-
-
 --* ------------------------------------------------------------------------------------------------------------------------ *--
 --?                                                     Helper Functions                                                     ?--
 --* ------------------------------------------------------------------------------------------------------------------------ *--
 
--- helper func to convert strings to booleans - primarily for env var comparison
---TODO: Move to better place
+-- import helper functions
 local Helpers = require("utils").Helpers
-
---TODO:refactor debug messages to be lodead via `/rcarriga/nvim-notify`
--- if the environment variable NVIM_DEBUG is set, then print the debug header
-if Helpers.to_boolean(os.getenv("NVIM_DEBUG")) == true then
-  print("\n[DEBUG]\n")
- end
-
+-- import async logger
+local Logger = require("utils").Logger
+-- import plenary's async lib to avoid using callbacks
+local async = require("plenary.async")
 
 --* ------------------------------------------------------------------------------------------------------------------------ *--
 --?                                               Packer Setup & Bootstrapping                                               ?--
@@ -77,27 +69,27 @@ local packer_bootstrap = ensure_packer()
 --! --------------------------------------------------------------------- !--
 require("packer").startup(function(use)
   use { "wbthomason/packer.nvim" }
-  --* -------------------------------------------------------- --*
-  --!  place plugins which you desire packer to install below
-  --* -------------------------------------------------------- --*
+  --* -------------------------------------------------------------- --*
+  --   NOTE: place plugins which you desire packer to install below
+  --* -------------------------------------------------------------- --*
 
   --* The Gruvbox color scheme is known for its warm and retro-inspired color palette, which many developers find visually pleasing and comfortable for coding. It often includes variations for different languages and file types to make syntax highlighting more readable and aesthetically pleasing
   use { "ellisonleao/gruvbox.nvim" }
   --* plugin to integrate the treesitter parsing lib into neovim
-  use("nvim-treesitter/nvim-treesitter", {run = ":TSUpdate"})
+  use( "nvim-treesitter/nvim-treesitter", {run = ":TSUpdate"})
   --* highly extendable fuzzy finder
   use {
-    "nvim-telescope/telescope.nvim", tag = "*",  --! IMPORTANT: telescope was previously hard tagged to `v0.1.3`, performing testing with the latest verison; revert if you encounter issues
+    "nvim-telescope/telescope.nvim", tag = "*",  -- IMPORTANT: telescope was previously hard tagged to `v0.1.3`, performing testing with the latest verison; revert if you encounter issues
     requires = {
-      {"nvim-lua/plenary.nvim"},  --* Required  --* neovim library that provides lua functions required for the development and use of various neovim plugins
-      {"BurntSushi/ripgrep"},     --* Required  --* line-oriented search tool that recursively searches your current directory for a regex pattern
-      {"sharkdp/fd"}              --* Optional  --* fast and user-friendly alternative to the traditional find command that comes with Unix and Linux operating systems
+      { "nvim-lua/plenary.nvim" },  -- Required  -- neovim library that provides lua functions required for the development and use of various neovim plugins
+      { "BurntSushi/ripgrep" },     -- Required  -- line-oriented search tool that recursively searches your current directory for a regex pattern
+      { "sharkdp/fd" }              -- Optional  -- fast and user-friendly alternative to the traditional find command that comes with Unix and Linux operating systems
     }
   }
   --* neovim statusline plugin written in Lua 
   use {
     "nvim-lualine/lualine.nvim",
-     requires = { "nvim-tree/nvim-web-devicons" } --! IMPORTANT: `nvim-web-devicons` requires a patched font to function on most terminals; see plugin configuration section for details
+     requires = { "nvim-tree/nvim-web-devicons" } -- IMPORTANT: `nvim-web-devicons` requires a patched font to function on most terminals; see plugin configuration section for details
   }
   --* go language integration plugin for vim
   use { "fatih/vim-go" }
@@ -105,9 +97,9 @@ require("packer").startup(function(use)
   --* neovim User Interface (UI) plugin for the neovim Debug Adapter Protocol (DAP)
   use { "rcarriga/nvim-dap-ui",
     requires = {
-      {"mfussenegger/nvim-dap"},  --* Required  --* neovim DAP plugin
-      {"folke/neodev.nvim"},      --* Required  --* setup for init.lua and plugin development with full signature help, docs and completion for the nvim lua API
-      {"mortepau/codicons.nvim"}  --! Required  --! this font requires to be patched to be properly processed by most terminals; see plugin configuration section
+      { "mfussenegger/nvim-dap" },  -- Required  -- neovim DAP plugin
+      { "folke/neodev.nvim" },      -- Required  -- setup for init.lua and plugin development with full signature help, docs and completion for the nvim lua API
+      { "mortepau/codicons.nvim" }  -- Required  -- IMPORTANT: this font requires to be patched to be properly processed by most terminals; see plugin configuration section
     }
   }
   --* plugin designed to integrate Go (the programming language) debugging capabilities with Neovim, leveraging the `nvim-dap` framework
@@ -115,58 +107,53 @@ require("packer").startup(function(use)
   --* a collection of functions that will help you setup Neovim's LSP client, so you can get IDE-like features with minimum effort
   use {
     "VonHeikemen/lsp-zero.nvim",
-    branch = "v3.x", --! IMPORTANT: currently testing `v3.x`; may have to revert back to `v2.x` if issues arise 
+    branch = "v3.x", -- IMPORTANT: currently testing `v3.x`; may have to revert back to `v2.x` if issues arise 
     requires = {
-      {"neovim/nvim-lspconfig"},              --* Required  --* a configuration utility for the built-in Language Server Protocol (LSP) client for neovim
-      {"williamboman/mason.nvim"},            --* Optional  --* is a neovim plugin that allows you to easily manage external editor tooling such as LSP servers, DAP servers, linters, and formatters through a single interface
-      {"williamboman/mason-lspconfig.nvim"},  --* Optional  --* bridges `mason.nvim` with the `lspconfig` plugin, making it easier to use both plugins together
-      {"hrsh7th/nvim-cmp"},                   --* Required  --* a neovim plugin that provides a powerful and extensible auto-completion framework for neovim (e.g. LSP auto-completion)
-      {"hrsh7th/cmp-nvim-lsp"},               --* Required  --* is a source (or completion provider) for the `nvim-cmp` completion framework, specifically designed to integrate with Neovim's built-in LSP client
-      {"hrsh7th/cmp-buffer"},                 --* Optional  --* another source plugin for the `nvim-cmp` completion framework. While `cmp-nvim-lsp` provides completion suggestions from neovim’s built-in LSP client, cmp-buffer provides completion suggestions from the content of currently open buffers
-      {"hrsh7th/cmp-path"},                   --* Optional  --* another source plugin for the `nvim-cmp` completion framework. `cmp-path` provides completion suggestions for file paths
-      {"saadparwaiz1/cmp_luasnip"},           --* Optional  --* another source plugin for the `nvim-cmp` completion framework. This plugin integrates `Luasnip` with `nvim-cmp`, allowing `Luasnip` snippets to be provided as completion items
-      {"hrsh7th/cmp-nvim-lua"},               --* Optional  --* another source plugin for the `nvim-cmp` completion framework. As the name suggests, `cmp-nvim-lua` provides Lua-specific completions
-      {"L3MON4D3/LuaSnip"},                   --* Required  --* a snippet engine plugin for neovim. `LuaSnip` is Lua-based, fast, and extensible snippet solution that allows you to define and insert snippets of text quickly, enhancing coding efficiency.
-      {"rafamadriz/friendly-snippets"},       --* Optional  --* a collection of snippets that are meant to be used with snippet engines available for Neovim, like `L3MON4D3/Luasnip`, `hrsh7th/vim-vsnip`, and others
+      { "neovim/nvim-lspconfig" },              -- Required  -- a configuration utility for the built-in Language Server Protocol (LSP) client for neovim
+      { "williamboman/mason.nvim" },            -- Optional  -- is a neovim plugin that allows you to easily manage external editor tooling such as LSP servers, DAP servers, linters, and formatters through a single interface
+      { "williamboman/mason-lspconfig.nvim" },  -- Optional  -- bridges `mason.nvim` with the `lspconfig` plugin, making it easier to use both plugins together
+      { "hrsh7th/nvim-cmp" },                   -- Required  -- a neovim plugin that provides a powerful and extensible auto-completion framework for neovim (e.g. LSP auto-completion)
+      { "hrsh7th/cmp-nvim-lsp" },               -- Required  -- is a source (or completion provider) for the `nvim-cmp` completion framework, specifically designed to integrate with Neovim's built-in LSP client
+      { "hrsh7th/cmp-buffer" },                 -- Optional  -- another source plugin for the `nvim-cmp` completion framework. While `cmp-nvim-lsp` provides completion suggestions from neovim’s built-in LSP client, cmp-buffer provides completion suggestions from the content of currently open buffers
+      { "hrsh7th/cmp-path" },                   -- Optional  -- another source plugin for the `nvim-cmp` completion framework. `cmp-path` provides completion suggestions for file paths
+      { "saadparwaiz1/cmp_luasnip" },           -- Optional  -- another source plugin for the `nvim-cmp` completion framework. This plugin integrates `Luasnip` with `nvim-cmp`, allowing `Luasnip` snippets to be provided as completion items
+      { "hrsh7th/cmp-nvim-lua" },               -- Optional  -- another source plugin for the `nvim-cmp` completion framework. As the name suggests, `cmp-nvim-lua` provides Lua-specific completions
+      { "L3MON4D3/LuaSnip" },                   -- Required  -- a snippet engine plugin for neovim. `LuaSnip` is Lua-based, fast, and extensible snippet solution that allows you to define and insert snippets of text quickly, enhancing coding efficiency.
+      { "rafamadriz/friendly-snippets" },       -- Optional  -- a collection of snippets that are meant to be used with snippet engines available for Neovim, like `L3MON4D3/Luasnip`, `hrsh7th/vim-vsnip`, and others
     }
   }
   --* a plugin designed to help manage terminal windows within neovim. The plugin allows users to toggle neovim's built-in terminal easily, meaning you can show or hide the terminal window with a single command or key mapping
-  use {"akinsho/toggleterm.nvim", tag = "*" }
+  use { "akinsho/toggleterm.nvim", tag = "*" }
   --* a plugin which provides an easy and efficient way to comment out lines of code in multiple programming languages.
-  use {"terrortylor/nvim-comment"}
-
-  --* ----------- --*
-  --* git related --*
-  --* ----------- --*
+  use { "numToStr/Comment.nvim" }
   --* plugin to enrich neovim with git signs (e.g. + for new lines)
-  use {"lewis6991/gitsigns.nvim"}
+  use { "lewis6991/gitsigns.nvim" }
   --* plugin that provides a side-by-side diff viewer for Git differences right inside Neovim. Offering a convenient way to visualize and navigate through changes in your Git repository without leaving your editor
   use {
     "sindrets/diffview.nvim",
     requires = {
-      {"nvim-tree/nvim-web-devicons"} --! IMPORTANT: `nvim-web-devicons` requires a patched font to function on most terminals; see plugin configuration section for details
+      { "nvim-tree/nvim-web-devicons" } -- IMPORTANT: `nvim-web-devicons` requires a patched font to function on most terminals; see plugin configuration section for details
     }
   }
-  --* NOTE: `Lazygit` may not be be a Neovim plugin, but it works amazinging well when paired with `toggleterm`; INSTALL IT AND GIVE IT A GO!
-  --  a plugin that aims to provide a more user-friendly interface to Git within the editor - I still prefer `Lazygit`, keeping this here for others' preferences
+  -- NOTE: `Lazygit` may not be be a Neovim plugin, but it works amazinging well when paired with `toggleterm`; INSTALL IT AND GIVE IT A GO!
+  -- a plugin that aims to provide a more user-friendly interface to Git within the editor - I still prefer `Lazygit`, keeping this here for others' preferences
   use {
     "NeogitOrg/neogit",
     requires = {
-      {"nvim-lua/plenary.nvim"},          --* Required  --* already explained
-      {"nvim-telescope/telescope.nvim"},  --* Optional  --* already explained
-      {"sindrets/diffview.nvim"},         --* Optional  --* already explained
-      {"ibhagwan/fzf-lua"},               --* Optional  --* a Neovim plugin that provides a Lua interface to the popular fzf fuzzy finder.
+      { "nvim-lua/plenary.nvim" },          -- Required  -- already explained
+      { "nvim-telescope/telescope.nvim" },  -- Optional  -- already explained
+      { "sindrets/diffview.nvim" },         -- Optional  -- already explained
+      { "ibhagwan/fzf-lua" },               -- Optional  -- a Neovim plugin that provides a Lua interface to the popular fzf fuzzy finder.
     }
   }
-
   -- check if the env var `NVIM_ENABLE_GPT` is set to true; if so include the chatgpt plugin as part of the packer setup
   if Helpers.to_boolean(os.getenv("NVIM_ENABLE_GPT")) == true then
     use {
       "jackMort/ChatGPT.nvim",
       requires = {
-        {"MunifTanjim/nui.nvim"},          --* Required  --* a plugin with a highly customizable UI component framework based on Lua
-        {"nvim-lua/plenary.nvim"},         --* Required  --* already explained
-        {"nvim-telescope/telescope.nvim"}  --* Required  --* already explained
+        { "MunifTanjim/nui.nvim" },          -- Required  -- a plugin with a highly customizable UI component framework based on Lua
+        { "nvim-lua/plenary.nvim" },         -- Required  -- already explained
+        { "nvim-telescope/telescope.nvim" }  -- Required  -- already explained
       },
     }
   end
@@ -174,14 +161,14 @@ require("packer").startup(function(use)
   use {
     "folke/todo-comments.nvim",
     requires = {
-      {"nvim-lua/plenary.nvim"},          --* Optional  --* required along with ripgrep for searching
-      {"folke/trouble.nvim"},             --* Optional  --* required for the displaying of todo tags via telescope and nvims quickfix and location lists
-      {"nvim-telescope/telescope.nvim"},  --* Optional  --* see above
+      { "nvim-lua/plenary.nvim" },          -- Optional  -- required along with ripgrep for searching
+      { "folke/trouble.nvim" },             -- Optional  -- required for the displaying of todo tags via telescope and nvims quickfix and location lists
+      { "nvim-telescope/telescope.nvim" },  -- Optional  -- see above
     }
   }
   -- programmable splash screen/dashboard for neovim
   use {
-      'goolord/alpha-nvim',
+      "goolord/alpha-nvim",
       config = function ()
           require'alpha'.setup(require'alpha.themes.dashboard'.config)
       end
@@ -191,19 +178,19 @@ require("packer").startup(function(use)
   use {
     "AckslD/nvim-neoclip.lua",
     requires = {
-      {'kkharji/sqlite.lua', module = 'sqlite'},  --* Required  --* SQLite/LuaJIT binding and a highly opinionated wrapper for storing, retrieving, caching, and persisting SQLite databases.
-      {'nvim-telescope/telescope.nvim'},          --* Required  --* already explained
-      {'ibhagwan/fzf-lua'},                       --* Optional  --* not required of you are using telescope
+      { "kkharji/sqlite.lua", module = "sqlite" },  -- Required  -- SQLite/LuaJIT binding and a highly opinionated wrapper for storing, retrieving, caching, and persisting SQLite databases.
+      { "nvim-telescope/telescope.nvim" },          -- Required  -- already explained
+      { "ibhagwan/fzf-lua" },                       -- Optional  -- not required of you are using telescope
     },
   }
-  -- BUG: there is an issue with shade, where it will not identifty popup window's overlay positions correctly, such as with `jackmort/chatgpt.nvim` - disabled until it can be corrected
-  -- use {"sunjon/shade.nvim"}
-  -- neovim plugin that provides a configurable and feature-rich buffer/tabline for managing open buffers.
+  -- plugin that provides a configurable and feature-rich buffer/tabline for managing open buffers.
   use {
-    'akinsho/bufferline.nvim',
+    "akinsho/bufferline.nvim",
     tag = "*",
-    requires = 'nvim-tree/nvim-web-devicons' --* Required  --* already explained
+    requires = { "nvim-tree/nvim-web-devicons" } -- Required  -- already explained
   }
+  -- fancy, configurable, notification manager for NeoVim
+  use { "rcarriga/nvim-notify" }
 
   -- NOTE:  automatically set up the packer configuration after cloning `packer.nvim` (i.e. Packer self-bootstrapping)
   if packer_bootstrap then
@@ -216,9 +203,19 @@ end)
 --?                                               Plugin Specific Configurations                                             ?--
 --* ------------------------------------------------------------------------------------------------------------------------ *--
 
--- NOTE: import structured modules
+-- IMPORTANT: load core first and foremost
 require("core")
+
+-- IMPORTANT: load plugins first before vim-core and extensions
 require("plugins")
+
+local welcome_msg = string.format("[ welcome %s ]",os.getenv("USER"))
+
+-- welcome the user 
+async.run(function() Logger.info(welcome_msg) end)
+
+-- NOTE: import remaining modules
+require("vim-core")
 require("extensions")
 
 

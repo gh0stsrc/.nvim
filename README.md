@@ -22,12 +22,25 @@ This is a simple but useful setup for neovim, it will continue to grow overtime.
   - `packer` is plugin/package manager for neovim
 
 - [gruvbox](https://github.com/morhetz/gruvbox)
-  - `gruvbox` The Gruvbox color scheme is known for its warm and retro-inspired color palette, which many developers find visually pleasing and comfortable for coding. It often includes variations for different languages and file types to make syntax highlighting more readable and aesthetically pleasing.
+  - `gruvbox`, the color scheme is known for its warm and retro-inspired color palette, which many developers find visually pleasing and comfortable for coding. It often includes variations for different languages and file types to make syntax highlighting more readable and aesthetically pleasing.
+
+- [alpha-nvim](https://github.com/goolord/alpha-nvim)
+  - `alpha` a fast and fully programmable dashbboard plugin for neovim
+
+- [akinsho/bufferline.nvim](https://github.com/akinsho/bufferline.nvim)
+  - `bufferline` is a popular Neovim plugin that provides a customizable and feature-rich buffer/tabline for managing open buffers in Neovim. It enhances the visual representation of buffers in Neovim, making it easier to navigate and manage multiple open files.
+  - <code style="color : blue"><b>Features</b></code>
+    - **_Tabline Replacement_**: It replaces Neovim's default tabline with a more informative and visually appealing bufferline. This bufferline can display icons, buffer names, and other metadata for each open buffer.
+    - **_Buffer Sorting_**: You can configure how buffers are sorted within the bufferline, whether it's based on the order of creation, file name, or other criteria.
+    - **_Buffer Icons_**: bufferline.nvim supports displaying file icons next to buffer names, making it easier to identify file types.
+    - **_Close Buttons_**: It allows you to add close buttons to individual buffers in the bufferline for easy buffer closing.
+    - **_Customization_**: The plugin is highly customizable, allowing you to tailor the appearance and behavior of the bufferline to your preferences.
+    - **_Integration with Other Plugins_**: It can integrate with other Neovim plugins, such as nvim-web-devicons for file icons and nvim-bufferline.lua for enhanced functionality.
 
 - [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)
   - `treesitter` is a parser generator tool and an incremental parsing library
     It can build a concrete syntax tree for a source file and efficiently update the syntax tree as the source file is edited
-  - **_nvim-treesitter is required for IDE functionality such as parsing, syntax highlighting, code analysis and   incremental selection_**
+  - **_nvim-treesitter is required for IDE functionality such as parsing, syntax highlighting, code analysis and incremental selection_**
 
 - [nvim-telescope/telescope.nvim](https://github.com/nvim-telescope/telescope.nvim)
   - `telescope` is a highly extendable fuzzy finder over lists. Built on the latest awesome features from neovim core
@@ -184,14 +197,18 @@ This is a simple but useful setup for neovim, it will continue to grow overtime.
     - **_Customization_**: It can be customized to fit your needs, including custom commands, size, and direction preferences
     - **_Integration_**: Works well with other Neovim plugins and follows Neovim's conventions for terminal windows
 
-- [terrortylor/nvim-comment](https://github.com/terrortylor/nvim-comment)
-  - `nvim-comment` is a Neovim plugin written in Lua, which provides an easy and efficient way to comment out lines of code in multiple programming languages. Commenting is a common task in coding, and this plugin helps automate and streamline the process.
-  - <code style="color : blue"><b>Features</b></code> 
-    - **_Single and Multi-line Commenting_**: The plugin allows users to comment out both single and multiple lines of code
-    - **_Nested Commenting_**: Supports nested commenting in languages that have appropriate syntax for it
-    - **_Toggling Comments_**: It offers a toggle feature that allows users to either comment or uncomment lines depending on their current state
-    - **_Custom Comment Strings_**: Users can configure custom comment strings for different filetypes
-    - **_Performance_**: Being written in Lua, it is more performance-efficient for Lua-based Neovim setups
+- [numToStr/Comment.nvim](https://github.com/numToStr/Comment.nvim)
+  - `Comment.nvim` is a Neovim plugin written in Lua, which provides an easy and efficient way to comment out lines of code in multiple programming languages. Commenting is a common task in coding, and this plugin helps automate and streamline the process. 
+  - <code style="color : blue"><b>Features</b></code>
+    - Supports treesitter. [Read more](https://github.com/numToStr/Comment.nvim#treesitter)
+    - Supports `commentstring`. Read `:h comment.commentstring`
+    - Supports line (`//`) and block (`/* */`) comments
+    - Dot (`.`) repeat support for gcc, gbc and friends
+    - Count support for `[count]gcc` and `[count]gbc`
+    - Left-right (`gcw` `gc$`) and Up-Down (`gc2j` `gc4`k) motions
+    - Use with text-objects (`gci{` `gbat`)
+    - Supports pre and post hooks
+    - Ignore certain lines, powered by Lua regex 
 
 - [lewis6991/gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim)
   - `gitsigns` is a Neovim plugin designed to enhance the user's experience when working with Git repositories by providing signs in the 'signcolumn' (the area just left of the line numbers). These signs indicate changes relative to the Git index (staged changes). The plugin is written in Lua and is optimized for performance, making it a popular choice among Neovim users.
@@ -248,6 +265,9 @@ This is a simple but useful setup for neovim, it will continue to grow overtime.
     - **_Customization_**: lazygit offers a range of configuration options, including custom key bindings, themes, and other preferences.
   - <code style="color : green"><b>`Lazygit` may not be be a Neovim plugin, but it works amazinging well when paired with `toggleterm`; INSTALL IT AND GIVE IT A GO!</b></code>
 
+- [nvim-neoclip.lua](https://github.com/AckslD/nvim-neoclip.lua)
+  - `neoclip` is a clipboard manager for neovim inspired by for example [`clipmenu`](https://github.com/cdown/clipmenu). It records everything that gets yanked in your vim session (up to a limit which is by default 1000 entries but can be configured). You can then select an entry in the history using telescope or fzf-lua which then gets populated in a register of your choice. 
+
 ---
 ### Language Severs, LSPs, Linters & Formatters
 
@@ -287,7 +307,10 @@ This is a simple but useful setup for neovim, it will continue to grow overtime.
 
 ---
 ### Nvim Config Environment Variables
- - `NVIM_DEBUG`: by setting this environment variable to `true`, Neovim will open with debugging info, such as the compatible clipboard providers that have been detected, etc.
+ - `NVIM_LOG_LVL`: by setting this environment variable to either ["TRACE" | "DEBUG" | "INFO" | "WARN" | "ERROR" | "OFF" ], the [`rcarriga/nvim-notify`](https://github.com/rcarriga/nvim-notify) plugin will be configured to display notifications upto the desired log level. If the env var `NVIM_LOG_LVL` is not set, the log level is deafult to `INFO`.
+
+ Neovim will open with debugging info, such as the compatible clipboard providers that have been detected, etc.
+by setting this environment variable to `true`, Neovim will open with debugging info, such as the compatible clipboard providers that have been detected, etc.
 </br>
  
  - `NVIM_SKIP_CLIP`: by setting this environment variable to `true`, you are choosing to skip the configuration of prefered clipboard providers (xclip, xsel, tmux, termux, etc...) and dismiss related errors.
@@ -439,7 +462,26 @@ If you find and relvant `Warnings` which may impact your nvim setup or experienc
 - `<alt-b>`                 - Go back/exit current window
 
 **Commenting**
-  - `<leader> + /` - comment a single line or multiple if lines are select in visual mode
+  - For commenting lines or blocks of code please refer to the default key-bindings for [`numToStr/Comment.nvim`](https://github.com/numToStr/Comment.nvim#-usage)
+
+  - For navigating `folke/todo-comments.nvim` comment tags please refer to the below key bindings:
+    - `tt`    - View all Todo Comment tags using telescope
+    - `] + t` - Jump to the next `TODO` tag 
+    - `[ + t` - Jump to the previous `TODO` tag 
+    - `] + h` - Jump to the next `HACK` tag 
+    - `[ + h` - Jump to the previous `HACK` tag 
+    - `] + b` - Jump to the next `BUG/FIX` tag 
+    - `[ + b` - Jump to the previous `BUG/FIX` tag 
+    - `] + i` - Jump to the next `IMPORTANT` tag 
+    - `[ + i` - Jump to the previous `IMPORTANT` tag 
+    - `] + w` - Jump to the next `WARN` tag 
+    - `[ + w` - Jump to the previous `WARN` tag 
+    - `] + p` - Jump to the next `PERF` tag 
+    - `[ + p` - Jump to the previous `PERF` tag 
+    - `] + n` - Jump to the next `NOTE` tag 
+    - `[ + n` - Jump to the previous `NOTE` tag 
+    - `] + T` - Jump to the next `TEST` tag 
+    - `[ + T` - Jump to the previous `TEST` tag 
 
 **Split Screen & Navigation**
   - `<leader> + v` **OR** `<alt-v>` - Split the screen vertically (uses currently opened file as default file to open)
@@ -450,12 +492,46 @@ If you find and relvant `Warnings` which may impact your nvim setup or experienc
   - `<alt-j>` - Toggle a persistent terminal pane at the bottom of the window horizontally (small)
   - `<alt-k>` - Toggle a floating persistent terminal pane that hovers over the main window (large)
 
+**Bufferline**
+  - `<alt>-c`     - Closes the current buffer
+  - `c + l`       - Closes all buffers to the left of the current buffer (visible in the bufferline)
+  - `c + r`       - Closes all buffers to the right of the current buffer (visible in the bufferline)
+  - `c + o`       - Closes all buffers other than the current buffer
+  - `n + n`       - Move the current buffer one index to the right
+  - `p + p`       - Move the current buffer one index to the left
+  - `<space> + ]` - Open the next buffer to the right
+  - `<space> + [` - Open the previous buffer to the left
+  - `<space> + 1` - Open the buffer with the visible oridnal of `1` (relative positioning)
+  - `<space> + 2` - Open the buffer with the visible oridnal of `2` (relative positioning)
+  - `<space> + 3` - Open the buffer with the visible oridnal of `3` (relative positioning)
+  - `<space> + 4` - Open the buffer with the visible oridnal of `4` (relative positioning)
+  - `<space> + 5` - Open the buffer with the visible oridnal of `5` (relative positioning)
+  - `<space> + 6` - Open the buffer with the visible oridnal of `6` (relative positioning)
+  - `<space> + 7` - Open the buffer with the visible oridnal of `7` (relative positioning)
+  - `<space> + 8` - Open the buffer with the visible oridnal of `8` (relative positioning)
+  - `<space> + 9` - Open the buffer with the visible oridnal of `9` (relative positioning)
+  - `<alt>-1`     - Open the buffer with the absolute oridnal/index of `1` (absolute positioning)
+  - `<alt>-2`     - Open the buffer with the absolute oridnal/index of `2` (absolute positioning)
+  - `<alt>-3`     - Open the buffer with the absolute oridnal/index of `3` (absolute positioning)
+  - `<alt>-4`     - Open the buffer with the absolute oridnal/index of `4` (absolute positioning)
+  - `<alt>-5`     - Open the buffer with the absolute oridnal/index of `5` (absolute positioning)
+  - `<alt>-6`     - Open the buffer with the absolute oridnal/index of `6` (absolute positioning)
+  - `<alt>-7`     - Open the buffer with the absolute oridnal/index of `7` (absolute positioning)
+  - `<alt>-8`     - Open the buffer with the absolute oridnal/index of `8` (absolute positioning)
+  - `<alt>-9`     - Open the buffer with the absolute oridnal/index of `9` (absolute positioning)
+
+**neoclip**
+  - `<space> + c` - Open searchable clipboard window using telescope
+
 **Lazygit**
   <code style="color : green"><b>Note</b></code>**:** The below key bindings are only available if `lazygit` is installed on your system (i.e. avaialble via `$PATH`). The neovim config will automatically bootstrap `toggleterm` with `lazygit` for you, ONLY if `lazygit` is installed.
   - `<leader> + g` - Open a floating terminal for `lazygit`
   - `<leader> + q` - Close the floating terminal for `lazygit`
   
   For a comprehensive list of built-in key mappings for `lazygit`, refer to its respective [documentation](https://github.com/jesseduffield/lazygit/tree/master/docs/keybindings).
+
+**notify**
+  - `n + h` - Open searchable window of messages/logs using telescope
 
 **Telescope**
   - `<leader> + <shift>-? `     - Find recently opened files

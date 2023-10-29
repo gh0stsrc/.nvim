@@ -1,4 +1,13 @@
 --* --------------------------------------------------------------- *--
+--?                         Core / Init Setup                       ?--
+--* --------------------------------------------------------------- *--
+
+-- IMPORTANT: This file is loaded before plugins, so if you need something to be executed before importing modules/libs put it here
+
+-- NOTE: set nvim-notify as the default noftication mechanism for all plugins that use vim.notify function (e.g. telescope)
+vim.notify = require("notify")
+
+--* --------------------------------------------------------------- *--
 --?                        Vim Customizations                       ?--
 --* --------------------------------------------------------------- *--
 
@@ -12,10 +21,8 @@ vim.opt.shiftwidth = 2
 vim.opt.softtabstop = 2
 -- use spaces for indentation instead of tab characters when you press <Tab> or use auto-indentation.
 vim.opt.expandtab = true
--- disables line numbering in the left margin of the buffer
-vim.opt.number = false
--- enables relative line numbering, which displays line numbers relative to the current cursor position (e.g., the current line is displayed as 0, the line above it as -1, and so on)
-vim.opt.relativenumber = true
+-- enables line numbering in the left margin of the buffer
+vim.opt.number = true
 -- disables the creation of swap files. Swap files are used for crash recovery and can be helpful, but this configuration turns them off
 vim.opt.swapfile = false
 -- enables highlight search results, causing text matching your search pattern to be highlighted.
@@ -36,4 +43,13 @@ vim.o.timeout = true
 vim.o.timeoutlen = 300
 -- enables true color support in the terminal if supported by your terminal emulator. This allows for more colorful syntax highlighting
 vim.o.termguicolors = true
+
+--NOTE: configure automatic toggling between relative and absolute number mode dynamically based on events
+vim.cmd([[
+ augroup numbertoggle
+   autocmd!
+   autocmd BufEnter,FocusGained,InsertLeave,WinEnter * if &nu && mode() != "i" | set rnu   | endif " NOTE: ENABLE relative numbering when entering a buffer, gaining neovim focus, leaving insert mode or when entering a window
+   autocmd BufLeave,FocusLost,InsertEnter,WinLeave   * if &nu                  | set nornu | endif " NOTE: DISABLE relative number (set abolsute), when leaving a buffer, losing focus, entering insert mode and leaving a window
+ augroup END
+]])
 
