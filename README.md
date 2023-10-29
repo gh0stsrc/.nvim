@@ -318,6 +318,9 @@ This is a simple but useful setup for neovim, it will continue to grow overtime.
     - **_Search and Filter_**: You can search for specific resources and filter them based on different criteria.
     - **_Customization_**: K9s is highly customizable and supports configuration files, allowing you to tailor it to your needs.
 
+- **_Todo/Tracker TUI_**
+  - you can plugin whichever Todo/Tracker TUI you desire and it will autmatically be bootstrapped by the neovim config and integrated with `toggleterm`. Todo so (pun indended), set the `NVIM_TODO_TUI` environment variable to the command of your desired TUI (e.g. `todui`). This will _ONLY_ work if the command is installed on your system (i.e. avaialble via `$PATH`).
+
 
 ---
 ### Nvim Config Environment Variables
@@ -349,6 +352,9 @@ by setting this environment variable to `true`, Neovim will open with debugging 
 
   - To manually override the `gruvbox` colorscheme to render comments in green text, when either treesitter or LSPs are **_NON_**-FUNCTIONAL, set the environment variable to `true`.
 
+- `NVIM_TODO_TUI`: by setting this environment variable to the command of your desired Todo/Tracker TUI (e.g. `todui`), the neovim will automatically bootstrap the integration with `toggleterm`; this will _ONLY_ work if the command is installed on your system (i.e. avaialble via `$PATH`).
+
+
 ---
 ### Nvim Config Installation Prerequisites
 
@@ -368,6 +374,10 @@ by setting this environment variable to `true`, Neovim will open with debugging 
   See the `k9s` extension subsection in [Terminal UI (TUI) Extensions](#terminal-ui-tui-extensions), to learn more about this amazing TUI for interacting with k8s clusters. Its time to leave the plain jane `kubectl` cli in the dust!
 
   Simply install `k9s` on your system ([follow their installation guide](https://github.com/derailed/k9s#installation)) and the neovim config will automatically bootstrap `toggleterm` with `k9s` for you. A dedicated floating terminal window will be available to toggle using the keybindings outlined in the [Noteworthy Key Bindings](#noteworthy-key-bindings) section of this document.
+
+**Todo/Tracker TUI**
+    - you can plugin whichever Todo/Tracker TUI you desire and it will autmatically be bootstrapped by the neovim config and integrated with `toggleterm`. Todo so (pun indended), set the `NVIM_TODO_TUI` environment variable to the command of your desired TUI (e.g. `todui`). This will _ONLY_ work if the command is installed on your system (i.e. avaialble via `$PATH`).
+    - see the respective [environment variable section](#nvim-config-environment-variables) for more details
 
 **Nvim Clipboard Provider Related**
 

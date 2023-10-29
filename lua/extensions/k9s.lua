@@ -9,7 +9,7 @@ if command_exists("k9s") then
 	-- load and save toggle terminal's terminal module Terminal object, for direct terminal window creation
 	Terminal = require('toggleterm.terminal').Terminal
 	-- Create a new Terminal instance for k9s
-	local k9s = Terminal:new({
+	local K9s = Terminal:new({
 	  cmd = "k9s",          -- command to execute in the terminal
 	  dir = "./",           -- directory for terminal to be opened within
 	  direction = "float",  -- set terminal to float over the current neovim window 
@@ -37,11 +37,11 @@ if command_exists("k9s") then
 
 	-- function to toggle the k9s terminal
 	function _k9s_toggle()
-	  k9s:toggle()
+	  K9s:toggle()
 	end
 
   -- TODO: find a better home for this key binding 
-  -- set a keymap in normal mode: pressing <leader>g will toggle the k9s terminal
+  -- set a keymap in normal mode, that will toggle the k9s terminal
   vim.api.nvim_set_keymap("n", "k9s", "<cmd>lua _k9s_toggle()<CR>", {noremap = true, silent = true})
 end
 
