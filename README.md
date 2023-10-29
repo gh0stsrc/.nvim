@@ -253,18 +253,6 @@ This is a simple but useful setup for neovim, it will continue to grow overtime.
     - `diffview`
     - `fzf-lua`
 
-- [jesseduffield/lazygit](https://github.com/jesseduffield/lazygit)
-  - `lazygit` is a **_NOT_** a Neovim plugin, but rather a simple terminal UI for Git commands, built with Go. It offers a more visual and interactive way to manage and visualize Git repositories directly from the terminal, without needing to remember or type out individual Git commands.
-  - <code style="color : blue"><b>Features</b></code> 
-    - **_Interactive UI_**: lazygit provides a visual interface in the terminal, where you can see the status of your repository, such as changed files, branches, commits, and stashes.
-    - **_Key Bindings_**: It offers various key bindings for common Git tasks. For example, you can stage files, commit changes, switch branches, and more, all with a few key presses.
-    - **_Commit Visualization_**: lazygit allows you to view a detailed log of commits, where you can navigate through your commit history interactively.
-    - **_File Diff_**: It shows a side-by-side diff of the changes in your files, making it easier to understand what has been modified.
-    - **_Stashing_**: You can quickly stash your changes and apply or pop stashes directly from the interface.
-    - **_Merge Conflict Resolution_**: lazygit provides tools for resolving merge conflicts, showing the conflicting changes and allowing you to choose which changes to accept.
-    - **_Customization_**: lazygit offers a range of configuration options, including custom key bindings, themes, and other preferences.
-  - <code style="color : green"><b>`Lazygit` may not be be a Neovim plugin, but it works amazinging well when paired with `toggleterm`; INSTALL IT AND GIVE IT A GO!</b></code>
-
 - [nvim-neoclip.lua](https://github.com/AckslD/nvim-neoclip.lua)
   - `neoclip` is a clipboard manager for neovim inspired by for example [`clipmenu`](https://github.com/cdown/clipmenu). It records everything that gets yanked in your vim session (up to a limit which is by default 1000 entries but can be configured). You can then select an entry in the history using telescope or fzf-lua which then gets populated in a register of your choice. 
 
@@ -303,6 +291,32 @@ This is a simple but useful setup for neovim, it will continue to grow overtime.
 
 - [marksman](https://github.com/artempyanykh/marksman)
   - `marksman` is a program that integrates with your editor to assist you in writing and maintaining your Markdown documents. Using the LSP protocol it provides completion, goto definition, find references, rename refactoring, diagnostics, and more.
+
+
+---
+### Terminal UI (TUI) Extensions
+
+- [jesseduffield/lazygit](https://github.com/jesseduffield/lazygit)
+  - `lazygit` is a **_NOT_** a Neovim plugin, but rather a simple terminal UI for Git commands, built with Go. It offers a more visual and interactive way to manage and visualize Git repositories directly from the terminal, without needing to remember or type out individual Git commands.
+  - <code style="color : blue"><b>Features</b></code> 
+    - **_Interactive UI_**: lazygit provides a visual interface in the terminal, where you can see the status of your repository, such as changed files, branches, commits, and stashes.
+    - **_Key Bindings_**: It offers various key bindings for common Git tasks. For example, you can stage files, commit changes, switch branches, and more, all with a few key presses.
+    - **_Commit Visualization_**: lazygit allows you to view a detailed log of commits, where you can navigate through your commit history interactively.
+    - **_File Diff_**: It shows a side-by-side diff of the changes in your files, making it easier to understand what has been modified.
+    - **_Stashing_**: You can quickly stash your changes and apply or pop stashes directly from the interface.
+    - **_Merge Conflict Resolution_**: lazygit provides tools for resolving merge conflicts, showing the conflicting changes and allowing you to choose which changes to accept.
+    - **_Customization_**: lazygit offers a range of configuration options, including custom key bindings, themes, and other preferences.
+
+- [derailed/k9s](https://github.com/derailed/k9s)
+  - `k9s` is a popular open-source terminal-based console (TUI) for managing and interacting with Kubernetes clusters. It provides a powerful and convenient way to view, navigate, and manipulate Kubernetes resources and clusters directly from your terminal. K9s is designed to simplify Kubernetes administration tasks and provide real-time insights into your cluster.
+  - <code style="color : blue"><b>Features</b></code>
+    - **_Interactive User Interface_**: K9s offers an interactive, ncurses-based user interface that displays your cluster's resources in a tabular format, making it easy to browse and manage them.
+    - **_Resource Navigation_**: You can navigate through various Kubernetes resources, including pods, services, deployments, configmaps, and more, using keyboard shortcuts.
+    - **_Resource Details_**: K9s provides detailed information about selected resources, including logs, events, and YAML manifests.
+    - **_Resource Operations_**: You can perform actions on resources, such as deleting, scaling, and editing, directly from the K9s interface.
+    - **_Context and Namespace Switching_**: K9s allows you to switch between different Kubernetes contexts and namespaces, making it convenient for managing multiple clusters or namespaces.
+    - **_Search and Filter_**: You can search for specific resources and filter them based on different criteria.
+    - **_Customization_**: K9s is highly customizable and supports configuration files, allowing you to tailor it to your needs.
 
 
 ---
@@ -346,9 +360,14 @@ by setting this environment variable to `true`, Neovim will open with debugging 
   To see how to patch fonts, refer to the [References Section](#references)  
 
 **Lazy Git**
-  See the `lazygit` module subsection of the [Plugin Inventory](#plugin-inventory) section, to learn more about this git worklfow tool and how it works **_amazingly well_** with `toggleterm`.
+  See the `lazygit` extension subsection in [Terminal UI (TUI) Extensions](#terminal-ui-tui-extensions), to learn more about this git worklfow tool and how it works **_amazingly well_** with `toggleterm`.
 
   If you decide to join the dark side, all you need to do is simply install `lazygit` on your system ([follow their installation guide](https://github.com/jesseduffield/lazygit/tree/master#installation)) and the neovim config will automatically bootstrap `toggleterm` with `lazygit` for you. A dedicated floating terminal window will be available to toggle using the keybindings outlined in the [Noteworthy Key Bindings](#noteworthy-key-bindings) section of this document.
+
+**k9s**
+  See the `k9s` extension subsection in [Terminal UI (TUI) Extensions](#terminal-ui-tui-extensions), to learn more about this amazing TUI for interacting with k8s clusters. Its time to leave the plain jane `kubectl` cli in the dust!
+
+  Simply install `k9s` on your system ([follow their installation guide](https://github.com/derailed/k9s#installation)) and the neovim config will automatically bootstrap `toggleterm` with `k9s` for you. A dedicated floating terminal window will be available to toggle using the keybindings outlined in the [Noteworthy Key Bindings](#noteworthy-key-bindings) section of this document.
 
 **Nvim Clipboard Provider Related**
 
@@ -525,10 +544,18 @@ If you find and relvant `Warnings` which may impact your nvim setup or experienc
 
 **Lazygit**
   <code style="color : green"><b>Note</b></code>**:** The below key bindings are only available if `lazygit` is installed on your system (i.e. avaialble via `$PATH`). The neovim config will automatically bootstrap `toggleterm` with `lazygit` for you, ONLY if `lazygit` is installed.
-  - `<leader> + g` - Open a floating terminal for `lazygit`
-  - `<leader> + q` - Close the floating terminal for `lazygit`
+  - `<leader> + g` - Open a floating terminal running `lazygit`
+  - `<leader> + q` OR `q` - Close the floating terminal running `lazygit`
   
   For a comprehensive list of built-in key mappings for `lazygit`, refer to its respective [documentation](https://github.com/jesseduffield/lazygit/tree/master/docs/keybindings).
+
+**k9s**
+  <code style="color : green"><b>Note</b></code>**:** The below key bindings are only available if `k9s` is installed on your system (i.e. avaialble via `$PATH`). The neovim config will automatically bootstrap `toggleterm` with `k9s` for you, ONLY if `k9s` is installed.
+  - `k + 9 + s` - Open a floating terminal running `k9s`
+  - `q`         - Close the floating terminal running `k9s` **_(while in NORMAL MODE)_**
+  - `q + q`     - Close the floating terminal running `k9s` **_(while in TERMINAL MODE)_**
+
+  For a comprehensive list of built-in key mappings for `k9s`, refer to its respective [documentation](https://github.com/derailed/k9s#key-bindings).
 
 **notify**
   - `n + h` - Open searchable window of messages/logs using telescope
