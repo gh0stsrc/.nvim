@@ -145,17 +145,17 @@ vim.keymap.set("t", "jj", [[<C-\><C-n>]])
 --* See `:help telescope.builtin`
 
 --* telescope related key bindings
-vim.keymap.set("n", "<leader>?", require("telescope.builtin").oldfiles, { desc = "[?] Find recently opened files" })
+vim.keymap.set("n", "<leader>?",       require("telescope.builtin").oldfiles, { desc = "[?] Find recently opened files" })
 vim.keymap.set("n", "<leader><space>", require("telescope.builtin").buffers, { desc = "[ ] Find existing buffers" })
-vim.keymap.set("n", "<M-f>", function()
+vim.keymap.set("n", "<M-f>",           function()
   require("telescope.builtin").current_buffer_fuzzy_find(require("telescope.themes").get_dropdown {
     winblend = 10,
       previewer = false,
   })
 end, { desc = "[/] Fuzzily search in current buffer" })
 
-vim.keymap.set("n", "<leader>p", require("telescope.builtin").find_files, { desc = "[S]earch [F]iles" })
-vim.keymap.set("n", "<M-p>", require("telescope.builtin").find_files, { desc = "[S]earch [F]iles" }) -- same command as above just also mapped to <alt>-p
+vim.keymap.set("n", "<leader>p",  require("telescope.builtin").find_files, { desc = "[S]earch [F]iles" })
+vim.keymap.set("n", "<M-p>",      require("telescope.builtin").find_files, { desc = "[S]earch [F]iles" }) -- same command as above just also mapped to <alt>-p
 vim.keymap.set("n", "<leader>sh", require("telescope.builtin").help_tags, { desc = "[S]earch [H]elp" })
 vim.keymap.set("n", "<leader>sw", require("telescope.builtin").grep_string, { desc = "[S]earch current [W]ord" })
 vim.keymap.set("n", "<leader>sg", require("telescope.builtin").live_grep, { desc = "[S]earch by [G]rep" })
@@ -190,7 +190,7 @@ vim.keymap.set("n", "<leader>dr", function() require("dap").repl.toggle() end)
 --* --------------------------------------------------------------- *--
 --* Note: Only functions exposed by the ChatGPT plugin have been mapped to keys explictly and can be seen below. Refer to the README for more details pertaining to
 
-vim.keymap.set("n", "gpt", "<cmd>ChatGPT<cr>")                       -- open general interactive window
+vim.keymap.set("n", "gpt",  "<cmd>ChatGPT<cr>")                       -- open general interactive window
 vim.keymap.set("n", "gpta", "<cmd>ChatGPTActAs<cr>")                 -- open a prompt prepared window (adopting a persona)
 vim.keymap.set("n", "gpte", "<cmd>ChatGPTEditWithInstructions<cr>")  -- open an interactive window where ChatGPT will edit a copy of the current buffer
 vim.keymap.set("n", "gptr", "<cmd>ChatGPTRun<cr>")                   -- execute ChatGPT commands
@@ -203,9 +203,9 @@ vim.keymap.set("n", "gptc", "<cmd>ChatGPTCompleteCode<cr>")          -- comeplet
 
 -- buffer deletion
 vim.keymap.set("n", "<M-c>", "<cmd>bdelete!<cr>")                                    -- delete current buffer
-vim.keymap.set("n", "cl", "<cmd>BufferLineCloseLeft<cr>")
-vim.keymap.set("n", "cr", "<cmd>BufferLineCloseRight<cr>")
-vim.keymap.set("n", "co", "<cmd>BufferLineCloseOthers<cr>")
+vim.keymap.set("n", "cl",    "<cmd>BufferLineCloseLeft<cr>")
+vim.keymap.set("n", "cr",    "<cmd>BufferLineCloseRight<cr>")
+vim.keymap.set("n", "co",    "<cmd>BufferLineCloseOthers<cr>")
 
 -- shift buffers in the bufferline
 vim.keymap.set("n", "nn", "<cmd>BufferLineMoveNext<cr>")                             -- move the current buffer 1 position to the left
@@ -250,6 +250,24 @@ vim.keymap.set("n", "<leader>c", "<cmd>Telescope neoclip<cr>")
 --* --------------------------------------------------------------- *--
 --?                         notify Bindings                         ?--
 --* --------------------------------------------------------------- *--
+
 -- open notification history in telescope
 vim.keymap.set("n", "nh", "<cmd>Telescope notify<cr>")
+
+
+--* --------------------------------------------------------------- *--
+--?                         harpoon Bindings                        ?--
+--* --------------------------------------------------------------- *--
+
+-- mark the file within the current buffer 
+vim.keymap.set("n", "hx", require('harpoon.mark').add_file)
+-- remove the mark for the file within the current buffer
+vim.keymap.set("n", "hr", require('harpoon.mark').rm_file)
+-- navigate to the next maked (harpooned) buffer
+vim.keymap.set("n", "hn", require('harpoon.ui').nav_next)
+-- navigate to the previous marked (harpooned) buffer
+vim.keymap.set("n", "hp", require('harpoon.ui').nav_prev)
+-- open window with all marked (harpooned) buffers using telescope
+vim.keymap.set("n", "hm", "<cmd>Telescope harpoon marks<cr>")
+
 

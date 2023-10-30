@@ -51,6 +51,14 @@ This is a simple but useful setup for neovim, it will continue to grow overtime.
     - `ripgrep`
     - `fd` _(optionally)_
 
+- [ThePrimeagen/harpoon](https://github.com/ThePrimeagen/harpoon)
+  - `harpoon` is a productivity plugin for Neovim that aims to help developers quickly navigate between files, terminals, and marks within their development environment. It provides a way to create shortcuts to frequently accessed resources, making it faster and more convenient to switch between different parts of a project.
+  - <code style="color : blue"><b>Features</b></code> 
+    - **_File Navigation_**: Quickly jump between a predefined set of files.
+    - **_Terminal Integration_**: Access and manage multiple terminals within Neovim.
+    - **_Marks_**: Set marks in files for rapid navigation.
+    - **_Ease of Use_**: Intuitive commands and shortcuts to improve workflow.
+
 - [BurntSushi/ripgrep](https://github.com/BurntSushi/ripgrep)
   - `ripgrep`, also known as rg, is a line-oriented search tool that recursively searches your current directory for a regex pattern. It is developed by Andrew Gallant (also known by his GitHub handle BurntSushi) and is written in Rust. `ripgrep` is similar to other search tools like ack and ag (The Silver Searcher), but it is typically faster.
   - <code style="color : blue"><b>Features</b></code> 
@@ -494,7 +502,7 @@ If you find and relvant `Warnings` which may impact your nvim setup or experienc
   - For commenting lines or blocks of code please refer to the default key-bindings for [`numToStr/Comment.nvim`](https://github.com/numToStr/Comment.nvim#-usage)
 
   - For navigating `folke/todo-comments.nvim` comment tags please refer to the below key bindings:
-    - `tt`    - View all Todo Comment tags using telescope
+    - `t + t`    - View all Todo Comment tags using telescope
     - `] + t` - Jump to the next `TODO` tag 
     - `[ + t` - Jump to the previous `TODO` tag 
     - `] + h` - Jump to the next `HACK` tag 
@@ -520,6 +528,13 @@ If you find and relvant `Warnings` which may impact your nvim setup or experienc
 **Toggleterm**
   - `<alt-j>` - Toggle a persistent terminal pane at the bottom of the window horizontally (small)
   - `<alt-k>` - Toggle a floating persistent terminal pane that hovers over the main window (large)
+
+**Harpoon (Marking)**
+  - `h + x` - Mark the current buffer
+  - `h + r` - Remove the mark on the current buffer
+  - `h + n` - Navigate to the next marked (harpooned) buffer
+  - `h + p` - Navigate to the previous marked (harpooned) buffer
+  - `h + m` - Open window with all marked (harpooned) buffers using telescope
 
 **Bufferline**
   - `<alt>-c`     - Closes the current buffer

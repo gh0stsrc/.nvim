@@ -192,6 +192,14 @@ require("packer").startup(function(use)
   -- fancy, configurable, notification manager for NeoVim
   use { "rcarriga/nvim-notify" }
 
+  -- marking buffers and blazingly fast navigation of buffers
+  use {
+    "ThePrimeagen/harpoon",
+    requires = {
+     { "nvim-lua/plenary.nvim" }  -- Required 
+    }
+  }
+
   -- NOTE:  automatically set up the packer configuration after cloning `packer.nvim` (i.e. Packer self-bootstrapping)
   if packer_bootstrap then
     require("packer").sync()
