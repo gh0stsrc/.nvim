@@ -102,7 +102,6 @@ This is a simple but useful setup for neovim, it will continue to grow overtime.
 
 - [MunifTanjim/nui.nvim"](https://github.com/MunifTanjim/nui.nvim)
   - `nui` is a plugin for Neovim, and it's a highly customizable UI component framework based on Lua. This plugin aims to provide developers with components such as prompts, menus, and dialogs to help build interactive user interfaces within Neovim.
-  
 
 - [nvim-lua/plenary.nvim](https://github.com/nvim-lua/plenary.nvim)
   - `plenary` is a neovim library that provides lua functions required for the development and use of various neovim plugins.
@@ -114,7 +113,6 @@ This is a simple but useful setup for neovim, it will continue to grow overtime.
 
 - [nvim-tree/nvim-web-devicons](https://github.com/nvim-tree/nvim-web-devicons)
   - `nvim-web-devicons` is a lua fork of vim-devicons. This plugin provides the same icons as well as colors for each icon.
-
 
 - [fatih/vim-go](https://github.com/fatih/vim-go)
   -`vim-go` is a plugin for the Vim text editor, specifically aimed at providing an enhanced environment for developing Go.
@@ -195,6 +193,16 @@ This is a simple but useful setup for neovim, it will continue to grow overtime.
 
 - [rafamadriz/friendly-snippets](https://github.com/rafamadriz/friendly-snippets)
   - `friendly-snippets` is a collection of snippets that are meant to be used with snippet engines available for Neovim, like L3MON4D3/Luasnip, hrsh7th/vim-vsnip, and others. It's a community-driven collection, and it aims to provide a rich set of pre-made snippets for various programming languages, frameworks, and libraries, allowing developers to enhance their coding efficiency.
+
+- [windwp/nvim-autopairs](https://github.com/windwp/nvim-autopairs)
+  - `autopairs` is designed to automatically close pairs of characters like parentheses, brackets, and quotes as you type, providing a smoother and faster coding experience.
+  - <code style="color : blue"><b>Features</b></code> 
+    - **_Auto Closing_**: Automatically insert the closing character when you type an opening character (e.g., typing ( results in () with the cursor placed between the parentheses).
+    - **_Auto Jumping_**: If the cursor is next to a closing character, typing that closing character will move the cursor to the right of it, instead of inserting another closing character.
+    - **_Fast Wrap_**: Allows you to quickly wrap existing text with pairs of characters.
+    - **_Intelligent Deletion_**: Helps with deleting pairs of characters intelligently to avoid leaving behind orphaned characters.
+    - **_Support for Multiple File Types_**: The plugin can be configured to work with various programming languages and file types, respecting their unique syntax and characteristics.
+    - **_Integration with Other Plugins_**: nvim-autopairs can be integrated with other Neovim plugins like completion plugins, providing a seamless coding experience.
 
 - [akinsho/toggleterm.nvim](https://github.com/akinsho/toggleterm.nvim)
   - `toggleterm` is a Neovim plugin written in Lua, designed to help manage terminal windows within Neovim. The plugin allows users to toggle Neovim's built-in terminal easily, meaning you can show or hide the terminal window with a single command or key mapping.

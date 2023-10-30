@@ -200,6 +200,9 @@ require("packer").startup(function(use)
     }
   }
 
+  -- autocompletion of paired symbols (e.g. {},(),[], ...)
+  use { "windwp/nvim-autopairs" }
+
   -- NOTE:  automatically set up the packer configuration after cloning `packer.nvim` (i.e. Packer self-bootstrapping)
   if packer_bootstrap then
     require("packer").sync()
