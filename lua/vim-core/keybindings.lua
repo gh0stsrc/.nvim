@@ -272,3 +272,14 @@ vim.keymap.set("n", "hp", require('harpoon.ui').nav_prev)
 vim.keymap.set("n", "hm", "<cmd>Telescope harpoon marks<cr>")
 
 
+--* --------------------------------------------------------------- *--
+--?                          flash Bindings                         ?--
+--* --------------------------------------------------------------- *--
+
+-- open flash search
+vim.keymap.set({"n", "x", "o"}, "<leader>s", function() require("flash").jump() end )
+-- open flash search in treesitter mode
+vim.keymap.set({"n", "x", "o"}, "<leader>t", function() require("flash").treesitter_search() end )
+-- open flash in remote mode
+vim.keymap.set("o", "<leader>r", function() require("flash").remote() end )
+

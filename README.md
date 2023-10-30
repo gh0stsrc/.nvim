@@ -59,6 +59,20 @@ This is a simple but useful setup for neovim, it will continue to grow overtime.
     - **_Marks_**: Set marks in files for rapid navigation.
     - **_Ease of Use_**: Intuitive commands and shortcuts to improve workflow.
 
+- [folke/flash.nvim](https://github.com/folke/flash.nvim)
+  - `flash` lets you navigate your code with search labels, enhanced character motions, and Treesitter integration.
+  - <code style="color : blue"><b>Features</b></code>
+    - Search Integration: integrate flash.nvim with your regular search using / or ?. Labels appear next to the matches, allowing you to quickly jump to any location. Labels are guaranteed not to exist as a continuation of the search pattern.
+    - type as many characters as you want before using a jump label.
+    - Enhanced `f`, `t`, `F`, `T` motions
+    - Treesitter Integration: all parents of the Treesitter node under your cursor are highlighted with a label for quick selection of a specific Treesitter node.
+    - Jump Mode: a standalone jumping mode similar to search
+    - Search Modes: `exact`, `search` (regex), and `fuzzy` search modes
+    - Multi Window jumping
+    - Remote Actions: perform motions in remote locations
+    - dot-repeatable jumps
+    - highly extensible: check the [examples](https://github.com/folke/flash.nvim#-examples)
+
 - [BurntSushi/ripgrep](https://github.com/BurntSushi/ripgrep)
   - `ripgrep`, also known as rg, is a line-oriented search tool that recursively searches your current directory for a regex pattern. It is developed by Andrew Gallant (also known by his GitHub handle BurntSushi) and is written in Rust. `ripgrep` is similar to other search tools like ack and ag (The Silver Searcher), but it is typically faster.
   - <code style="color : blue"><b>Features</b></code> 
@@ -543,6 +557,11 @@ If you find and relvant `Warnings` which may impact your nvim setup or experienc
   - `h + n` - Navigate to the next marked (harpooned) buffer
   - `h + p` - Navigate to the previous marked (harpooned) buffer
   - `h + m` - Open window with all marked (harpooned) buffers using telescope
+
+**Flash**
+ - `<leader> + s` - Activate flash search (Modes: `n`, `x`, `o`)
+ - `<leader> + t` - Activate flash search in `treesitter` mode (Modes: `n`, `x`, `o`)
+ - `<leader> + r` - Activate flash in remote mode (Modes: `o`)
 
 **Bufferline**
   - `<alt>-c`     - Closes the current buffer

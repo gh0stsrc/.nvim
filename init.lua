@@ -200,6 +200,9 @@ require("packer").startup(function(use)
     }
   }
 
+  -- blazingly fast search-based navigation within buffers
+  use { "folke/flash.nvim" }
+
   -- autocompletion of paired symbols (e.g. {},(),[], ...)
   use { "windwp/nvim-autopairs" }
 
