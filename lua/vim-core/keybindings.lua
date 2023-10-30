@@ -216,7 +216,7 @@ vim.keymap.set("n", "<leader>]", "<cmd>BufferLineCycleNext<cr>")                
 vim.keymap.set("n", "<leader>[", "<cmd>BufferLineCyclePrev<cr>")                     -- move focus to the next buffer to the right of the currently opened buffer
 
 -- relative buffer selection
-vim.keymap.set("n", "<leader>1", "<cmd>BufferLineGoToBuffer 1<cr>")                  -- move the focus to the 1st visible buffer in the bufferline (relative positioning) 
+vim.keymap.set("n", "<leader>1", "<cmd>BufferLineGoToBuffer 1<cr>")                  -- move the focus to the 1st visible buffer in the bufferline (relative positioning)
 vim.keymap.set("n", "<leader>2", "<cmd>BufferLineGoToBuffer 2<cr>")                  -- 2nd
 vim.keymap.set("n", "<leader>3", "<cmd>BufferLineGoToBuffer 3<cr>")                  -- 3rd
 vim.keymap.set("n", "<leader>4", "<cmd>BufferLineGoToBuffer 4<cr>")                  -- 4th
@@ -228,15 +228,16 @@ vim.keymap.set("n", "<leader>9", "<cmd>BufferLineGoToBuffer 9<cr>")             
 vim.keymap.set("n", "<leader>0", "<cmd>BufferLineGoToBuffer -1<cr>")                 -- move the focus to the last visible buffer in the bufferline (relative positioning)
 
 -- absolute buffer selection
-vim.keymap.set("n", "<M-1>", "<cmd>lua require(\"bufferline\").go_to(1, true)<cr>")  -- move the focus to the 1st buffer in the bufferline (absolute positioning) 
-vim.keymap.set("n", "<M-2>", "<cmd>lua require(\"bufferline\").go_to(2, true)<cr>")  -- 2nd 
-vim.keymap.set("n", "<M-3>", "<cmd>lua require(\"bufferline\").go_to(3, true)<cr>")  -- 3rd 
-vim.keymap.set("n", "<M-4>", "<cmd>lua require(\"bufferline\").go_to(4, true)<cr>")  -- 4th 
-vim.keymap.set("n", "<M-5>", "<cmd>lua require(\"bufferline\").go_to(5, true)<cr>")  -- 5th 
-vim.keymap.set("n", "<M-6>", "<cmd>lua require(\"bufferline\").go_to(6, true)<cr>")  -- 6th 
-vim.keymap.set("n", "<M-7>", "<cmd>lua require(\"bufferline\").go_to(7, true)<cr>")  -- 7th 
-vim.keymap.set("n", "<M-8>", "<cmd>lua require(\"bufferline\").go_to(8, true)<cr>")  -- 8th 
-vim.keymap.set("n", "<M-9>", "<cmd>lua require(\"bufferline\").go_to(9, true)<cr>")  -- move the focus to the 9th buffer in the bufferline (absolute positioning) 
+-- NOTE: using the function notation as the lua command notation will break when using a dot accessor
+vim.keymap.set("n", "<M-1>", function() require("bufferline").go_to(1, true) end)  -- move the focus to the 1st buffer in the bufferline (absolute positioning)
+vim.keymap.set("n", "<M-2>", function() require("bufferline").go_to(2, true) end)  -- 2nd
+vim.keymap.set("n", "<M-3>", function() require("bufferline").go_to(3, true) end)  -- 3rd
+vim.keymap.set("n", "<M-4>", function() require("bufferline").go_to(4, true) end)  -- 4th
+vim.keymap.set("n", "<M-5>", function() require("bufferline").go_to(5, true) end)  -- 5th
+vim.keymap.set("n", "<M-6>", function() require("bufferline").go_to(6, true) end)  -- 6th
+vim.keymap.set("n", "<M-7>", function() require("bufferline").go_to(7, true) end)  -- 7th
+vim.keymap.set("n", "<M-8>", function() require("bufferline").go_to(8, true) end)  -- 8th
+vim.keymap.set("n", "<M-9>", function() require("bufferline").go_to(9, true) end)  -- move the focus to the 9th buffer in the bufferline (absolute positioning)
 
 
 --* --------------------------------------------------------------- *--
