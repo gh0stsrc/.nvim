@@ -216,6 +216,12 @@ require("packer").startup(function(use)
   -- autocompletion of paired symbols (e.g. {},(),[], ...)
   use { "windwp/nvim-autopairs" }
 
+  -- toggable navigation pane plugin to explore project file structures 
+  use {
+    "nvim-tree/nvim-tree.lua",
+    requires = { "nvim-tree/nvim-web-devicons" }
+}
+
   -- NOTE:  automatically set up the packer configuration after cloning `packer.nvim` (i.e. Packer self-bootstrapping)
   if packer_bootstrap then
     require("packer").sync()

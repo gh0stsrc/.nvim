@@ -283,3 +283,13 @@ vim.keymap.set({"n", "x", "o"}, "<leader>t", function() require("flash").treesit
 -- open flash in remote mode
 vim.keymap.set("o", "<leader>r", function() require("flash").remote() end )
 
+
+--* --------------------------------------------------------------- *--
+--?                       nvim-tree Key Bindings                    ?--
+--* --------------------------------------------------------------- *--
+
+-- toggle the nvim-tree file explorer pane
+vim.keymap.set("n", "<M-n>", "<cmd>NvimTreeToggle<cr>")
+-- open nvim-tree file explorer pane, if not opened and set focus
+vim.keymap.set("n", "``", "<cmd>NvimTreeFocus<cr>")
+
