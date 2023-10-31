@@ -286,6 +286,20 @@ This is a simple but useful setup for neovim, it will continue to grow overtime.
 - [nvim-neoclip.lua](https://github.com/AckslD/nvim-neoclip.lua)
   - `neoclip` is a clipboard manager for neovim inspired by for example [`clipmenu`](https://github.com/cdown/clipmenu). It records everything that gets yanked in your vim session (up to a limit which is by default 1000 entries but can be configured). You can then select an entry in the history using telescope or fzf-lua which then gets populated in a register of your choice. 
 
+- [nvim-tree/nvim-tree.lua](https://github.com/nvim-tree/nvim-tree.lua)
+  - `nvim-tree` is a popular file explorer plugin for Neovim, written in Lua. It provides a visual tree-like structure to navigate your file system, making it easier to browse, open, and manage files and directories directly from Neovim. This plugin is designed to be highly customizable and extendable, fitting seamlessly into a modern Neovim setup that utilizes Lua for configuration and plugins.
+  - <code style="color : blue"><b>Features</b></code>
+    - **_File Browsing_**: Navigate through your file system, open files, and directories.
+    - **_Git Integration_**: Show git status of files (added, modified, untracked, etc.).
+    - **_Customizable_**: Customize its appearance and behavior to suit your workflow.
+    - **_Actions_**: Perform various actions on files/directories like copy, paste, rename, delete, etc.
+    - **_Icons and Colors_**: Supports file icons and color highlighting based on file type or status.
+    - **_Integration with Other Plugins_**: Can be integrated with other popular Neovim plugins and tools.
+    - **_LSP_**: Supports LSP (Language Server Protocol) for various file operations.
+    - **_File Operations_**: Perform operations like create, delete, rename, and move on files and directories.
+    - **_Search_**: Quickly search and jump to files or directories.
+    - **_Keybindings_**: Comes with default keybindings, but allows for full customization.
+
 ---
 ### Language Severs, LSPs, Linters & Formatters
 
@@ -546,6 +560,12 @@ If you find and relvant `Warnings` which may impact your nvim setup or experienc
   - `<leader> + v` **OR** `<alt-v>` - Split the screen vertically (uses currently opened file as default file to open)
   - `<leader> + h` **OR** `<alt-h>` - Navigate one screen to the left
   - `<leader> + l` **OR** `<alt-l>` - Navigate one screen to the right
+
+**Nvim-Tree**
+  - `<alt>-n`     - Toggle the nvim-tree file explorer pane
+  - ``` ` + ` ``` - Open nvim-tree file explorer pane, if not opened and set focus
+
+<code style="color : green"><b>Note</b></code>**:** for all built-in `nvim-tree` keybindings, please either see the [keymap code](https://github.com/nvim-tree/nvim-tree.lua/blob/master/lua/nvim-tree/keymap.lua) in github, or use the `g + ?` keybinding while maintaining focus in the `nvim-tree` file explorer pane 
 
 **Toggleterm**
   - `<alt-j>` - Toggle a persistent terminal pane at the bottom of the window horizontally (small)
