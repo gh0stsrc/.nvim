@@ -31,20 +31,13 @@
 ---               - Regular Comment           
 
 
---* ------------------------------------------------------------------------------------------------------------------------ *--
---?                                                     Helper Functions                                                     ?--
---* ------------------------------------------------------------------------------------------------------------------------ *--
-
--- import helper functions
-local Helpers = require("utils").Helpers
--- import async logger
-local Logger = require("utils").Logger
--- import plenary's async lib to avoid using callbacks
-local async = require("plenary.async")
 
 --* ------------------------------------------------------------------------------------------------------------------------ *--
 --?                                               Packer Setup & Bootstrapping                                               ?--
 --* ------------------------------------------------------------------------------------------------------------------------ *--
+
+-- import helper functions
+local Helpers = require("utils.helpers")
 
 -- function to be used to check if Packer is not currently install, if not, invoke Packer installation and self-bootstrapping
 local ensure_packer = function()
@@ -75,8 +68,10 @@ require("packer").startup(function(use)
 
   --* The Gruvbox color scheme is known for its warm and retro-inspired color palette, which many developers find visually pleasing and comfortable for coding. It often includes variations for different languages and file types to make syntax highlighting more readable and aesthetically pleasing
   use { "ellisonleao/gruvbox.nvim" }
+
   --* plugin to integrate the treesitter parsing lib into neovim
   use( "nvim-treesitter/nvim-treesitter", {run = ":TSUpdate"})
+
   --* highly extendable fuzzy finder
   use {
     "nvim-telescope/telescope.nvim", tag = "*",  -- IMPORTANT: telescope was previously hard tagged to `v0.1.3`, performing testing with the latest verison; revert if you encounter issues
@@ -86,14 +81,16 @@ require("packer").startup(function(use)
       { "sharkdp/fd" }              -- Optional  -- fast and user-friendly alternative to the traditional find command that comes with Unix and Linux operating systems
     }
   }
+
   --* neovim statusline plugin written in Lua 
   use {
     "nvim-lualine/lualine.nvim",
      requires = { "nvim-tree/nvim-web-devicons" } -- IMPORTANT: `nvim-web-devicons` requires a patched font to function on most terminals; see plugin configuration section for details
   }
+
   --* go language integration plugin for vim
   use { "fatih/vim-go" }
-  
+
   --* neovim User Interface (UI) plugin for the neovim Debug Adapter Protocol (DAP)
   use { "rcarriga/nvim-dap-ui",
     requires = {
@@ -102,8 +99,10 @@ require("packer").startup(function(use)
       { "mortepau/codicons.nvim" }  -- Required  -- IMPORTANT: this font requires to be patched to be properly processed by most terminals; see plugin configuration section
     }
   }
+
   --* plugin designed to integrate Go (the programming language) debugging capabilities with Neovim, leveraging the `nvim-dap` framework
   use { "leoluz/nvim-dap-go"}
+
   --* a collection of functions that will help you setup Neovim's LSP client, so you can get IDE-like features with minimum effort
   use {
     "VonHeikemen/lsp-zero.nvim",
@@ -122,12 +121,16 @@ require("packer").startup(function(use)
       { "rafamadriz/friendly-snippets" },       -- Optional  -- a collection of snippets that are meant to be used with snippet engines available for Neovim, like `L3MON4D3/Luasnip`, `hrsh7th/vim-vsnip`, and others
     }
   }
+
   --* a plugin designed to help manage terminal windows within neovim. The plugin allows users to toggle neovim's built-in terminal easily, meaning you can show or hide the terminal window with a single command or key mapping
   use { "akinsho/toggleterm.nvim", tag = "*" }
+
   --* a plugin which provides an easy and efficient way to comment out lines of code in multiple programming languages.
   use { "numToStr/Comment.nvim" }
+
   --* plugin to enrich neovim with git signs (e.g. + for new lines)
   use { "lewis6991/gitsigns.nvim" }
+
   --* plugin that provides a side-by-side diff viewer for Git differences right inside Neovim. Offering a convenient way to visualize and navigate through changes in your Git repository without leaving your editor
   use {
     "sindrets/diffview.nvim",
@@ -135,6 +138,7 @@ require("packer").startup(function(use)
       { "nvim-tree/nvim-web-devicons" } -- IMPORTANT: `nvim-web-devicons` requires a patched font to function on most terminals; see plugin configuration section for details
     }
   }
+
   -- NOTE: `Lazygit` may not be be a Neovim plugin, but it works amazinging well when paired with `toggleterm`; INSTALL IT AND GIVE IT A GO!
   -- a plugin that aims to provide a more user-friendly interface to Git within the editor - I still prefer `Lazygit`, keeping this here for others' preferences
   use {
@@ -146,6 +150,7 @@ require("packer").startup(function(use)
       { "ibhagwan/fzf-lua" },               -- Optional  -- a Neovim plugin that provides a Lua interface to the popular fzf fuzzy finder.
     }
   }
+
   -- check if the env var `NVIM_ENABLE_GPT` is set to true; if so include the chatgpt plugin as part of the packer setup
   if Helpers.to_boolean(os.getenv("NVIM_ENABLE_GPT")) == true then
     use {
@@ -157,6 +162,7 @@ require("packer").startup(function(use)
       },
     }
   end
+
   -- todo-comments provide enriched comments experience with color highlighting, distinct icons and are searchable via commands and key-bindings, throughout open buffers and the entire project workspace
   use {
     "folke/todo-comments.nvim",
@@ -166,6 +172,7 @@ require("packer").startup(function(use)
       { "nvim-telescope/telescope.nvim" },  -- Optional  -- see above
     }
   }
+
   -- programmable splash screen/dashboard for neovim
   use {
       "goolord/alpha-nvim",
@@ -173,6 +180,7 @@ require("packer").startup(function(use)
           require'alpha'.setup(require'alpha.themes.dashboard'.config)
       end
   }
+
   -- a clipboard manager for neovim inspired by clipmenu. It records everything that gets yanked in your vim session (up to a condifgurable limit), 
   -- you can then select an entry in the history using telescope or fzf-lua which then gets populated in a register of your choice.
   use {
@@ -183,12 +191,14 @@ require("packer").startup(function(use)
       { "ibhagwan/fzf-lua" },                       -- Optional  -- not required of you are using telescope
     },
   }
+
   -- plugin that provides a configurable and feature-rich buffer/tabline for managing open buffers.
   use {
     "akinsho/bufferline.nvim",
     tag = "*",
     requires = { "nvim-tree/nvim-web-devicons" } -- Required  -- already explained
   }
+
   -- fancy, configurable, notification manager for NeoVim
   use { "rcarriga/nvim-notify" }
 
@@ -217,13 +227,18 @@ end)
 --?                                               Plugin Specific Configurations                                             ?--
 --* ------------------------------------------------------------------------------------------------------------------------ *--
 
+-- import async logger 
+local Logger = require("utils.logger")
+-- import plenary's async lib to avoid using callbacks
+local async = require("plenary.async")
+
 -- IMPORTANT: load core first and foremost
 require("core")
 
 -- IMPORTANT: load plugins first before vim-core and extensions
 require("plugins")
 
-local welcome_msg = string.format("[ welcome %s ]",os.getenv("USER"))
+local welcome_msg = string.format("[ welcome %s ]", os.getenv("USER"))
 
 -- welcome the user 
 async.run(function() Logger.info(welcome_msg) end)
