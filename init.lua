@@ -220,7 +220,15 @@ require("packer").startup(function(use)
   use {
     "nvim-tree/nvim-tree.lua",
     requires = { "nvim-tree/nvim-web-devicons" }
-}
+  }
+
+  -- plugin to enhance the visibility of indentation levels
+  use {
+    "lukas-reineke/indent-blankline.nvim",
+    requires = {
+      { "nvim-treesitter/nvim-treesitter" }, -- Required for scope highlighting
+    }
+  }
 
   -- NOTE:  automatically set up the packer configuration after cloning `packer.nvim` (i.e. Packer self-bootstrapping)
   if packer_bootstrap then

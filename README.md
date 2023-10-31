@@ -37,6 +37,14 @@ This is a simple but useful setup for neovim, it will continue to grow overtime.
     - **_Customization_**: The plugin is highly customizable, allowing you to tailor the appearance and behavior of the bufferline to your preferences.
     - **_Integration with Other Plugins_**: It can integrate with other Neovim plugins, such as nvim-web-devicons for file icons and nvim-bufferline.lua for enhanced functionality.
 
+- [lukas-reineke/indent-blankline.nvim](https://github.com/lukas-reineke/indent-blankline.nvim)
+  - `indent-blankline.nvim` is a plugin is designed to enhance the visibility of indentation levels within your code or text documents.
+  - <code style="color : blue"><b>Features</b></code>
+    - Displaying vertical lines at each indentation level for improved readability.
+    - Customizable appearance: You can adjust the color, style, and behavior of the indentation lines according to your preferences.
+    - Support for various types of indentation, including spaces and tabs.
+    - Compatibility with other Neovim features and plugins.
+
 - [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)
   - `treesitter` is a parser generator tool and an incremental parsing library
     It can build a concrete syntax tree for a source file and efficiently update the syntax tree as the source file is edited
