@@ -1,4 +1,4 @@
---
+---
 ---  ███╗   ██╗███████╗ ██████╗ ████████╗███████╗██╗   ██╗███████╗███████╗
 ---  ████╗  ██║██╔════╝██╔═══██╗╚══██╔══╝██╔════╝██║   ██║██╔════╝╚══███╔╝
 ---  ██╔██╗ ██║█████╗  ██║   ██║   ██║   █████╗  ██║   ██║███████╗  ███╔╝ 
@@ -60,18 +60,20 @@ local packer_bootstrap = ensure_packer()
 --?   Packer Startup Configuration - Including Bootstrapping of Plugins   ?--
 --! --------------------------------------------------------------------- !--
 require("packer").startup(function(use)
+  -- include packer for self-bootstrapping
   use { "wbthomason/packer.nvim" }
+
   --* -------------------------------------------------------------- --*
   --   NOTE: place plugins which you desire packer to install below
   --* -------------------------------------------------------------- --*
 
-  --* The Gruvbox color scheme is known for its warm and retro-inspired color palette, which many developers find visually pleasing and comfortable for coding. It often includes variations for different languages and file types to make syntax highlighting more readable and aesthetically pleasing
+  -- The Gruvbox color scheme is known for its warm and retro-inspired color palette, which many developers find visually pleasing and comfortable for coding. It often includes variations for different languages and file types to make syntax highlighting more readable and aesthetically pleasing
   use { "ellisonleao/gruvbox.nvim" }
 
-  --* plugin to integrate the treesitter parsing lib into neovim
+  -- plugin to integrate the treesitter parsing lib into neovim
   use( "nvim-treesitter/nvim-treesitter", {run = ":TSUpdate"})
 
-  --* highly extendable fuzzy finder
+  -- highly extendable fuzzy finder
   use {
     "nvim-telescope/telescope.nvim", tag = "*",  -- IMPORTANT: telescope was previously hard tagged to `v0.1.3`, performing testing with the latest verison; revert if you encounter issues
     requires = {
@@ -81,17 +83,17 @@ require("packer").startup(function(use)
     }
   }
 
-  --* neovim statusline plugin written in Lua 
+  -- neovim statusline plugin written in Lua 
   use {
     "nvim-lualine/lualine.nvim",
      requires = { "nvim-tree/nvim-web-devicons" } -- Required  -- `lualine` uses patched fonts, if want to see icons you must have a set of patched fonts installed and use `nvim-web-devicons` to map the fonts (default or custom)
                                                                   -- IMPORTANT: `nvim-web-devicons` requires a patched font to function on most terminals; see plugin configuration section for details
   }
 
-  --* go language integration plugin for vim
+  -- go language integration plugin for vim
   use { "fatih/vim-go" }
 
-  --* neovim User Interface (UI) plugin for the neovim Debug Adapter Protocol (DAP)
+  -- neovim User Interface (UI) plugin for the neovim Debug Adapter Protocol (DAP)
   use { "rcarriga/nvim-dap-ui",
     requires = {
       { "mfussenegger/nvim-dap" },  -- Required  -- neovim DAP plugin
@@ -101,10 +103,10 @@ require("packer").startup(function(use)
     }
   }
 
-  --* plugin designed to integrate Go (the programming language) debugging capabilities with Neovim, leveraging the `nvim-dap` framework
+  -- plugin designed to integrate Go (the programming language) debugging capabilities with Neovim, leveraging the `nvim-dap` framework
   use { "leoluz/nvim-dap-go"}
 
-  --* a collection of functions that will help you setup Neovim's LSP client, so you can get IDE-like features with minimum effort
+  -- a collection of functions that will help you setup Neovim's LSP client, so you can get IDE-like features with minimum effort
   use {
     "VonHeikemen/lsp-zero.nvim",
     branch = "v3.x", -- IMPORTANT: currently testing `v3.x`; may have to revert back to `v2.x` if issues arise 
@@ -123,16 +125,16 @@ require("packer").startup(function(use)
     }
   }
 
-  --* a plugin designed to help manage terminal windows within neovim. The plugin allows users to toggle neovim's built-in terminal easily, meaning you can show or hide the terminal window with a single command or key mapping
+  -- a plugin designed to help manage terminal windows within neovim. The plugin allows users to toggle neovim's built-in terminal easily, meaning you can show or hide the terminal window with a single command or key mapping
   use { "akinsho/toggleterm.nvim", tag = "*" }
 
-  --* a plugin which provides an easy and efficient way to comment out lines of code in multiple programming languages.
+  -- a plugin which provides an easy and efficient way to comment out lines of code in multiple programming languages.
   use { "numToStr/Comment.nvim" }
 
-  --* plugin to enrich neovim with git signs (e.g. + for new lines)
+  -- plugin to enrich neovim with git signs (e.g. + for new lines)
   use { "lewis6991/gitsigns.nvim" }
 
-  --* plugin that provides a side-by-side diff viewer for Git differences right inside Neovim. Offering a convenient way to visualize and navigate through changes in your Git repository without leaving your editor
+  -- plugin that provides a side-by-side diff viewer for Git differences right inside Neovim. Offering a convenient way to visualize and navigate through changes in your Git repository without leaving your editor
   use {
     "sindrets/diffview.nvim",
     requires = {
@@ -236,6 +238,7 @@ end)
 
 -- import async logger 
 local Logger = require("utils.logger")
+
 -- import plenary's async lib to avoid using callbacks
 local async = require("plenary.async")
 
@@ -245,10 +248,12 @@ require("core")
 -- IMPORTANT: load plugins first before vim-core and extensions
 require("plugins")
 
-local welcome_msg = string.format("[ welcome %s ]", os.getenv("USER"))
-
 -- welcome the user 
-async.run(function() Logger.info(welcome_msg) end)
+async.run(
+  function() 
+    Logger.info(string.format("[ welcome %s ]", os.getenv("USER")))
+  end
+)
 
 -- NOTE: import remaining modules
 require("vim-core")
