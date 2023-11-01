@@ -7,3 +7,4 @@ require("plugins.ui.notify")
 require("plugins.ui.lualine")
 require("plugins.ui.bufferline")
 require("plugins.ui.indent_blankline")
+

@@ -283,14 +283,6 @@ This is a simple but useful setup for neovim, it will continue to grow overtime.
     - **_Performance_**: fzf-lua is designed to be fast and efficient, offering the power of fzf without unnecessary overhead.
     **_Integrated Experience_**: One of the main goals of the plugin is to offer a seamless and integrated fzf experience within Neovim, making common tasks quicker and more intuitive.
 
-- [NeogitOrg/neogit](https://github.com/NeogitOrg/neogit)
-  - `neogit` is a Neovim plugin that aims to bring an intuitive and integrated Git experience directly into Neovim. Written in Lua and designed for Neovim 0.5 and above, it offers a set of Git features that can be accessed without leaving the editor, thus enhancing the productivity of users who work frequently with Git.
-  - <code style="color : red"><b>Dependencies</b></code> 
-    - `plenary`
-    - `telescope`
-    - `diffview`
-    - `fzf-lua`
-
 - [nvim-neoclip.lua](https://github.com/AckslD/nvim-neoclip.lua)
   - `neoclip` is a clipboard manager for neovim inspired by for example [`clipmenu`](https://github.com/cdown/clipmenu). It records everything that gets yanked in your vim session (up to a limit which is by default 1000 entries but can be configured). You can then select an entry in the history using telescope or fzf-lua which then gets populated in a register of your choice. 
 

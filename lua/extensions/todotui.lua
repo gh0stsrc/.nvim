@@ -43,5 +43,5 @@ if todo_tui_cmd ~= nil then
     -- set a keymap in normal mode, that will toggle the Todo TUI  terminal
     vim.api.nvim_set_keymap("n", "<M-t>", "<cmd>lua _todo_tui_toggle()<CR>", {noremap = true, silent = true})
   end
-
 end
+

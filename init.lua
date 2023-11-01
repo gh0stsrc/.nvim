@@ -31,7 +31,6 @@
 ---               - Regular Comment           
 
 
-
 --* ------------------------------------------------------------------------------------------------------------------------ *--
 --?                                               Packer Setup & Bootstrapping                                               ?--
 --* ------------------------------------------------------------------------------------------------------------------------ *--
@@ -85,7 +84,8 @@ require("packer").startup(function(use)
   --* neovim statusline plugin written in Lua 
   use {
     "nvim-lualine/lualine.nvim",
-     requires = { "nvim-tree/nvim-web-devicons" } -- IMPORTANT: `nvim-web-devicons` requires a patched font to function on most terminals; see plugin configuration section for details
+     requires = { "nvim-tree/nvim-web-devicons" } -- Required  -- `lualine` uses patched fonts, if want to see icons you must have a set of patched fonts installed and use `nvim-web-devicons` to map the fonts (default or custom)
+                                                                  -- IMPORTANT: `nvim-web-devicons` requires a patched font to function on most terminals; see plugin configuration section for details
   }
 
   --* go language integration plugin for vim
@@ -96,7 +96,8 @@ require("packer").startup(function(use)
     requires = {
       { "mfussenegger/nvim-dap" },  -- Required  -- neovim DAP plugin
       { "folke/neodev.nvim" },      -- Required  -- setup for init.lua and plugin development with full signature help, docs and completion for the nvim lua API
-      { "mortepau/codicons.nvim" }  -- Required  -- IMPORTANT: this font requires to be patched to be properly processed by most terminals; see plugin configuration section
+      { "mortepau/codicons.nvim" }  -- Required  -- `nvim-dap-ui` uses patched fonts, if want to see icons you must have a set of patched fonts installed and use `codicons.nvim` to map the fonts (default or custom)
+                                                     -- IMPORTANT: this font requires to be patched to be properly processed by most terminals; see plugin configuration section
     }
   }
 
@@ -135,19 +136,8 @@ require("packer").startup(function(use)
   use {
     "sindrets/diffview.nvim",
     requires = {
-      { "nvim-tree/nvim-web-devicons" } -- IMPORTANT: `nvim-web-devicons` requires a patched font to function on most terminals; see plugin configuration section for details
-    }
-  }
-
-  -- NOTE: `Lazygit` may not be be a Neovim plugin, but it works amazinging well when paired with `toggleterm`; INSTALL IT AND GIVE IT A GO!
-  -- a plugin that aims to provide a more user-friendly interface to Git within the editor - I still prefer `Lazygit`, keeping this here for others' preferences
-  use {
-    "NeogitOrg/neogit",
-    requires = {
-      { "nvim-lua/plenary.nvim" },          -- Required  -- already explained
-      { "nvim-telescope/telescope.nvim" },  -- Optional  -- already explained
-      { "sindrets/diffview.nvim" },         -- Optional  -- already explained
-      { "ibhagwan/fzf-lua" },               -- Optional  -- a Neovim plugin that provides a Lua interface to the popular fzf fuzzy finder.
+      { "nvim-tree/nvim-web-devicons" } -- Required  -- `diffview` uses patched fonts, if want to see icons you must have a set of patched fonts installed and use `nvim-web-devicons` to map the fonts (default or custom)
+                                                        -- IMPORTANT: `nvim-web-devicons` requires a patched font to function on most terminals; see plugin configuration section for details
     }
   }
 
@@ -157,8 +147,8 @@ require("packer").startup(function(use)
       "jackMort/ChatGPT.nvim",
       requires = {
         { "MunifTanjim/nui.nvim" },          -- Required  -- a plugin with a highly customizable UI component framework based on Lua
-        { "nvim-lua/plenary.nvim" },         -- Required  -- already explained
-        { "nvim-telescope/telescope.nvim" }  -- Required  -- already explained
+        { "nvim-lua/plenary.nvim" },         -- Required  -- neovim library that provides lua functions required for the development and use of various neovim plugins
+        { "nvim-telescope/telescope.nvim" }  -- Required  -- `ChatGPT` levarages Telescope's fuzzy finder windows and previews
       },
     }
   end
@@ -169,7 +159,7 @@ require("packer").startup(function(use)
     requires = {
       { "nvim-lua/plenary.nvim" },          -- Optional  -- required along with ripgrep for searching
       { "folke/trouble.nvim" },             -- Optional  -- required for the displaying of todo tags via telescope and nvims quickfix and location lists
-      { "nvim-telescope/telescope.nvim" },  -- Optional  -- see above
+      { "nvim-telescope/telescope.nvim" },  -- Optional  -- required for this neovim config, as I configured `todo-comments` to be used with Telescope's fuzzy finder windows and previews
     }
   }
 
@@ -187,8 +177,8 @@ require("packer").startup(function(use)
     "AckslD/nvim-neoclip.lua",
     requires = {
       { "kkharji/sqlite.lua", module = "sqlite" },  -- Required  -- SQLite/LuaJIT binding and a highly opinionated wrapper for storing, retrieving, caching, and persisting SQLite databases.
-      { "nvim-telescope/telescope.nvim" },          -- Required  -- already explained
-      { "ibhagwan/fzf-lua" },                       -- Optional  -- not required of you are using telescope
+      { "nvim-telescope/telescope.nvim" },          -- Required  -- required for this neovim config, as I configured `neoclip` to be used with Telescope's fuzzy finder windows and previews
+      { "ibhagwan/fzf-lua" },                       -- Optional  -- fuzzy finder, which is NOT required of you are using `Telescope`
     },
   }
 
@@ -196,7 +186,8 @@ require("packer").startup(function(use)
   use {
     "akinsho/bufferline.nvim",
     tag = "*",
-    requires = { "nvim-tree/nvim-web-devicons" } -- Required  -- already explained
+    requires = { "nvim-tree/nvim-web-devicons" } -- Required  -- `bufferline` uses patched fonts, if want to see icons you must have a set of patched fonts installed and use `nvim-web-devicons` to map the fonts (default or custom)
+                                                                  -- IMPORTANT: `nvim-web-devicons` requires a patched font to function on most terminals; see plugin configuration section for details
   }
 
   -- fancy, configurable, notification manager for NeoVim
@@ -206,7 +197,8 @@ require("packer").startup(function(use)
   use {
     "ThePrimeagen/harpoon",
     requires = {
-     { "nvim-lua/plenary.nvim" }  -- Required 
+      { "nvim-lua/plenary.nvim" },         -- Required  -- neovim library that provides lua functions required for the development and use of various neovim plugins 
+      { "nvim-telescope/telescope.nvim" }  -- Required  -- considered required for this neovim config, as I configured `harpoon` to be used with Telescope's fuzzy finder windows and previews
     }
   }
 
@@ -219,14 +211,15 @@ require("packer").startup(function(use)
   -- toggable navigation pane plugin to explore project file structures 
   use {
     "nvim-tree/nvim-tree.lua",
-    requires = { "nvim-tree/nvim-web-devicons" }
+    requires = { "nvim-tree/nvim-web-devicons" }  -- Required  -- `nvim-tree` uses patched fonts, if want to see icons you must have a set of patched fonts installed and use `nvim-web-devicons` to map the fonts (default or custom)
+                                                                  -- IMPORTANT: `nvim-web-devicons` requires a patched font to function on most terminals; see plugin configuration section for details
   }
 
   -- plugin to enhance the visibility of indentation levels
   use {
     "lukas-reineke/indent-blankline.nvim",
     requires = {
-      { "nvim-treesitter/nvim-treesitter" }, -- Required for scope highlighting
+      { "nvim-treesitter/nvim-treesitter" },  -- Required  -- `nvim-treesitter` is required for language context-aware scope highlighting
     }
   }
 
