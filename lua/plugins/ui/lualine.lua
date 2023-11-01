@@ -10,3 +10,4 @@ require("lualine").setup({
     section_separators = "",
   },
 })
+

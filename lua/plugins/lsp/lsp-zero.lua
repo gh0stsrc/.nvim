@@ -1,6 +1,7 @@
 --* --------------------------------------------------------------- *--
 --?            Language Server Protocol & interface Setup           ?--
 --* --------------------------------------------------------------- *--
+
 local lsp = require("lsp-zero").preset("recommended")
 
 -- list of language servers, debugger adapters, linters and formatters to be installed by mason and leveraged by lsp-zero
