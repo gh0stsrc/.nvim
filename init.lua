@@ -6,7 +6,7 @@
 ---  ██║ ╚████║███████╗╚██████╔╝   ██║   ███████╗╚██████╔╝███████║███████╗
 ---  ╚═╝  ╚═══╝╚══════╝ ╚═════╝    ╚═╝   ╚══════╝ ╚═════╝ ╚══════╝╚══════╝
 ---
---- Version : v1.6.0
+--- Version : v2.0.0
 --- NOTE    : Comments have been extended by the use of `folke/todo-comments.nvim`. Tagged comments are enriched with color highlighting, distinct icons and are searchable via commands and key-bindings, throughout open buffers and
 ---           the entire project workspace.
 ---
