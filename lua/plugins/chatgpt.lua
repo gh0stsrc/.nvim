@@ -11,8 +11,8 @@ if Helpers.to_boolean(os.getenv("NVIM_ENABLE_GPT")) == true then
     chat = {
       question_sign = "󰆆",
       answer_sign = "󰯉",
-      border_left_sign = "",
-      border_right_sign = "󰠥",
+      border_left_sign = "",
+      border_right_sign = "",
     },
     popup_window = {
       border = {
